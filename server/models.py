@@ -20,7 +20,7 @@ class Users(db.Model, SerializerMixin):
             creator = lambda bank_obj: Bank(bank = bank_obj))
     
     accounts = db.relationship('Accounts', back_populates = 'users')
-    serialize_rules = ('-accounts','-bank','-transactions')
+    serialize_rules = ('-accounts.users','-bank','-transactions')
 
 
 
@@ -30,6 +30,7 @@ class Transactions(db.Model, SerializerMixin):
     title = db.Column(db.String)
     category = db.Column(db.String)
     created_at = Column(DateTime, default=datetime.utcnow)
+    amount = db.Column(db.Integer)
 
 
     user = association_proxy('accounts', 'users',

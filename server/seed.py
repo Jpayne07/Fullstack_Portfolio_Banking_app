@@ -27,11 +27,13 @@ if __name__ =='__main__':
         transaction1 = Transactions(
             title = 'Dunkin',
             category = 'Fastfood',
+            amount = '18.90'
         )
         
         transaction2 = Transactions(
             title = 'FPL',
             category = 'Utilities',
+            amount = '28.90'
         )
 
         db.session.add_all([transaction1, transaction2])
