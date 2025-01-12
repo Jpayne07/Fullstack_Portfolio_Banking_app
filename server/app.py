@@ -1,7 +1,9 @@
-from flask import Flask
+from flask import Flask, request
 from flask_restful import Resource, Api
 from config import app, db, api
 from models import Accounts, Transactions, Users, Bank
+from faker import Faker
+fake = Faker()
 
 #Members API Route
 
@@ -18,6 +20,24 @@ class Transaction(Resource):
     def get(self):
         transactions = [transaction.to_dict() for transaction in Transactions.query.all()]
         return(transactions,200)
+    
+    def post(self):
+        db.session.query(Transactions).delete()  # Deletes all rows in the Transactions table
+        db.session.commit()
+        for _ in range(10):
+            
+            transaction = Transactions(
+                title = fake.company(),
+                category = fake.word(),
+                amount = round(fake.random_number(digits=3), 2)  # Random amount with 2 decimal places
+            )
+            print(transaction.to_dict())
+            db.session.add(transaction)
+        
+        db.session.commit()
+        data = request.get_json()
+        print(data)
+        return(data, 201)
     
 class Banks(Resource):
     def get(self):

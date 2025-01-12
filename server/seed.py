@@ -1,6 +1,7 @@
 from app import app
 from models import db, Users, Accounts, Transactions, Bank
-
+from faker import Faker
+fake = Faker()
 
 if __name__ =='__main__':
     with app.app_context():
@@ -24,20 +25,8 @@ if __name__ =='__main__':
         db.session.add_all([user1, user2])
         db.session.commit()
 
-        transaction1 = Transactions(
-            title = 'Dunkin',
-            category = 'Fastfood',
-            amount = '18.90'
-        )
         
-        transaction2 = Transactions(
-            title = 'FPL',
-            category = 'Utilities',
-            amount = '28.90'
-        )
 
-        db.session.add_all([transaction1, transaction2])
-        db.session.commit()
 
         bank1 = Bank(
             bank_name = 'Regions',
