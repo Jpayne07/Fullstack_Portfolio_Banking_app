@@ -13,16 +13,28 @@ class Users(db.Model, SerializerMixin):
     account_type = db.Column(db.String)
     password = db.Column(db.String)
 
-    transactions = association_proxy('accounts','transactions',
-        creator=lambda transaction_obj: Accounts(transactions = transaction_obj))
+    @property
+    def transactions(self):
+        return [transaction for account in self.accounts for transaction in account.transactions]
+
         
     bank = association_proxy('accounts', 'banks',
             creator = lambda bank_obj: Bank(bank = bank_obj))
     
+    cards = association_proxy('accounts', 'cards',
+            creator = lambda card_obj: Card(card = card_obj))
+    
     accounts = db.relationship('Accounts', back_populates = 'users')
     serialize_rules = ('-accounts.users','-bank','-transactions')
 
+class Card(db.Model, SerializerMixin):
+    __tablename__ = "cards"
+    id = db.Column(db.Integer, primary_key=True)
+    card_number = db.Column(db.Integer, unique = True)
+    expiration_date = db.Column(db.Date)
 
+    accounts = db.relationship('Accounts', back_populates = 'cards')
+    serialize_rules = ('-accounts.cards',)
 
 class Transactions(db.Model, SerializerMixin):
     __tablename__ = "transactions"
@@ -54,8 +66,13 @@ class Bank(db.Model, SerializerMixin):
     
     users = association_proxy('accounts', 'users',
         creator = lambda users_obj: Users(users = users_obj))
+    
+    cards = association_proxy('accounts', 'cards',
+            creator = lambda card_obj: Card(card = card_obj))
 
-    accounts = db.relationship('Accounts', back_populates = 'banks')
+    accounts = db.relationship('Accounts', back_populates = 'banks', cascade='all, delete-orphan')
+
+    
 
     serialize_rules = ('-accounts','-transactions','-users')
 
@@ -64,12 +81,14 @@ class Accounts(db.Model, SerializerMixin):
     id = db.Column(db.Integer, primary_key="True")
     bank_id = db.Column(db.Integer, db.ForeignKey('banks.id'))
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+    card_id = db.Column(db.Integer, db.ForeignKey('cards.id'))
     transaction_id = db.Column(db.Integer, db.ForeignKey('transactions.id'))
     account_value = db.Column(db.String)
     transaction_count = db.Column(db.Integer)
 
     banks = db.relationship('Bank', back_populates = 'accounts')
+    cards = db.relationship('Card', back_populates = 'accounts')
     transactions = db.relationship('Transactions', back_populates = 'accounts')
     users = db.relationship('Users', back_populates = 'accounts')
 
-    serialize_rules = ('-banks','-transactions','-users')
+    serialize_rules = ('-banks.accounts','-transactions.accounts','-users')
