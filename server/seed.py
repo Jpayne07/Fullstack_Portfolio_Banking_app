@@ -49,7 +49,7 @@ if __name__ =='__main__':
             user_id = 1,
             transaction_id = 1,
             account_value = 100000,
-            transaction_count = 2,
+            account_type = "Checking",
             card_id = 2
         )
     
@@ -58,7 +58,7 @@ if __name__ =='__main__':
             user_id = 2,
             transaction_id = 2,
             account_value = 100000,
-            transaction_count = 2,
+            account_type = "Savings",
             card_id = 1
         )
         db.session.add_all([account1, account2])

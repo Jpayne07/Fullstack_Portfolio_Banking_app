@@ -27,34 +27,6 @@ class Users(db.Model, SerializerMixin):
     accounts = db.relationship('Accounts', back_populates = 'users')
     serialize_rules = ('-accounts.users','-bank','-transactions')
 
-class Card(db.Model, SerializerMixin):
-    __tablename__ = "cards"
-    id = db.Column(db.Integer, primary_key=True)
-    card_number = db.Column(db.Integer, unique = True)
-    expiration_date = db.Column(db.Date)
-
-    accounts = db.relationship('Accounts', back_populates = 'cards')
-    serialize_rules = ('-accounts.cards',)
-
-class Transactions(db.Model, SerializerMixin):
-    __tablename__ = "transactions"
-    id = db.Column(db.Integer, primary_key = True)
-    title = db.Column(db.String)
-    category = db.Column(db.String)
-    created_at = Column(DateTime, default=datetime.utcnow)
-    amount = db.Column(db.Integer)
-
-
-    user = association_proxy('accounts', 'users',
-        creator=lambda user_obj: Users(user = user_obj))
-    
-    bank = association_proxy('accounts', 'banks',
-            creator=lambda bank_obj: Bank(bank = bank_obj))
-
-    accounts = db.relationship('Accounts', back_populates = 'transactions')
-    serialize_rules = ('-accounts','-bank','-user')
-
-
 class Bank(db.Model, SerializerMixin):
     __tablename__ = "banks"
     id = db.Column(db.Integer, primary_key=True)
@@ -74,7 +46,16 @@ class Bank(db.Model, SerializerMixin):
 
     
 
-    serialize_rules = ('-accounts','-transactions','-users')
+    serialize_rules = ('-accounts.bank','-transactions','-users')
+
+class Card(db.Model, SerializerMixin):
+    __tablename__ = "cards"
+    id = db.Column(db.Integer, primary_key=True)
+    card_number = db.Column(db.Integer, unique = True)
+    expiration_date = db.Column(db.Date)
+
+    accounts = db.relationship('Accounts', back_populates = 'cards')
+    serialize_rules = ('-accounts.cards',)
 
 class Accounts(db.Model, SerializerMixin):
     __tablename__ = "accounts"
@@ -84,7 +65,7 @@ class Accounts(db.Model, SerializerMixin):
     card_id = db.Column(db.Integer, db.ForeignKey('cards.id'))
     transaction_id = db.Column(db.Integer, db.ForeignKey('transactions.id'))
     account_value = db.Column(db.String)
-    transaction_count = db.Column(db.Integer)
+    account_type = db.Column(db.String)
 
     banks = db.relationship('Bank', back_populates = 'accounts')
     cards = db.relationship('Card', back_populates = 'accounts')
@@ -92,3 +73,23 @@ class Accounts(db.Model, SerializerMixin):
     users = db.relationship('Users', back_populates = 'accounts')
 
     serialize_rules = ('-banks.accounts','-transactions.accounts','-users')
+
+    
+
+class Transactions(db.Model, SerializerMixin):
+    __tablename__ = "transactions"
+    id = db.Column(db.Integer, primary_key = True)
+    title = db.Column(db.String)
+    category = db.Column(db.String)
+    created_at = Column(DateTime, default=datetime.utcnow)
+    amount = db.Column(db.Integer)
+
+
+    user = association_proxy('accounts', 'users',
+        creator=lambda user_obj: Users(user = user_obj))
+    
+    bank = association_proxy('accounts', 'banks',
+            creator=lambda bank_obj: Bank(bank = bank_obj))
+
+    accounts = db.relationship('Accounts', back_populates = 'transactions')
+    serialize_rules = ('-accounts','-bank','-user')
