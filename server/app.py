@@ -1,14 +1,15 @@
-from flask import Flask, request
+from flask import Flask, request, session, make_response
 from flask_restful import Resource, Api
 from config import app, db, api
 from models import Accounts, Transactions, Users, Bank, Card
 from faker import Faker
-fake = Faker()
 import random
+from werkzeug.exceptions import UnprocessableEntity, Unauthorized
+
 
 
 #Members API Route
-
+fake = Faker()
 class Home(Resource):
     def get(self):
         return({"members": ["Mamber1","Member2", "Member3"]},200)
@@ -61,6 +62,39 @@ class Cards(Resource):
     def get(self):
         cards = [cards.to_dict() for cards in Card.query.all()]
         return(cards,200)
+    
+class Login(Resource):
+    def post(self):
+        user_object = request.get_json()
+        user = Users.query.filter(Users.username == user_object['username']).first()
+        if user:
+            if user.authenticate(user_object['password']):
+                session['user_id'] = user.to_dict()['id']
+                return user.to_dict(), 200
+        else:
+            raise Unauthorized("Username or password are incorrect")
+        
+    
+class CheckSession(Resource):
+    def get(self):
+        user_id = session.get('user_id') 
+
+        if user_id:
+            id = session['user_id']
+            user = Users.query.filter_by(id=id).first().to_dict()
+            user_no_pass = {
+                'id': session['user_id'],
+                'username': user['username'],
+            }
+            response = make_response(user_no_pass, 200)
+            return response
+        else:
+            response = make_response("Not authorized", 401)
+            return response
+class ClearSession(Resource):
+    def get(self):
+        session['user_id'] = None
+        return ('User Cleared', 201)
 
 
 
@@ -71,6 +105,9 @@ api.add_resource(Banks, '/api/banks')
 api.add_resource(Transaction, '/api/transaction')
 api.add_resource(TransactionSeed, '/api/transactionseed')
 api.add_resource(User, '/api/user')
+api.add_resource(CheckSession, '/api/check_session')
+api.add_resource(Login, '/api/login')
+api.add_resource(ClearSession, '/api/clear_session')
 
 
 if __name__ == '__main__':

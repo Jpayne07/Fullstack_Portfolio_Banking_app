@@ -14,15 +14,14 @@ if __name__ =='__main__':
 
         user1 = Users(
             username = 'Jacob',
-            account_type = 'Checking',
-            password = 'Hi'
+           
         )
-
+        user1.password_hash = "hi"
         user2 = Users(
             username = 'Hunter',
-            account_type = 'Savings',
-            password = 'Hi'
+           
         )
+        user2.password_hash = "hi"
 
         db.session.add_all([user1, user2])
         db.session.commit()

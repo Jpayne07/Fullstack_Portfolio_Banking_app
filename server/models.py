@@ -1,17 +1,18 @@
 from sqlalchemy import Column
 from sqlalchemy.orm import relationship
-from config import db
+from config import db, bcrypt
 from sqlalchemy_serializer import SerializerMixin
 from sqlalchemy.ext.associationproxy import association_proxy
 from sqlalchemy.types import DateTime
 from datetime import datetime
+from sqlalchemy.ext.hybrid import hybrid_property
+
 
 class Users(db.Model, SerializerMixin):
     __tablename__ = "users"
     id = db.Column(db.Integer, primary_key = True)
     username = db.Column(db.String, unique = True)
-    account_type = db.Column(db.String)
-    password = db.Column(db.String)
+    _password_hash = db.Column(db.String)
 
     @property
     def transactions(self):
@@ -26,6 +27,21 @@ class Users(db.Model, SerializerMixin):
     
     accounts = db.relationship('Accounts', back_populates = 'users')
     serialize_rules = ('-accounts.users','-bank','-transactions')
+
+    @hybrid_property
+    def password_hash(self):
+        raise AttributeError("password_hash is not accessible.")
+
+    @password_hash.setter
+    def password_hash(self, password):
+        # utf-8 encoding and decoding is required in python 3
+        password_hash = bcrypt.generate_password_hash(
+            password.encode('utf-8'))
+        self._password_hash = password_hash.decode('utf-8')
+
+    def authenticate(self, password):
+        return bcrypt.check_password_hash(
+            self._password_hash, password.encode('utf-8'))
 
 class Bank(db.Model, SerializerMixin):
     __tablename__ = "banks"
