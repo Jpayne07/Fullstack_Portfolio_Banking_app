@@ -1,5 +1,5 @@
 import React, {useContext} from 'react'
-import BankComponent from '../Components/BankComponent'
+import BankComponentv2 from '../Components/BankComponentv2'
 import TransactionModule from '../Components/Transaction_Module'
 import AppContext from '../AppContext'
 
@@ -9,12 +9,9 @@ function Home() {
   return (
     <div className='home_wrapper'>
       <div className='background_wrapper'>
-        <div className='_wrapper'>
-          <h2>Bank Name</h2>
-          <div className='bank_id'>
-            <h3 id = "bank_name"><BankComponent banks = {banks}/></h3>
-          </div>
-        </div>
+          
+          <BankComponentv2 banks = {banks}/>
+
         
       </div>
       

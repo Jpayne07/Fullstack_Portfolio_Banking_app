@@ -1,19 +1,24 @@
-import React, {use, useEffect, useState} from 'react'
+import React, {use, useContext, useState} from 'react'
+import AppContext from '../AppContext'
 import Nav from '../Components/Nav'
-import AccountComponent from '../Components/AccountComponent'
+import BanksComponentv2 from '../Components/BankComponentv2'
 function Accounts() {
-    const [accountRaw, setAccountRaw] = useState([])
-    useEffect(()=>{
-        fetch('/api/accounts/')
-        .then(r=>r.json())
-        .then(data=>setAccountRaw(data))
-    },[])
+    const { banks } = useContext(AppContext)
+    // useEffect(()=>{
+    //     fetch('/api/banks')
+    //     .then(r=>r.json())
+    //     .then(data=>setBankRaw(data))
+    // },[])
 
 
 
   return (
     <div>
-        <AccountComponent accountRaw = {accountRaw}/>
+      <div className='login_wrapper' style={{minHeight:"600px"}}>
+        <div className='background_wrapper' id="login" >
+          <BanksComponentv2 banks = {banks}/>
+        </div>
+      </div>
     </div>
   )
 }

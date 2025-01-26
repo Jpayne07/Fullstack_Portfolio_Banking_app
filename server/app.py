@@ -33,7 +33,8 @@ class TransactionSeed(Resource):
             transaction = Transactions(
                 title=fake.company(),
                 category=fake.word(),
-                amount=round(fake.random_number(digits=3), 2)  # Random amount with 2 decimal places
+                amount=round(fake.random_number(digits=3), 2),  # Random amount with 2 decimal places
+                account_id = random.choice([1,2])
             )
             print(transaction.to_dict())
             db.session.add(transaction)

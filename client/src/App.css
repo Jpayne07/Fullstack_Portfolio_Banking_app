@@ -22,10 +22,6 @@ body {
   background-size: 100%;
 
 }
-.test{
-  display: flex;
-  justify-content: center;
-}
 
  .main_nav{
  display: flex;
@@ -134,6 +130,8 @@ background-color: #2BFF5C;
   border-radius: 10px;
   color: white;
   max-width: 600px;
+  
+  
 
  }
 #continue_as_guest{
@@ -141,21 +139,26 @@ background-color: #2BFF5C;
 }
  .background_wrapper{
   width: 50%;
+  display: flex;
+  justify-content: center;
   align-content: center;
   text-align: center;
   margin: 0 10px;
   max-width: 600px;
-  /* opacity: .75; */
   margin: 50px;
   border-radius: 10px;
   padding: 8px;
   background: linear-gradient(to bottom, rgba(217, 217, 217, 0.4), rgba(255, 255, 255, 0.8)50%);
   text-align: left;
  }
+
  #login.background_wrapper{
   max-width: 400px;
  }
-
+.page_wrapper{
+  display: flex;
+  justify-content: center;
+}
 
  .transactions_page_wrapper{
   /* width: 50%; */
@@ -352,9 +355,26 @@ a:active{
   transition: "background-color 0.3s ease, transform 0.2s ease";
   width: 200px;
 }
-/* #login_button{
-  padding: 20px 0;
-  margin:20px 0;
-  width:100%;
+.bank_account_container{
+  display: flex;
+  align-items: center;
+  padding: 0 0 5px 0;
+}
+.bank_account_container h4,
+.bank_account_container p {
+  /* margin: 10px; Reset margin if necessary */
+  padding:0  10px 0 0; /* Optional: Add padding for spacing */
 
-} */
+}
+
+.bank_account_container p {
+    flex-grow: 1;
+    color: #2BFF5C;
+}
+
+.bank_account_container h4 {
+  /* margin: 10px; Reset margin if necessary */
+  padding:0  10px 0 0; /* Optional: Add padding for spacing */
+  flex-grow: 5;
+}
+

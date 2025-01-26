@@ -5,6 +5,7 @@ import Transactions from './Pages/Transactions'
 import Accounts from './Pages/Accounts'
 import Cards from './Pages/Cards'
 import Home from './Pages/Home'
+import Transactionsv2 from './Pages/Transactionsv2'
 
 
 const routes = [
@@ -29,6 +30,10 @@ const routes = [
             {
               path:'/accounts',
               element: <Accounts />
+            }, 
+            {
+              path:'/account/:id',
+              element: <Transactionsv2 />
             }
             , 
             {

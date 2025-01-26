@@ -39,7 +39,7 @@ if __name__ =='__main__':
             bank_name = 'Wells Fargo',
             brand_color = 'Red'
         )
-
+        
         db.session.add_all([bank1, bank2])
         db.session.commit()
 
@@ -60,7 +60,16 @@ if __name__ =='__main__':
             account_type = "Savings",
             card_id = 1
         )
-        db.session.add_all([account1, account2])
+
+        account3 = Accounts(
+            bank_id = 2,
+            user_id = 2,
+            transaction_id = 2,
+            account_value = 100000,
+            account_type = "Savings",
+            card_id = 3
+        )
+        db.session.add_all([account1, account2,account3])
         db.session.commit()
 
         card1 = Card(

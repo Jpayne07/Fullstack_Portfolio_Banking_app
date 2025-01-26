@@ -95,6 +95,7 @@ class Accounts(db.Model, SerializerMixin):
 class Transactions(db.Model, SerializerMixin):
     __tablename__ = "transactions"
     id = db.Column(db.Integer, primary_key = True)
+    account_id = db.Column(db.Integer, db.ForeignKey('accounts.id'))
     title = db.Column(db.String)
     category = db.Column(db.String)
     created_at = Column(DateTime, default=datetime.utcnow)
