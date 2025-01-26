@@ -3,7 +3,7 @@ import Nav from '../Components/Nav'
 
 function Cards() {
   return (
-    <div><Nav/></div>
+    <div></div>
   )
 }
 

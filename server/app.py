@@ -1,10 +1,12 @@
-from flask import Flask, request, session, make_response
+from flask import Flask, request, session, make_response, redirect, jsonify
 from flask_restful import Resource, Api
-from config import app, db, api
+from config import app, db, api, GITHUB_API_URL, GITHUB_CLIENT_SECRET, GITHUB_CLIENT_ID, GITHUB_AUTH_URL, GITHUB_TOKEN_URL
 from models import Accounts, Transactions, Users, Bank, Card
 from faker import Faker
 import random
 from werkzeug.exceptions import UnprocessableEntity, Unauthorized
+from urllib.parse import urlparse
+import requests
 
 
 
@@ -73,6 +75,61 @@ class Login(Resource):
                 return user.to_dict(), 200
         else:
             raise Unauthorized("Username or password are incorrect")
+
+class LoginWithGithub(Resource):
+    def get(self):
+        return (redirect(f'{GITHUB_AUTH_URL}?client_id={GITHUB_CLIENT_ID}'))
+    
+class Callback(Resource):
+     def get(self):
+        code = request.args.get('code')
+        if code:
+            session['github_code'] = code
+        else:
+            return 'No code found in URL', 400
+        token_response = requests.post(
+        GITHUB_TOKEN_URL,
+        headers={"Accept": "application/json"},
+        data={
+            "client_id": GITHUB_CLIENT_ID,
+            "client_secret": GITHUB_CLIENT_SECRET,
+            "code": code,
+        },
+    )
+        token_data = token_response.json()
+        access_token = token_data.get("access_token")
+        if not access_token:
+            return "Error: Unable to fetch access token", 400
+        user_response = requests.get(
+        GITHUB_API_URL,
+        headers={"Authorization": f"Bearer {access_token}"},
+    )
+        user_data = user_response.json()
+        github_id = user_data.get("id")
+        username = user_data.get("login")
+
+        if not github_id or not username:
+            return jsonify({"error": "Failed to fetch GitHub user data"}), 400
+        user = Users.query.filter_by(username=username).first()
+        if user:
+        # Existing user: log them in by saving their info in the session
+            session["user_id"] = user.to_dict()['id']
+            print('already logged in')
+            return redirect('http://localhost:3000')
+        else:
+            new_user = Users(username=username)
+
+        db.session.add(new_user)
+        db.session.commit()
+        print(Users.query.filter_by(username=new_user.username).first().id)
+        # Log them in by saving their info in the session
+        session["user_id"] = Users.query.filter_by(username=new_user.username).first().id
+        return redirect('http://localhost:3000')
+
+        # Store user details in the session
+        
+            
+        
         
     
 class CheckSession(Resource):
@@ -94,6 +151,8 @@ class CheckSession(Resource):
 class ClearSession(Resource):
     def get(self):
         session['user_id'] = None
+        session['user'] = None
+        session['access_token'] = None
         return ('User Cleared', 201)
 
 
@@ -107,7 +166,9 @@ api.add_resource(TransactionSeed, '/api/transactionseed')
 api.add_resource(User, '/api/user')
 api.add_resource(CheckSession, '/api/check_session')
 api.add_resource(Login, '/api/login')
+api.add_resource(LoginWithGithub, '/api/login-github')
 api.add_resource(ClearSession, '/api/clear_session')
+api.add_resource(Callback, '/callback')
 
 
 if __name__ == '__main__':

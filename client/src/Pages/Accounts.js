@@ -13,7 +13,6 @@ function Accounts() {
 
   return (
     <div>
-        <Nav />
         <AccountComponent accountRaw = {accountRaw}/>
     </div>
   )

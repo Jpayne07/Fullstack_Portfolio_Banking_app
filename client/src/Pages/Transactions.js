@@ -30,7 +30,6 @@ function Transactions() {
     
   return (
     <div className='page_wrapper'>
-    <Nav />
     <div className='test'>
     <div className='transactions_page_wrapper'>
       
