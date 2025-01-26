@@ -4,12 +4,12 @@ function BanksComponentv2({banks}) {
     const bankElement = banks.map(bank=>{
         return(
             <div style={{width: "100%"}}>
-              <h2 style={{padding:"15px 0"}}>{bank.bank_name}</h2>
+              <h2 style={{padding:"15px 0", textAlign:"left"}}>{bank.bank_name}</h2>
 
                 {bank.accounts.map(account=>{
                   return(
                   <div className='bank_account_container'>
-                      <h4>{account.account_type}</h4>
+                      <h4 ><a href={`account/${account.id}`}>{account.account_type}</a></h4>
                       <p>{account.account_value}</p>
                   </div>)
                   }

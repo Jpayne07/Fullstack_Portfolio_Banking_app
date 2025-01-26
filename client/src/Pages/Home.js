@@ -5,22 +5,16 @@ import AppContext from '../AppContext'
 
 function Home() {
     const { banks } = useContext(AppContext)
-    const { transactions } = useContext(AppContext)
   return (
     <div className='home_wrapper'>
-      <div className='background_wrapper'>
-          
+      <div className='background_wrapper'>   
           <BankComponentv2 banks = {banks}/>
-
-        
       </div>
-      
           <div className='background_wrapper'>
           <div className='_wrapper'>  
-
             <h2 className='transaction_header'>Transactions</h2>
-            
-          <TransactionModule transactions = {transactions}/>
+            <TransactionModule banks = {banks}/>
+            {/* NEED TO FIND ALTERNATIVE FOR ABOVE ^^^^ */}
           </div>
         </div>
     </div>

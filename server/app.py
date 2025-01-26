@@ -44,7 +44,6 @@ class TransactionSeed(Resource):
         account = db.session.query(Accounts).filter_by(id=random_integer).first()
         if account:
             account.transaction_id = transaction.id  # Update transaction reference
-            account.transaction_count += 1  # Increment the transaction count
             db.session.commit()
 
         data = {"message": "Transactions seeded successfully"}

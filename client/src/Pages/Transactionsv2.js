@@ -1,13 +1,12 @@
 import React, {useContext} from 'react'
 import '../App.css'
-import Nav from '../Components/Nav'
 import TransactionModule from '../Components/Transaction_Module'
 import AppContext from '../AppContext'
 
 
 function Transactions() {
 
-  const { transactions } = useContext(AppContext);
+  const { banks } = useContext(AppContext);
       function handleClick() {
         fetch('/api/transactionseed', {
             method: 'POST',  // Use POST for creating data
@@ -27,8 +26,7 @@ function Transactions() {
     <div className='transactions_page_wrapper'>
       
       <h2 className='transaction_header'>Transactions</h2>
-      <h3 className='transaction_dateview'>Date</h3>
-      <TransactionModule transactions = {transactions}/>
+      <TransactionModule banks = {banks}/>
       <div className='transactions_button_break'></div>
       <button className='transactions_rng' onClick={handleClick}> {/*need to setup request response cycle in the app api*/ }
       Generate Random Transactions 

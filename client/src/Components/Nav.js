@@ -11,7 +11,7 @@ function Nav({user}) {
     <div className='main_nav_wrapper'>
         <nav className='main_nav'>
         <NavLink to="/" className="nav-link">Home</NavLink>
-        <NavLink to="/transactions" className="nav-link">Transactions</NavLink>
+        {/* <NavLink to="/transactions" className="nav-link">Transactions</NavLink> */}
         <p>Users</p>
         <NavLink to="/accounts" className="nav-link">Accounts</NavLink>
         <NavLink to="/cards" className="nav-link">Cards</NavLink>

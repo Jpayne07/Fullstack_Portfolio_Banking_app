@@ -18,8 +18,8 @@
 body {
   background-image: url("images/01396bbb-7dc1-4010-9b61-0d13d51563da.png");
   /* background-repeat: repeat-y; */
-  background-attachment: scroll;
-  background-size: 100%;
+  /* background-attachment: scroll; */
+  /* background-size: 100%; */
 
 }
 
@@ -162,10 +162,12 @@ background-color: #2BFF5C;
 
  .transactions_page_wrapper{
   /* width: 50%; */
+  display: flex;
+  flex-wrap: wrap;
   align-content: center;
   text-align: center;
   margin: 0 10px;
-  width: 1200px;
+  width: 600px;
   background: linear-gradient(135deg, gray 0%, white 100%);
   opacity: .75;
   padding: 50px;
@@ -183,22 +185,28 @@ background-color: #2BFF5C;
  }
 
 
- .transactions h2{
+ /* .transactions h2{
   text-align: left;
   font-weight: 900;
- }
+ } */
 
  .transaction_dateview{
   text-align: left;
   padding-top: 20px;
   font-weight: 900;
+  width: 100%;
+ }
+
+ .transaction_header{
+  width: 100%;
+  text-align: left;
  }
 
  .transaction_rows{
   display: flex;
   text-align: left;
   flex-wrap: wrap;
-  /* gap: 50px; */
+  width:100%;
   padding-top: 20px;
   justify-content: space-between;
   color: white;
@@ -335,6 +343,7 @@ a:active{
   /* height: 20px; */
   margin: 50px 0 0 0;
   border-style: dashed;
+  width: 100%;
 }
 
 #bank_name{
@@ -359,6 +368,7 @@ a:active{
   display: flex;
   align-items: center;
   padding: 0 0 5px 0;
+  width: 100%;
 }
 .bank_account_container h4,
 .bank_account_container p {

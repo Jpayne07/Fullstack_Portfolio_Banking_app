@@ -79,7 +79,7 @@ class Accounts(db.Model, SerializerMixin):
     bank_id = db.Column(db.Integer, db.ForeignKey('banks.id'))
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
     card_id = db.Column(db.Integer, db.ForeignKey('cards.id'))
-    transaction_id = db.Column(db.Integer, db.ForeignKey('transactions.id'))
+    # transaction_id = db.Column(db.Integer, db.ForeignKey('transactions.id'))
     account_value = db.Column(db.String)
     account_type = db.Column(db.String)
 

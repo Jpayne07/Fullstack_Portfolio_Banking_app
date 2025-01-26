@@ -3,17 +3,10 @@ import React, { createContext, useState, useEffect } from 'react';
 const AppContext = createContext();
 
 export const AppProvider = ({ children }) => {
-  const [transactions, setTransactions] = useState([]);
   const [banks, setBanks] = useState([]);
   const [user, setUser] = useState(null);
 
-  useEffect(() => {
-    fetch('/api/transaction')
-      .then((r) => r.json())
-      .then((data) => {
-        setTransactions(data);
-      });
-  }, []);
+
 
   useEffect(() => {
     fetch('/api/banks')
@@ -35,7 +28,7 @@ export const AppProvider = ({ children }) => {
   }, []);
 
   return (
-    <AppContext.Provider value={{ transactions, banks, user, setUser }}>
+    <AppContext.Provider value={{ banks, user, setUser }}>
       {children}
     </AppContext.Provider>
   );

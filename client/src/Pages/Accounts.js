@@ -1,14 +1,9 @@
-import React, {use, useContext, useState} from 'react'
+import React, {useContext} from 'react'
 import AppContext from '../AppContext'
-import Nav from '../Components/Nav'
 import BanksComponentv2 from '../Components/BankComponentv2'
 function Accounts() {
     const { banks } = useContext(AppContext)
-    // useEffect(()=>{
-    //     fetch('/api/banks')
-    //     .then(r=>r.json())
-    //     .then(data=>setBankRaw(data))
-    // },[])
+
 
 
 
