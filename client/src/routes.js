@@ -1,11 +1,12 @@
 import React from 'react'
 import App from './App'
 import Login from './Pages/Login'
-import Transactions from './Pages/Transactions'
+// import Transactions from './Pages/Transactions'
 import Accounts from './Pages/Accounts'
 import Cards from './Pages/Cards'
 import Home from './Pages/Home'
-import Transactionsv2 from './Pages/Transactionsv2'
+import TransactionsIndex from './Pages/TransactionsIndex'
+import TransactionId from './Pages/Transaction_id'
 
 
 const routes = [
@@ -20,20 +21,18 @@ const routes = [
             {
               path:'/login',
               element: <Login />
-            }
-            , 
-            {
-              path:'/transactions',
-              element: <Transactions />
-            }
-            , 
+            },
             {
               path:'/accounts',
               element: <Accounts />
             }, 
             {
               path:'/account/:id',
-              element: <Transactionsv2 />
+              element: <TransactionsIndex />
+            }, 
+            {
+              path:'/transactions/:id',
+              element: <TransactionId />
             }
             , 
             {

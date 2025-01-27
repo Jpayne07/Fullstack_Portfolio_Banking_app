@@ -1,6 +1,6 @@
 import React, {useContext} from 'react'
 import BankComponentv2 from '../Components/BankComponentv2'
-import TransactionModule from '../Components/Transaction_Module'
+import TransactionModule from '../Components/Transaction_Index_Module'
 import AppContext from '../AppContext'
 
 function Home() {

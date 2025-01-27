@@ -19,7 +19,7 @@ body {
   background-image: url("images/01396bbb-7dc1-4010-9b61-0d13d51563da.png");
   /* background-repeat: repeat-y; */
   /* background-attachment: scroll; */
-  /* background-size: 100%; */
+  background-size: 100%;
 
 }
 
@@ -75,10 +75,11 @@ background-color: #2BFF5C;
   width: auto;
   height: auto;
   font-size: 16px;
-  margin: 50px 0 0 0;
+  margin: 10px 250px 10px 250px;
   position: relative;
   display: inline-block;
   cursor: pointer;
+  
  }
  .transactions_rng .tooltiptext {
   visibility: hidden;
@@ -109,8 +110,8 @@ background-color: #2BFF5C;
   margin:8px; 
   border-radius: 15px;
   font-weight: 800;
-  width: 200px;
-  height: 65px;
+  width: 150px;
+  height: 50px;
  }
 
  .home_wrapper{
@@ -126,7 +127,7 @@ background-color: #2BFF5C;
   width: 100%;
   background-color:rgba(0,0,0, .5);
   height: 100%;
-  padding: 50px;
+  padding: 25px 50px;
   border-radius: 10px;
   color: white;
   max-width: 600px;
@@ -151,7 +152,13 @@ background-color: #2BFF5C;
   background: linear-gradient(to bottom, rgba(217, 217, 217, 0.4), rgba(255, 255, 255, 0.8)50%);
   text-align: left;
  }
+#test.background_wrapper{
+  max-width: 800px;
+}
 
+#test._wrapper{
+  max-width: 800px;
+}
  #login.background_wrapper{
   max-width: 400px;
  }
@@ -176,10 +183,35 @@ background-color: #2BFF5C;
 
   
  }
- #Price{
-  width:100px;
-  text-align: right;
- }
+ .pagination_controls {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.pagination_controls button {
+  background-color: #2BFF5C;
+  color: grey;
+  border: none;
+  /* padding: 5px 5px; */
+  cursor: pointer;
+  margin: 0 5px;
+  border-radius: 5px;
+  font-size: 16px;
+  width: 100px;
+  height: 35px;
+}
+
+.pagination_controls button:disabled {
+  background-color: #cccccc;
+  cursor: not-allowed;
+}
+
+
+.pagination_controls span {
+  font-size: 14px;
+  font-weight: bold;
+}
  #DollaBill{
   color: #2BFF5C;
  }
@@ -203,15 +235,22 @@ background-color: #2BFF5C;
  }
 
  .transaction_rows{
-  display: flex;
-  text-align: left;
-  flex-wrap: wrap;
-  width:100%;
-  padding-top: 20px;
-  justify-content: space-between;
-  color: white;
-
+  display: grid;
+  grid-template-columns: 3fr 2fr 1fr 1fr 1fr 1fr; /* Same proportions as headers */
+  gap: 10px;
+  align-items: center;
+  padding: 7.5px 0;
+  border-bottom: 1px solid #eee;
  }
+#singular.transaction_rows{
+
+  grid-template-columns: 3fr 2fr 1fr 1fr 1fr; /* Same proportions as headers */
+ 
+ }
+ p{
+  font-size: 14px;
+ }
+
  .bank_id{
   display: flex;
   flex-wrap: wrap;
@@ -220,7 +259,7 @@ background-color: #2BFF5C;
   padding-top: 20px;
   justify-content:flex-start;
  }
- p.time{
+ .time{
   font-weight: 900;
   width: 100%;
  }
@@ -231,7 +270,24 @@ background-color: #2BFF5C;
   white-space: nowrap; /* Prevents line breaks */
   overflow: hidden;    /* Hides any overflowing content */
   text-overflow: ellipsis; /* Adds '...' if the text overflows */
+  
  }
+
+ .transaction_headers {
+  display: grid;
+  grid-template-columns:  3fr 2fr 1fr 1fr 1fr 1fr;  /* Adjust proportions */
+  gap: 10px;
+  align-items: center;
+  border-bottom: 1px solid #ccc;
+  padding: 10px 0;
+  font-weight: bold;
+  font-size: 16px;
+  color: #2BFF5C;
+}
+#singular.transaction_headers {
+  grid-template-columns:  3fr 2fr 1fr 1fr 1fr;  /* Adjust proportions */
+  
+}
 
  #bank_logo{
   flex-grow: 2;
@@ -243,7 +299,7 @@ background-color: #2BFF5C;
 
  .login_image_wrapper{
   width:50%;
-  opacity: 90%;
+  opacity: 100%;
   max-width: 600px;
   /* margin:0 50px;
   padding: 50px; */
@@ -324,7 +380,7 @@ border-width: 0px;
 }
 
 a:visited{
-  color: black;
+  color: inherit;
 
 }
 #form_error{
@@ -341,7 +397,7 @@ a:active{
   border-color: #2BFF5C;
   border-width: 2px;
   /* height: 20px; */
-  margin: 50px 0 0 0;
+  margin: 10px 0 0 0;
   border-style: dashed;
   width: 100%;
 }
@@ -350,20 +406,24 @@ a:active{
   text-decoration: underline;
   font-size: 24px;
 }
-#github_Login{
-  display: "flex";
-  align-items: "center";
-  justify-content: "center";
-  padding: "10px 20px";
+#github_Login {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px; /* Space between the icon and the text */
+  padding: 10px 20px;
   background-color: white;
-  font-size: 16px;
-  color: "white";
-  border: "none";
-  border-radius: "8px";
-  cursor: "pointer";
-  transition: "background-color 0.3s ease, transform 0.2s ease";
-  width: 200px;
+  color: black;
+  border: 2px solid black; /* Black border to match the theme */
+  border-radius: 12px; /* Rounded corners */
+  font-family: "Courier New", Courier, monospace; /* Font matching the screenshot */
+  font-size: 16px; /* Adjust the font size */
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.2); /* Add subtle shadow */
+  width: 250px;
 }
+
 .bank_account_container{
   display: flex;
   align-items: center;
@@ -374,17 +434,7 @@ a:active{
 .bank_account_container p {
   /* margin: 10px; Reset margin if necessary */
   padding:0  10px 0 0; /* Optional: Add padding for spacing */
-
 }
 
-.bank_account_container p {
-    flex-grow: 1;
-    color: #2BFF5C;
-}
 
-.bank_account_container h4 {
-  /* margin: 10px; Reset margin if necessary */
-  padding:0  10px 0 0; /* Optional: Add padding for spacing */
-  flex-grow: 5;
-}
 

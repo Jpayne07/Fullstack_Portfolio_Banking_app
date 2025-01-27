@@ -25,11 +25,33 @@ class Transaction(Resource):
     def get(self):
         transactions = [transaction.to_dict() for transaction in Transactions.query.all()]
         return(transactions,200)
+    
+
+class IndivdiualTransaction(Resource):
+    def get(self, id):
+        transaction = Transactions.query.filter_by(id=id).first()
+        return(transaction.to_dict(),200)
+    def patch(self, id):
+        transaction = Transactions.query.filter_by(id=id).first()
+
+        data = request.get_json()
+        for key, value in data.items():
+            if hasattr(transaction, key):  # Ensure the attribute exists on the model
+                setattr(transaction, key, value)
+    
+        # Commit the changes to the database
+        try:
+            db.session.commit()
+            return transaction.to_dict(), 200
+        except Exception as e:
+            db.session.rollback()
+            return {"error": str(e)}, 500
+    
 class TransactionSeed(Resource):
     def post(self):  # Change to POST for creating resources
         db.session.query(Transactions).delete()  # Deletes all rows in the Transactions table
         db.session.commit()
-        for _ in range(10):
+        for _ in range(100):
             transaction = Transactions(
                 title=fake.company(),
                 category=fake.word(),
@@ -169,6 +191,7 @@ api.add_resource(Login, '/api/login')
 api.add_resource(LoginWithGithub, '/api/login-github')
 api.add_resource(ClearSession, '/api/clear_session')
 api.add_resource(Callback, '/callback')
+api.add_resource(IndivdiualTransaction, '/api/transaction/<int:id>')
 
 
 if __name__ == '__main__':

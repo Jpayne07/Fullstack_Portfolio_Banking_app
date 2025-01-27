@@ -62,16 +62,17 @@ class Bank(db.Model, SerializerMixin):
 
     
 
-    serialize_rules = ('-accounts.bank','-transactions','-users')
+    serialize_rules = ('-accounts.banks.accounts',)
 
 class Card(db.Model, SerializerMixin):
     __tablename__ = "cards"
     id = db.Column(db.Integer, primary_key=True)
     card_number = db.Column(db.Integer, unique = True)
     expiration_date = db.Column(db.Date)
-
+    transactions = association_proxy('accounts', 'transactions',
+        creator=lambda transaction_obj: Transactions(transactions =  transaction_obj))
     accounts = db.relationship('Accounts', back_populates = 'cards')
-    serialize_rules = ('-accounts.cards',)
+    serialize_rules = ('-accounts','-transactions.card')
 
 class Accounts(db.Model, SerializerMixin):
     __tablename__ = "accounts"
@@ -88,7 +89,8 @@ class Accounts(db.Model, SerializerMixin):
     transactions = db.relationship('Transactions', back_populates = 'accounts')
     users = db.relationship('Users', back_populates = 'accounts')
 
-    serialize_rules = ('-banks.accounts','-transactions.accounts','-users')
+    serialize_rules = ('-banks.accounts', '-transactions.accounts', '-users', '-cards.accounts', 'transactions.card')
+
 
     
 
@@ -107,6 +109,10 @@ class Transactions(db.Model, SerializerMixin):
     
     bank = association_proxy('accounts', 'banks',
             creator=lambda bank_obj: Bank(bank = bank_obj))
+    
+    card = association_proxy('accounts', 'cards',
+            creator=lambda card_obj: Card(card = card_obj))
 
     accounts = db.relationship('Accounts', back_populates = 'transactions')
-    serialize_rules = ('-accounts','-bank','-user')
+    serialize_rules = ('-accounts.transactions', '-bank', '-user')
+
