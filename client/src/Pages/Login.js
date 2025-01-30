@@ -1,4 +1,5 @@
-import React, {useState, useEffect} from 'react'
+import React, {useState, useEffect, useContext} from 'react'
+import AppContext from '../AppContext';
 import Nav from '../Components/Nav'
 import bank_image from '../images/bank_image.jpg'
 import illustrated_pixel_art_desktop_wallpaper from '../images/illustrated_pixel_art_desktop_wallpaper.svg'
@@ -9,9 +10,11 @@ import { useNavigate } from 'react-router-dom';
 
 
 
-function Login({setUser}) {
+function Login() {
     const navigate = useNavigate();
     const [errors, setErrors] = useState([]);
+    const { setUser } = useContext(AppContext);
+
     const handleLoginGithub = () => {
       window.location.href = 'http://localhost:5555/api/login-github'; // Ensure the URL matches your Flask app's URL
     };
@@ -19,7 +22,6 @@ function Login({setUser}) {
       const queryString = window.location.search;
       const urlParams = new URLSearchParams(queryString);
       const codeParams = urlParams.get("code")
-      console.log(codeParams)
     },[handleLoginGithub])
 
     function handleSubmit(username, password) {
@@ -34,7 +36,7 @@ function Login({setUser}) {
             if (r.ok) {
               r.json().then((user) => {
                 console.log(user);
-                // setUser(user);
+                setUser(user);
                 navigate('/');
               });
             } else {
@@ -98,11 +100,11 @@ function Login({setUser}) {
                                 </div>
                             
                             
-                            <div className='form_row'>
+                            <div className='form_row' style={{justifyContent:"center"}}>
                             <button type="submit" disabled={isSubmitting} id='login_button'>
                             Submit
                             </button>
-                            <p onClick={()=>{handleSubmit('Jacob','hi')}}><span id = 'continue_as_guest'>OR</span> Continue as guest</p>
+                            <p onClick={()=>{handleSubmit('Jacob','hi')}}style={{width:"100%", textAlign:"center"}}><span id = 'continue_as_guest'>OR</span> Continue as guest</p>
                             <button id="github_Login" onClick={handleLoginGithub}>
                               <svg
                                 xmlns="http://www.w3.org/2000/svg"

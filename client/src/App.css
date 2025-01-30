@@ -160,7 +160,7 @@ background-color: #2BFF5C;
   max-width: 800px;
 }
  #login.background_wrapper{
-  max-width: 400px;
+  max-width: 450px;
  }
 .page_wrapper{
   display: flex;
@@ -348,9 +348,13 @@ background-color: #2BFF5C;
   outline: none;
   transition: border-color 0.3s;
   width: 50%;
-  /* flex-grow: 1; */
+}
+.transaction_header{
+  font-size: 32px;
+}
 
-
+#transaction_home._wrapper{
+  padding: 50px;
 }
 
 .form_row{
@@ -361,6 +365,7 @@ min-width: 150px;
 justify-content: center;
 padding:10px 0;
 align-content: center;
+justify-content: space-between;
 }
 .formik_labels{
 font-size: 20px;

@@ -4,8 +4,10 @@ const AppContext = createContext();
 
 export const AppProvider = ({ children }) => {
   const [banks, setBanks] = useState([]);
-  const [user, setUser] = useState(null);
-  const [transaction, setTransaction] = useState([]);
+  const [user, setUser] = useState(undefined);
+  const [categories, setCategories] = useState([]);
+  const [loading, setLoading] = useState(true);
+
 
 
 
@@ -17,26 +19,24 @@ export const AppProvider = ({ children }) => {
       });
   }, []);
   useEffect(() => {
-    fetch('/api/transaction')
+    fetch('/api/insights')
       .then((r) => r.json())
       .then((data) => {
-        setTransaction(data);
+        setCategories(data);
       });
   }, []);
 
   useEffect(() => {
     fetch('/api/check_session')
-      .then((r) => {
-        if (r.ok) {
-          r.json().then((user) => {
-            setUser(user);
-          });
-        }
+      .then((r) => r.ok ? r.json() : null)
+      .then((user) => {
+        setUser(user);
+        setLoading(false);
       });
   }, []);
 
   return (
-    <AppContext.Provider value={{ banks, transaction, user, setUser }}>
+    <AppContext.Provider value={{loading, banks, categories, user, setUser, setBanks }}>
       {children}
     </AppContext.Provider>
   );

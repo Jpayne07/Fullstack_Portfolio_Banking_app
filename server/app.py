@@ -11,6 +11,10 @@ import requests
 
 
 #Members API Route
+# @app.before_request
+# def check_if_logged_in():
+#     if not session['user_id']:
+#         return {'error': 'Unauthorized'}, 401
 fake = Faker()
 class Home(Resource):
     def get(self):
@@ -29,8 +33,15 @@ class Transaction(Resource):
 
 class IndivdiualTransaction(Resource):
     def get(self, id):
+        
         transaction = Transactions.query.filter_by(id=id).first()
+        # if transaction['account_id'] in user.
+        # if session['user_id'] = transaction
         return(transaction.to_dict(),200)
+    def delete(self, id):
+        transaction = Transactions.query.filter_by(id=id).first()
+        db.session.delete(transaction)
+        db.session.commit()
     def patch(self, id):
         transaction = Transactions.query.filter_by(id=id).first()
 
@@ -51,13 +62,15 @@ class TransactionSeed(Resource):
     def post(self):  # Change to POST for creating resources
         db.session.query(Transactions).delete()  # Deletes all rows in the Transactions table
         db.session.commit()
+        money_categories = ['salary', 'invoice', 'payment', 'refund', 'transfer']
+
         for _ in range(100):
             transaction = Transactions(
-                title=fake.company(),
-                category=fake.word(),
-                amount=round(fake.random_number(digits=3), 2),  # Random amount with 2 decimal places
-                account_id = random.choice([1,2])
-            )
+        title=fake.company(),
+        category=random.choice(money_categories),  # Choose from the 5 predefined categories
+        amount=round(random.uniform(1, 1000), 0),  # Random amount between 1 and 1000 with 2 decimal places
+        account_id=random.choice([1, 2])
+    )
             print(transaction.to_dict())
             db.session.add(transaction)
 
@@ -74,8 +87,38 @@ class TransactionSeed(Resource):
     
 class Banks(Resource):
     def get(self):
-        banks = [bank.to_dict() for bank in Bank.query.all()]
+        user = Users.query.filter(Users.id == session['user_id']).first()
+        # user = None
+        if user:
+            print(user)
+            bank_ids = [account.bank_id for account in user.accounts] 
+            print(bank_ids)
+            banks = [bank.to_dict() for bank in Bank.query.filter(Bank.id.in_(bank_ids)).all()]
+        else:
+            return {"message": "You must sign in to see this"}, 405
         return(banks,200)
+class Insights(Resource):
+    def get(self):
+        user = Users.query.filter(Users.id == session['user_id']).first()
+        # user = None
+        if user:
+            print(user)
+            bank_ids = [account.bank_id for account in user.accounts] 
+            banks = [bank.to_dict() for bank in Bank.query.filter(Bank.id.in_(bank_ids)).all()]
+            transaction_categories = {}
+            for bank in banks:
+                for account in bank['accounts']:
+                    for transaction in account['transactions']:
+                        category = transaction['category']
+                        if category in transaction_categories:
+                            transaction_categories[category] += transaction['amount']
+                        else:
+                            print(transaction['category'])
+                            transaction_categories[category] = transaction['amount']
+
+        else:
+            return {"message": "You must sign in to see this"}, 405
+        return(transaction_categories,200)
     
 class Account(Resource):
     def get(self):
@@ -87,6 +130,21 @@ class Cards(Resource):
         cards = [cards.to_dict() for cards in Card.query.all()]
         return(cards,200)
     
+class Signup(Resource):
+    def post(self):
+        data = request.get_json()
+        # user = Users.query.filter(Users.username == user_object['username']).first()
+        if data:
+            user_object = Users(
+                username = data["username"]
+            )
+            user_object.password_hash = data['password']
+        else:
+            raise Unauthorized("Username or password are incorrect")
+        
+        db.session.add(user_object)
+        db.session.commit()
+        return("New user added", 201)
 class Login(Resource):
     def post(self):
         user_object = request.get_json()
@@ -101,6 +159,8 @@ class Login(Resource):
 class LoginWithGithub(Resource):
     def get(self):
         return (redirect(f'{GITHUB_AUTH_URL}?client_id={GITHUB_CLIENT_ID}'))
+    
+
     
 class Callback(Resource):
      def get(self):
@@ -171,11 +231,9 @@ class CheckSession(Resource):
             response = make_response("Not authorized", 401)
             return response
 class ClearSession(Resource):
-    def get(self):
+    def delete(self):
         session['user_id'] = None
-        session['user'] = None
-        session['access_token'] = None
-        return ('User Cleared', 201)
+        return {'message': '204: No Content'}, 204
 
 
 
@@ -188,10 +246,12 @@ api.add_resource(TransactionSeed, '/api/transactionseed')
 api.add_resource(User, '/api/user')
 api.add_resource(CheckSession, '/api/check_session')
 api.add_resource(Login, '/api/login')
+api.add_resource(Signup, '/api/signup')
 api.add_resource(LoginWithGithub, '/api/login-github')
 api.add_resource(ClearSession, '/api/clear_session')
 api.add_resource(Callback, '/callback')
 api.add_resource(IndivdiualTransaction, '/api/transaction/<int:id>')
+api.add_resource(Insights, '/api/insights')
 
 
 if __name__ == '__main__':

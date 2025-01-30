@@ -46,7 +46,6 @@ if __name__ =='__main__':
         account1 = Accounts(
             bank_id = 1,
             user_id = 1,
-            transaction_id = 1,
             account_value = 100000,
             account_type = "Checking",
             card_id = 2
@@ -55,7 +54,6 @@ if __name__ =='__main__':
         account2 = Accounts(
             bank_id = 2,
             user_id = 2,
-            transaction_id = 2,
             account_value = 100000,
             account_type = "Savings",
             card_id = 1
@@ -64,7 +62,6 @@ if __name__ =='__main__':
         account3 = Accounts(
             bank_id = 2,
             user_id = 2,
-            transaction_id = 2,
             account_value = 100000,
             account_type = "Savings",
             card_id = 3
