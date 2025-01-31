@@ -8,6 +8,7 @@ import Home from './Pages/Home'
 import TransactionsIndex from './Pages/TransactionsIndex'
 import TransactionId from './Pages/Transaction_id'
 import Signup from './Pages/Signup'
+import Accountsv2 from './Pages/Accountsv2'
 
 
 const routes = [
@@ -25,7 +26,7 @@ const routes = [
             },
             {
               path:'/accounts',
-              element: <Accounts />
+              element: <Accountsv2 />
             }, 
             {
               path:'/account/:id',

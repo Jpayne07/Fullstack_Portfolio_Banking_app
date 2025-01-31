@@ -69,7 +69,7 @@ class TransactionSeed(Resource):
         title=fake.company(),
         category=random.choice(money_categories),  # Choose from the 5 predefined categories
         amount=round(random.uniform(1, 1000), 0),  # Random amount between 1 and 1000 with 2 decimal places
-        account_id=random.choice([1, 2])
+        account_id=random.choice([1, 2, 3, 4])
     )
             print(transaction.to_dict())
             db.session.add(transaction)
@@ -88,11 +88,9 @@ class TransactionSeed(Resource):
 class Banks(Resource):
     def get(self):
         user = Users.query.filter(Users.id == session['user_id']).first()
-        # user = None
+        
         if user:
-            print(user)
             bank_ids = [account.bank_id for account in user.accounts] 
-            print(bank_ids)
             banks = [bank.to_dict() for bank in Bank.query.filter(Bank.id.in_(bank_ids)).all()]
         else:
             return {"message": "You must sign in to see this"}, 405
@@ -100,9 +98,9 @@ class Banks(Resource):
 class Insights(Resource):
     def get(self):
         user = Users.query.filter(Users.id == session['user_id']).first()
+        print(user)
         # user = None
         if user:
-            print(user)
             bank_ids = [account.bank_id for account in user.accounts] 
             banks = [bank.to_dict() for bank in Bank.query.filter(Bank.id.in_(bank_ids)).all()]
             transaction_categories = {}
@@ -113,7 +111,6 @@ class Insights(Resource):
                         if category in transaction_categories:
                             transaction_categories[category] += transaction['amount']
                         else:
-                            print(transaction['category'])
                             transaction_categories[category] = transaction['amount']
 
         else:
@@ -133,7 +130,7 @@ class Cards(Resource):
 class Signup(Resource):
     def post(self):
         data = request.get_json()
-        # user = Users.query.filter(Users.username == user_object['username']).first()
+        print(data)
         if data:
             user_object = Users(
                 username = data["username"]
@@ -149,12 +146,12 @@ class Login(Resource):
     def post(self):
         user_object = request.get_json()
         user = Users.query.filter(Users.username == user_object['username']).first()
+        print(user)
         if user:
             if user.authenticate(user_object['password']):
                 session['user_id'] = user.to_dict()['id']
                 return user.to_dict(), 200
-        else:
-            raise Unauthorized("Username or password are incorrect")
+        return {"message": "Username or password are incorrect"}, 401
 
 class LoginWithGithub(Resource):
     def get(self):

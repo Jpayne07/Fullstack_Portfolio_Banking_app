@@ -1,0 +1,103 @@
+#signup{
+    border: #F9F6F0;
+    background-color: #2BFF5C;
+    /* flex-grow: 2; */
+    }
+#continue_as_guest{
+    color: #FFBC2B;
+    }
+
+.login_image_wrapper{
+    width:50%;
+    opacity: 100%;
+    max-width: 600px;
+    /* margin:0 50px;
+    padding: 50px; */
+    
+    
+    }
+.login_wrapper{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: center;
+    /* background-color: #171717; */
+    padding:50px;
+    }
+    
+    
+    
+    .login_content h2{ 
+    font-size: 48px;
+    color: white;
+    }
+    
+    .login_content p{ 
+    font-size: 16px;
+    color: white;
+    padding: 20px 0;
+    
+    }
+    
+    .login_image_wrapper img {
+    width: 100%; /* Make the image responsive to container's width */
+    height: 100%; /* Fill the height of the container */
+    object-fit: cover; /* Ensures the image covers the container */
+    object-position: right center;
+    padding: 0; /* Remove padding to avoid spacing issues */
+    background-position: left center;
+    }
+    
+    .formik_fields {
+    /* padding: 10px; */
+    font-size: 16px;
+    height: 20px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    outline: none;
+    transition: border-color 0.3s;
+    width: 50%;
+    }
+
+
+.form_row{
+    display: flex;
+    flex-wrap: wrap;
+    width: 100%;
+    min-width: 150px;
+    justify-content: center;
+    padding:10px 0;
+    align-content: center;
+    justify-content: space-between;
+    }
+#form_error{
+    padding: 10px;
+    color: #FFBC2B;
+    }
+
+form button{
+    font-size: 20px;
+    height: 50px; 
+    width: 100px;
+    border-radius: 5px;
+    background-color: #2BFF5C;
+    border-width: 0px;
+    }
+
+#github_Login {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px; /* Space between the icon and the text */
+    padding: 10px 20px;
+    background-color: white;
+    color: black;
+    border: 2px solid black; /* Black border to match the theme */
+    border-radius: 12px; /* Rounded corners */
+    font-family: "Courier New", Courier, monospace; /* Font matching the screenshot */
+    font-size: 16px; /* Adjust the font size */
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.2); /* Add subtle shadow */
+    width: 250px;
+    }

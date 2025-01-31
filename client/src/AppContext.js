@@ -12,31 +12,25 @@ export const AppProvider = ({ children }) => {
 
 
   useEffect(() => {
-    fetch('/api/banks')
-      .then((r) => r.json())
-      .then((data) => {
-        setBanks(data);
-      });
-  }, []);
-  useEffect(() => {
-    fetch('/api/insights')
-      .then((r) => r.json())
-      .then((data) => {
-        setCategories(data);
-      });
-  }, []);
+    setLoading(true);
+    Promise.all([
+      fetch('/api/banks').then((r) => r.json()),
+      fetch('/api/insights').then((r) => r.json())
+    ]).then(([banksData, insightsData]) => {
+      setBanks(banksData);
+      setCategories(insightsData);
+      setLoading(false);
+    }).catch(error => {
+      console.error('Error fetching data:', error);
+      setLoading(false);
+    });
+  }, [user]);
 
-  useEffect(() => {
-    fetch('/api/check_session')
-      .then((r) => r.ok ? r.json() : null)
-      .then((user) => {
-        setUser(user);
-        setLoading(false);
-      });
-  }, []);
+
+
 
   return (
-    <AppContext.Provider value={{loading, banks, categories, user, setUser, setBanks }}>
+    <AppContext.Provider value={{loading, banks, categories, user, setUser, setBanks, setLoading }}>
       {children}
     </AppContext.Provider>
   );

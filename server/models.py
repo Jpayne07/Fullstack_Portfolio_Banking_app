@@ -102,7 +102,10 @@ class Transactions(db.Model, SerializerMixin):
     category = db.Column(db.String)
     created_at = Column(DateTime, default=datetime.utcnow)
     amount = db.Column(db.Integer)
-
+    transactionType = db.Column(db.String, db.CheckConstraint('transactionType === "Negative" or transactionType === "Positive"'))
+    __table_args__ = (
+        db.CheckConstraint('(transactionType is not "Negative" ) or (transactionType is not "Positive")'),
+    )
 
     user = association_proxy('accounts', 'users',
         creator=lambda user_obj: Users(user = user_obj))

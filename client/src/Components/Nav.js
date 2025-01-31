@@ -8,8 +8,8 @@ import AppContext from '../AppContext';
 
 function Nav() {
   const navigate = useNavigate()
-  const { user } = useContext(AppContext);
-  const { setUser } = useContext(AppContext);
+  const { user,setUser,setBanks } = useContext(AppContext);
+
 
   
 
@@ -20,6 +20,7 @@ function Nav() {
       .then(() => {
         alert("Logged Out");
         setUser(null)
+        setBanks(null)
         navigate('/login');
       })
       .catch((error) => console.error('Error:', error)); // Optional: handle fetch error

@@ -1,0 +1,227 @@
+/* Divs */
+
+._wrapper{
+    width: 100%;
+    background-color:rgba(0,0,0, .5);
+    height: 100%;
+    padding: 25px 50px;
+    border-radius: 10px;
+    color: white;
+    max-width: 600px;
+}
+
+.background_wrapper{
+width: 50%;
+display: flex;
+justify-content: center;
+align-content: center;
+text-align: center;
+margin: 0 10px;
+max-width: 600px;
+margin: 50px;
+border-radius: 10px;
+padding: 8px;
+background: linear-gradient(to bottom, rgba(217, 217, 217, 0.4), rgba(255, 255, 255, 0.8)50%);
+text-align: left;
+}
+#test.background_wrapper{
+max-width: 800px;
+}
+
+#test._wrapper{
+max-width: 800px;
+}
+
+.transactions_page_wrapper{
+display: flex;
+flex-wrap: wrap;
+align-content: center;
+text-align: center;
+margin: 0 10px;
+width: 600px;
+background: linear-gradient(135deg, gray 0%, white 100%);
+opacity: .75;
+padding: 50px;
+margin: 50px;
+border-radius: 10px;
+}
+/* datadisplay */
+ /* .transactions h2{
+  text-align: left;
+  font-weight: 900;
+ } */
+
+ .transaction_dateview{
+    text-align: left;
+    padding-top: 20px;
+    font-weight: 900;
+    width: 100%;
+   }
+  
+   .transaction_header{
+    width: 100%;
+    text-align: left;
+   }
+  
+   .transaction_rows{
+    display: grid;
+    grid-template-columns: 3fr 2fr 1fr 1fr 1fr 1fr; /* Same proportions as headers */
+    gap: 10px;
+    align-items: center;
+    padding: 7.5px 0;
+    border-bottom: 1px solid #eee;
+   }
+
+.account_grid{
+    display: grid;
+    grid-template-columns: 3fr 3fr ; /* Same proportions as headers */
+    gap: 10px;
+    align-items: center;
+    padding: 7.5px 0;
+    width: 100%;
+    column-gap: 50px;
+}
+  #singular.transaction_rows{
+  
+    grid-template-columns: 3fr 2fr 1fr 1fr 1fr; /* Same proportions as headers */
+  }  
+  .bank_id{
+    display: flex;
+    flex-wrap: wrap;
+    text-align: left;
+    gap: 50px;
+    padding-top: 20px;
+    justify-content:flex-start;
+   }
+   .time{
+    font-weight: 900;
+    width: 100%;
+   }
+  
+   p#transaction_name{
+    font-weight: 900;
+    flex-grow: 1;
+    white-space: nowrap; /* Prevents line breaks */
+    overflow: hidden;    /* Hides any overflowing content */
+    text-overflow: ellipsis; /* Adds '...' if the text overflows */
+    
+   }
+  
+   .transaction_headers {
+    display: grid;
+    grid-template-columns:  3fr 2fr 1fr 1fr 1fr 1fr;  /* Adjust proportions */
+    gap: 10px;
+    align-items: center;
+    border-bottom: 1px solid #ccc;
+    padding: 10px 0;
+    font-weight: bold;
+    font-size: 16px;
+    color: #2BFF5C;
+  }
+  #singular.transaction_headers {
+    grid-template-columns:  3fr 2fr 1fr 1fr 1fr;  /* Adjust proportions */
+    
+  }
+  
+   #bank_logo{
+    flex-grow: 2;
+   }
+  
+   #bank_name{
+    flex-grow: 3;
+   }
+  
+  
+  .transaction_header{
+    font-size: 32px;
+  }
+
+/* functionality */
+
+.pagination_controls button:disabled {
+    background-color: #cccccc;
+    cursor: not-allowed;
+  }
+  
+  
+  .pagination_controls span {
+    font-size: 14px;
+    font-weight: bold;
+  }
+   #DollaBill{
+    color: #2BFF5C;
+   }
+.pagination_controls {
+display: flex;
+justify-content: center;
+align-items: center;
+}
+
+.transactions_rng{
+width: auto;
+height: auto;
+font-size: 16px;
+margin: 10px 250px 10px 250px;
+position: relative;
+display: inline-block;
+cursor: pointer;
+
+}
+.transactions_rng .tooltiptext {
+visibility: hidden;
+width: 150px;
+background-color: black;
+color: white;
+text-align: center;
+border-radius: 5px;
+padding: 5px;
+position: absolute;
+z-index: 1;
+bottom: 125%; /* Position it above the button */
+left: 50%;
+margin-left: -60px; /* Centers the tooltip */
+opacity: 0;
+transition: opacity 0.3s;
+  }
+
+  .pagination_controls button {
+    background-color: #2BFF5C;
+    color: grey;
+    border: none;
+    /* padding: 5px 5px; */
+    cursor: pointer;
+    margin: 0 5px;
+    border-radius: 5px;
+    font-size: 16px;
+    width: 100px;
+    height: 35px;
+  }
+
+  .transactions_button_break{
+    /* background-color: #31ED31; */
+    border: 2px;
+    border-color: #2BFF5C;
+    border-width: 2px;
+    /* height: 20px; */
+    margin: 10px 0 0 0;
+    border-style: dashed;
+    width: 100%;
+  }
+  
+  .bank_account_container h4,
+  .bank_account_container p {
+    /* margin: 10px; Reset margin if necessary */
+    padding:0  10px 0 0; /* Optional: Add padding for spacing */
+  }
+
+#bank_name{
+    text-decoration: underline;
+    font-size: 24px;
+  }
+  
+  .bank_account_container{
+    display: flex;
+    align-items: center;
+    padding: 0 0 5px 0;
+    width: 100%;
+  }

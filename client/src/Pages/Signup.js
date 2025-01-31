@@ -9,20 +9,20 @@ import { useNavigate } from 'react-router-dom';
 import * as yup from 'yup';
 
 const FormSchema = yup.object().shape({
-  pass: yup
+  password: yup
     .string()
-    .min(8, 'Password must be 8 characters long')
-    .matches(/[0-9]/, 'Password requires a number')
+    .min(2, 'Password must be 2 characters long')
+    // .matches(/[0-9]/, 'Password requires a number')
     .matches(/[a-z]/, 'Password requires a lowercase letter')
     .matches(/[A-Z]/, 'Password requires an uppercase letter')
     .matches(/[^\w]/, 'Password requires a symbol'),
-  confirm: yup
+  confirmPassword: yup
     .string()
-    .oneOf([yup.ref('pass'), null], 'Must match "password" field value'),
+    .oneOf([yup.ref('password'), null], 'Must match "password" field value'),
   username: yup
     .string()
     .min(5, 'username must be 5 characters long')
-    .matches(/[0-9]/, 'username requires a number')
+    // .matches(/[0-9]/, 'username requires a number')
     .matches(/[a-z]/, 'username requires a lowercase letter')
     .matches(/[A-Z]/, 'username requires an uppercase letter'),
   confirmUsername: yup
@@ -90,7 +90,7 @@ function Signup() {
                     </div>
                     
                     <Formik
-                        initialValues={{ username: '', password: '',pass: '', confirmUsername: '' }}
+                        initialValues={{ username: '', password: '', confirmPassword: '', confirmUsername: '' }}
                         validationSchema={FormSchema}
                         onSubmit={(values) => {
                         handleSubmit(values.username, values.password);
@@ -109,8 +109,8 @@ function Signup() {
                                 </div>
                                 <div className='form_row'>
                                     <label className="formik_labels">Password: </label>
-                                    <Field type="password" name="pass" className="formik_fields"/>
-                                    {errors.pass && <p>{errors.pass}</p>}
+                                    <Field type="text" name="password" className="formik_fields"/>
+                                    {errors.password && <p>{errors.password}</p>}
                                 </div>
                                 <div className='form_row'>
                                     <label className="formik_labels">Confirm U: </label>
@@ -119,8 +119,8 @@ function Signup() {
                                 </div>
                                 <div className='form_row'>
                                     <label className="formik_labels">Confirm P: </label>
-                                    <Field type="password" name="confirm" className="formik_fields"/>
-                                    {errors.confirm && <p>{errors.confirm}</p>}
+                                    <Field type="text" name="confirmPassword" className="formik_fields"/>
+                                    {errors.confirmPassword && <p>{errors.confirmPassword}</p>}
                                 </div>
                               </div>
                             

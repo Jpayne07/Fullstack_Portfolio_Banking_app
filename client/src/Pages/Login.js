@@ -13,7 +13,7 @@ import { useNavigate } from 'react-router-dom';
 function Login() {
     const navigate = useNavigate();
     const [errors, setErrors] = useState([]);
-    const { setUser } = useContext(AppContext);
+    const { setUser,loading } = useContext(AppContext);
 
     const handleLoginGithub = () => {
       window.location.href = 'http://localhost:5555/api/login-github'; // Ensure the URL matches your Flask app's URL
@@ -24,7 +24,7 @@ function Login() {
       const codeParams = urlParams.get("code")
     },[handleLoginGithub])
 
-    function handleSubmit(username, password) {
+    function handleSubmit(username, password, setSubmitting) {
         fetch("/api/login", {
           method: "POST",
           headers: {
@@ -35,7 +35,6 @@ function Login() {
           .then((r) => {
             if (r.ok) {
               r.json().then((user) => {
-                console.log(user);
                 setUser(user);
                 navigate('/');
               });
@@ -48,9 +47,9 @@ function Login() {
           .catch((err) => {
             setErrors([err.message || "Network error. Please try again later."]);
           })
-        //   .finally(() => {
-        //     setSubmitting(false);  // Ensure submission is completed
-        //   });
+          .finally(() => {
+            setSubmitting(false);  // Ensure submission is completed
+          });
       }
 
 
@@ -80,8 +79,8 @@ function Login() {
                         }
                         return errors;
                         }}
-                        onSubmit={(values) => {
-                        handleSubmit(values.username, values.password);
+                        onSubmit={(values, { setSubmitting }) => {
+                        handleSubmit(values.username, values.password, setSubmitting);
                         }}
                     >
                         {({ isSubmitting }) => (
@@ -101,8 +100,8 @@ function Login() {
                             
                             
                             <div className='form_row' style={{justifyContent:"center"}}>
-                            <button type="submit" disabled={isSubmitting} id='login_button'>
-                            Submit
+                            <button type="submit" disabled={isSubmitting} id="login_button">
+                              {isSubmitting ? "Submitting..." : "Submit"}
                             </button>
                             <p onClick={()=>{handleSubmit('Jacob','hi')}}style={{width:"100%", textAlign:"center"}}><span id = 'continue_as_guest'>OR</span> Continue as guest</p>
                             <button id="github_Login" onClick={handleLoginGithub}>
@@ -117,6 +116,15 @@ function Login() {
                                 </svg>
                               <span id='github_span'>Login With GitHub</span>
                             </button>
+                            {errors.length > 0 && (
+                              <div className="error-messages">
+                                {errors.map((error, index) => (
+                                  <p key={index} className="error-text">
+                                    {error}
+                                  </p>
+                                ))}
+                              </div>
+                            )}
                             </div>
                         </Form>
                         )}

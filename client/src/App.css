@@ -14,12 +14,14 @@
   font-family: "OCR A Extended";
   src: url("OCRAEXT.TTF");
 }
-
+#root {
+  color: white; /* Or any high-contrast color */
+}
 body {
   background-image: url("images/01396bbb-7dc1-4010-9b61-0d13d51563da.png");
   /* background-repeat: repeat-y; */
   /* background-attachment: scroll; */
-  background-size: 100%;
+  /* background-size: 100%; */
 
 }
 
@@ -46,13 +48,7 @@ body {
   align-content: center;
 }
 
-#signup{
-border: #F9F6F0;
-background-color: #2BFF5C;
-/* flex-grow: 2; */
-}
-
- .main_nav_wrapper{
+.main_nav_wrapper{
   display: flex;
   background-color: #171717;
   margin: 0px;
@@ -71,32 +67,8 @@ background-color: #2BFF5C;
   align-self: center;
   
  }
- .transactions_rng{
-  width: auto;
-  height: auto;
-  font-size: 16px;
-  margin: 10px 250px 10px 250px;
-  position: relative;
-  display: inline-block;
-  cursor: pointer;
-  
- }
- .transactions_rng .tooltiptext {
-  visibility: hidden;
-  width: 150px;
-  background-color: black;
-  color: white;
-  text-align: center;
-  border-radius: 5px;
-  padding: 5px;
-  position: absolute;
-  z-index: 1;
-  bottom: 125%; /* Position it above the button */
-  left: 50%;
-  margin-left: -60px; /* Centers the tooltip */
-  opacity: 0;
-  transition: opacity 0.3s;
-}
+
+ 
 
 /* Show the tooltip when hovering over the button */
 .transactions_rng:hover .tooltiptext {
@@ -123,42 +95,7 @@ background-color: #2BFF5C;
   background-image: 'client/src/images/01396bbb-7dc1-4010-9b61-0d13d51563da.png';
   font-size: 16px;
  }
- ._wrapper{
-  width: 100%;
-  background-color:rgba(0,0,0, .5);
-  height: 100%;
-  padding: 25px 50px;
-  border-radius: 10px;
-  color: white;
-  max-width: 600px;
-  
-  
-
- }
-#continue_as_guest{
-  color: #FFBC2B;
-}
- .background_wrapper{
-  width: 50%;
-  display: flex;
-  justify-content: center;
-  align-content: center;
-  text-align: center;
-  margin: 0 10px;
-  max-width: 600px;
-  margin: 50px;
-  border-radius: 10px;
-  padding: 8px;
-  background: linear-gradient(to bottom, rgba(217, 217, 217, 0.4), rgba(255, 255, 255, 0.8)50%);
-  text-align: left;
- }
-#test.background_wrapper{
-  max-width: 800px;
-}
-
-#test._wrapper{
-  max-width: 800px;
-}
+ 
  #login.background_wrapper{
   max-width: 450px;
  }
@@ -166,280 +103,20 @@ background-color: #2BFF5C;
   display: flex;
   justify-content: center;
 }
-
- .transactions_page_wrapper{
-  /* width: 50%; */
-  display: flex;
-  flex-wrap: wrap;
-  align-content: center;
-  text-align: center;
-  margin: 0 10px;
-  width: 600px;
-  background: linear-gradient(135deg, gray 0%, white 100%);
-  opacity: .75;
-  padding: 50px;
-  margin: 50px;
-  border-radius: 10px;
-
-  
- }
- .pagination_controls {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.pagination_controls button {
-  background-color: #2BFF5C;
-  color: grey;
-  border: none;
-  /* padding: 5px 5px; */
-  cursor: pointer;
-  margin: 0 5px;
-  border-radius: 5px;
-  font-size: 16px;
-  width: 100px;
-  height: 35px;
-}
-
-.pagination_controls button:disabled {
-  background-color: #cccccc;
-  cursor: not-allowed;
-}
-
-
-.pagination_controls span {
-  font-size: 14px;
-  font-weight: bold;
-}
- #DollaBill{
-  color: #2BFF5C;
- }
-
-
- /* .transactions h2{
-  text-align: left;
-  font-weight: 900;
- } */
-
- .transaction_dateview{
-  text-align: left;
-  padding-top: 20px;
-  font-weight: 900;
-  width: 100%;
- }
-
- .transaction_header{
-  width: 100%;
-  text-align: left;
- }
-
- .transaction_rows{
-  display: grid;
-  grid-template-columns: 3fr 2fr 1fr 1fr 1fr 1fr; /* Same proportions as headers */
-  gap: 10px;
-  align-items: center;
-  padding: 7.5px 0;
-  border-bottom: 1px solid #eee;
- }
-#singular.transaction_rows{
-
-  grid-template-columns: 3fr 2fr 1fr 1fr 1fr; /* Same proportions as headers */
- 
- }
  p{
   font-size: 14px;
  }
-
- .bank_id{
-  display: flex;
-  flex-wrap: wrap;
-  text-align: left;
-  gap: 50px;
-  padding-top: 20px;
-  justify-content:flex-start;
- }
- .time{
-  font-weight: 900;
-  width: 100%;
- }
-
- p#transaction_name{
-  font-weight: 900;
-  flex-grow: 1;
-  white-space: nowrap; /* Prevents line breaks */
-  overflow: hidden;    /* Hides any overflowing content */
-  text-overflow: ellipsis; /* Adds '...' if the text overflows */
-  
- }
-
- .transaction_headers {
-  display: grid;
-  grid-template-columns:  3fr 2fr 1fr 1fr 1fr 1fr;  /* Adjust proportions */
-  gap: 10px;
-  align-items: center;
-  border-bottom: 1px solid #ccc;
-  padding: 10px 0;
-  font-weight: bold;
-  font-size: 16px;
-  color: #2BFF5C;
-}
-#singular.transaction_headers {
-  grid-template-columns:  3fr 2fr 1fr 1fr 1fr;  /* Adjust proportions */
-  
-}
-
- #bank_logo{
-  flex-grow: 2;
- }
-
- #bank_name{
-  flex-grow: 3;
- }
-
- .login_image_wrapper{
-  width:50%;
-  opacity: 100%;
-  max-width: 600px;
-  /* margin:0 50px;
-  padding: 50px; */
-  
-
- }
-
- .login_wrapper{
-  display: flex;
-  flex-direction: row;
-  flex-wrap: nowrap;
-  justify-content: center;
-  /* background-color: #171717; */
-  padding:50px;
- }
-
- 
-
- .login_content h2{ 
-  font-size: 48px;
-  color: white;
- }
-
- .login_content p{ 
-  font-size: 16px;
-  color: white;
-  padding: 20px 0;
-
- }
-
- .login_image_wrapper img {
-  width: 100%; /* Make the image responsive to container's width */
-  height: 100%; /* Fill the height of the container */
-  object-fit: cover; /* Ensures the image covers the container */
-  object-position: right center;
-  padding: 0; /* Remove padding to avoid spacing issues */
-  background-position: left center;
-}
-
-.formik_fields {
-  /* padding: 10px; */
-  font-size: 16px;
-  height: 20px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  outline: none;
-  transition: border-color 0.3s;
-  width: 50%;
-}
-.transaction_header{
-  font-size: 32px;
-}
-
-#transaction_home._wrapper{
-  padding: 50px;
-}
-
-.form_row{
-display: flex;
-flex-wrap: wrap;
-width: 100%;
-min-width: 150px;
-justify-content: center;
-padding:10px 0;
-align-content: center;
-justify-content: space-between;
-}
-.formik_labels{
-font-size: 20px;
-  color:white;
-  margin: 0 25px 0 0;
- 
-  
-}
-
-form button{
-font-size: 20px;
-height: 50px; 
-width: 100px;
-border-radius: 5px;
-background-color: #2BFF5C;
-border-width: 0px;
-}
 
 a:visited{
   color: inherit;
 
 }
-#form_error{
-  padding: 10px;
-  color: #FFBC2B;
-}
+
 a:active{
   color:#FFBC2B
 }
 
-.transactions_button_break{
-  /* background-color: #31ED31; */
-  border: 2px;
-  border-color: #2BFF5C;
-  border-width: 2px;
-  /* height: 20px; */
-  margin: 10px 0 0 0;
-  border-style: dashed;
-  width: 100%;
-}
 
-#bank_name{
-  text-decoration: underline;
-  font-size: 24px;
-}
-#github_Login {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px; /* Space between the icon and the text */
-  padding: 10px 20px;
-  background-color: white;
-  color: black;
-  border: 2px solid black; /* Black border to match the theme */
-  border-radius: 12px; /* Rounded corners */
-  font-family: "Courier New", Courier, monospace; /* Font matching the screenshot */
-  font-size: 16px; /* Adjust the font size */
-  cursor: pointer;
-  transition: background-color 0.3s ease, transform 0.2s ease;
-  box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.2); /* Add subtle shadow */
-  width: 250px;
-}
-
-.bank_account_container{
-  display: flex;
-  align-items: center;
-  padding: 0 0 5px 0;
-  width: 100%;
-}
-.bank_account_container h4,
-.bank_account_container p {
-  /* margin: 10px; Reset margin if necessary */
-  padding:0  10px 0 0; /* Optional: Add padding for spacing */
-}
 
 
 
