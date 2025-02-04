@@ -20,26 +20,13 @@ function App() {
   
 
   useEffect(() => {
-    const checkSession = async () => {
-      try {
-        // setLoading(true); // Start loading
-        const res = await fetch('/api/check_session');
-        if (res.ok) {
-          const userData = await res.json();
-          setUser(userData);
-        } else {
-          setUser(null);
-        }
-      } catch (error) {
-        setUser(null);
-      } finally {
-        // setLoading(false); // Stop loading in finally block to ensure it's called in all cases
-
+    fetch("/api/check_session").then((response) => {
+      if (response.ok) {
+        response.json()
+        .then((user) => setUser(user))
       }
-    };
-  
-    checkSession();
-  }, [setUser, setLoading]); // Include setLoading in dependency array
+    });
+  }, []);
   
   useEffect(() => {
     if (!loading && !user) {

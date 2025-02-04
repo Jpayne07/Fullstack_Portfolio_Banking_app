@@ -1,9 +1,12 @@
-import React, {useState} from 'react'
+import React, {useState,useContext} from 'react'
 import { useParams } from 'react-router-dom';
 import Pencil from '../images/Pencil.svg'
+import AppContext from '../AppContext';
 
 
-function TransactionIndexModule({banks, setBanks}) {
+function TransactionIndexModule({}) {
+  const {user} = useContext(AppContext);
+  console.log(user)
   const { id } = useParams()
   const [currentPage, setCurrentPage] = useState(1); // Tracks the current page
   const itemsPerPage = 10; // Number of transactions per page
@@ -23,19 +26,22 @@ function TransactionIndexModule({banks, setBanks}) {
     fetch(`/api/transaction/${id}`, { method: 'DELETE' })
     .then(() => alert('Transaction deleted, please refresh page'));
   }
-    const transactionList = banks.map(bank=>{
-      return <div className='bank_account_container'>
-       
-        {bank.accounts
-        .map(account=>{
-          const totalTransactions = account.transactions.length;
+    const transactionList = user.accounts.map(account=>{
+      const totalTransactions = account.transactions.length;
             const paginatedTransactions = account.transactions.slice(
               (currentPage - 1) * itemsPerPage,
-              currentPage * itemsPerPage
-            ); // Slice transactions for the current page
-          return <div style={{width:"100%"}}>
+              currentPage * itemsPerPage);
+      return <div className='bank_account_container' >
+{/*        
+        {user.accounts
+        .filter((account) => account.id === Number(id))
+        .map(account=>{
+          
+            // Slice transactions for the current page
+          return */}
+           <div style={{width:"100%"}}>
             {/* bank_name below */}
-            <h1 style={{padding:"15px 0", textAlign:"left"}}>{`${account.banks.bank_name}: ${account.account_type}`}</h1>
+            <h1 style={{padding:"15px 0", textAlign:"left"}}>{`${account.bank.name}: ${account.account_type}`}</h1>
             <div className="transaction_headers">
             <h4>Description</h4>
                   <h4>Date</h4>
@@ -65,8 +71,8 @@ function TransactionIndexModule({banks, setBanks}) {
                 <p id='transaction_name'>{transaction.title}</p>
                 <p>{date}</p>
                 <p>{transaction.id}</p>
-                <p>{transaction.card.card_number.toString().slice(-4)}</p>
-                <p id='Price'><span id='DollaBill'>$ </span>{transaction.amount}</p>
+                <p>{transaction.card?transaction.card.card_number.toString().slice(-4):null}</p>
+                <p id='Price'><span id='DollaBill'>$ </span>{transaction.transaction_type ==="Negative"?`-${transaction.amount}`:transaction.amount}</p>
                 <div><a href={`/transactions/${transaction.id}`}><svg width="20" height="20" viewBox="0 0 78 78" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path d="M39 65H68.25M53.625 11.375C54.9179 10.0821 56.6715 9.35571 58.5 9.35571C59.4054 9.35571 60.3019 9.53404 61.1383 9.88051C61.9748 10.227 62.7348 10.7348 63.375 11.375C64.0152 12.0152 64.523 12.7752 64.8695 13.6117C65.216 14.4481 65.3943 15.3446 65.3943 16.25C65.3943 17.1554 65.216 18.0519 64.8695 18.8883C64.523 19.7248 64.0152 20.4848 63.375 21.125L22.75 61.75L9.75 65L13 52L53.625 11.375Z" stroke="#2BFF5C" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round"/>
                 </svg></a>
@@ -98,9 +104,7 @@ function TransactionIndexModule({banks, setBanks}) {
                   </button>
                 </div>
                 </div>
-  }
-)
-}</div>
+</div>
       
         
     })

@@ -1,5 +1,5 @@
 from app import app
-from models import db, Users, Accounts, Transactions, Bank, Card
+from models import db, User, Accounts, Transactions, Bank, Card
 from faker import Faker
 from datetime import date
 
@@ -12,12 +12,12 @@ if __name__ =='__main__':
         db.drop_all()
         db.create_all()
 
-        user1 = Users(
+        user1 = User(
             username = 'Jacob',
            
         )
         user1.password_hash = "hi"
-        user2 = Users(
+        user2 = User(
             username = 'Hunter',
            
         )
@@ -30,14 +30,12 @@ if __name__ =='__main__':
 
 
         bank1 = Bank(
-            bank_name = 'Regions',
-            brand_color = 'Green'
+            name = 'Regions',
 
         )
 
         bank2 = Bank(
-            bank_name = 'Wells Fargo',
-            brand_color = 'Red'
+            name = 'Wells Fargo',
         )
         
         db.session.add_all([bank1, bank2])

@@ -1,12 +1,16 @@
 from flask import Flask, request, session, make_response, redirect, jsonify
 from flask_restful import Resource, Api
 from config import app, db, api, GITHUB_API_URL, GITHUB_CLIENT_SECRET, GITHUB_CLIENT_ID, GITHUB_AUTH_URL, GITHUB_TOKEN_URL
-from models import Accounts, Transactions, Users, Bank, Card
+from models import Accounts, Transactions, User, Bank, Cards
 from faker import Faker
 import random
 from werkzeug.exceptions import UnprocessableEntity, Unauthorized
 from urllib.parse import urlparse
 import requests
+import pandas as pd
+import matplotlib.pyplot as plt
+
+
 
 
 
@@ -20,12 +24,15 @@ class Home(Resource):
     def get(self):
         return({"members": ["Mamber1","Member2", "Member3"]},200)
     
-class User(Resource):
+class User_Item(Resource):
     def get(self):
-        users = [user.to_dict() for user in Users.query.all()]
-        return(users, 200)
+        if session['user_id']:
+            useri = User.query.filter_by(id=session['user_id']).first()
+        else:
+            return make_response("You must be logged in to see this content", 405)
+        return(useri.to_dict(), 200)
     
-class Transaction(Resource):
+class Transactions_List(Resource):
     def get(self):
         transactions = [transaction.to_dict() for transaction in Transactions.query.all()]
         return(transactions,200)
@@ -62,16 +69,17 @@ class TransactionSeed(Resource):
     def post(self):  # Change to POST for creating resources
         db.session.query(Transactions).delete()  # Deletes all rows in the Transactions table
         db.session.commit()
-        money_categories = ['salary', 'invoice', 'payment', 'refund', 'transfer']
+        money_categories = ['shopping', 'coffee shops', 'subscriptions', 'food', 'groceries', 'rent']
+        transaction_type_categories = ['Negative', 'Positive']
 
         for _ in range(100):
             transaction = Transactions(
         title=fake.company(),
         category=random.choice(money_categories),  # Choose from the 5 predefined categories
-        amount=round(random.uniform(1, 1000), 0),  # Random amount between 1 and 1000 with 2 decimal places
-        account_id=random.choice([1, 2, 3, 4])
+        amount=round(random.uniform(1, 100), 0),  # Random amount between 1 and 1000 with 2 decimal places
+        account_id=random.choice([1, 2, 3, 4]),
+        transaction_type=random.choice(transaction_type_categories)
     )
-            print(transaction.to_dict())
             db.session.add(transaction)
 
         db.session.commit()
@@ -87,8 +95,8 @@ class TransactionSeed(Resource):
     
 class Banks(Resource):
     def get(self):
-        user = Users.query.filter(Users.id == session['user_id']).first()
-        
+        user = User.query.filter(User.id == session['user_id']).first()
+
         if user:
             bank_ids = [account.bank_id for account in user.accounts] 
             banks = [bank.to_dict() for bank in Bank.query.filter(Bank.id.in_(bank_ids)).all()]
@@ -97,20 +105,23 @@ class Banks(Resource):
         return(banks,200)
 class Insights(Resource):
     def get(self):
-        user = Users.query.filter(Users.id == session['user_id']).first()
-        print(user)
-        # user = None
+        user = User.query.filter(User.id == session['user_id']).first()
+
         if user:
-            bank_ids = [account.bank_id for account in user.accounts] 
-            banks = [bank.to_dict() for bank in Bank.query.filter(Bank.id.in_(bank_ids)).all()]
+            account_ids = [account.id for account in user.accounts] 
+            accounts = [account.to_dict() for account in Accounts.query.filter(Accounts.id.in_(account_ids)).all()]
             transaction_categories = {}
-            for bank in banks:
-                for account in bank['accounts']:
-                    for transaction in account['transactions']:
-                        category = transaction['category']
+            for account in accounts:
+                for transaction in account['transactions']:
+                    category = transaction['category']
+                    # only calculating spending
+                    if transaction['transaction_type'] == "Negative":
                         if category in transaction_categories:
+
+                            # key += value
                             transaction_categories[category] += transaction['amount']
                         else:
+                            # setting first find of transaction category
                             transaction_categories[category] = transaction['amount']
 
         else:
@@ -119,12 +130,18 @@ class Insights(Resource):
     
 class Account(Resource):
     def get(self):
-        accounts = [account.to_dict() for account in Accounts.query.all()]
-        return(accounts,200)
+        if session['user_id']:
+            user = User.query.filter(User.id == session['user_id']).first().to_dict()
+            return user
+        else:
+            return {"message": "You must sign in to see this"}, 405
+        updated_accounts = [dict(account,bank_name= account['banks']['bank_name']) for account in accounts]
+    
+        return(updated_accounts,200)
     
 class Cards(Resource):
     def get(self):
-        cards = [cards.to_dict() for cards in Card.query.all()]
+        cards = [cards.to_dict() for cards in Cards.query.all()]
         return(cards,200)
     
 class Signup(Resource):
@@ -132,7 +149,7 @@ class Signup(Resource):
         data = request.get_json()
         print(data)
         if data:
-            user_object = Users(
+            user_object = User(
                 username = data["username"]
             )
             user_object.password_hash = data['password']
@@ -145,11 +162,12 @@ class Signup(Resource):
 class Login(Resource):
     def post(self):
         user_object = request.get_json()
-        user = Users.query.filter(Users.username == user_object['username']).first()
-        print(user)
+        user = User.query.filter(User.username == user_object['username']).first()
         if user:
             if user.authenticate(user_object['password']):
                 session['user_id'] = user.to_dict()['id']
+                print("Session set:", session)
+
                 return user.to_dict(), 200
         return {"message": "Username or password are incorrect"}, 401
 
@@ -189,42 +207,46 @@ class Callback(Resource):
 
         if not github_id or not username:
             return jsonify({"error": "Failed to fetch GitHub user data"}), 400
-        user = Users.query.filter_by(username=username).first()
+        user = User.query.filter_by(username=username).first()
         if user:
         # Existing user: log them in by saving their info in the session
             session["user_id"] = user.to_dict()['id']
             print('already logged in')
             return redirect('http://localhost:3000')
         else:
-            new_user = Users(username=username)
+            new_user = User(username=username)
 
         db.session.add(new_user)
         db.session.commit()
-        print(Users.query.filter_by(username=new_user.username).first().id)
+        print(User.query.filter_by(username=new_user.username).first().id)
         # Log them in by saving their info in the session
-        session["user_id"] = Users.query.filter_by(username=new_user.username).first().id
+        session["user_id"] = User.query.filter_by(username=new_user.username).first().id
         return redirect('http://localhost:3000')
 
         # Store user details in the session
-        
-            
-        
-        
+       
     
 class CheckSession(Resource):
     def get(self):
         user_id = session.get('user_id') 
-
+        print("got user id")
         if user_id:
             id = session['user_id']
-            user = Users.query.filter_by(id=id).first().to_dict()
-            user_no_pass = {
-                'id': session['user_id'],
-                'username': user['username'],
-            }
-            response = make_response(user_no_pass, 200)
+            user = User.query.filter_by(id=id).first().to_dict()
+            # user_no_pass = {
+            #     'id': session['user_id'],
+            #     'username': user['username'],
+            # }
+            # iterate thorugh user.banks
+            # iterate thorugh each banks accounts
+            # set bank.accounts = filter to users accounts
+            # return user to dict
+            # copnsider throwing breakpoint
+            print("Session USer:", user)
+            response = make_response(user, 200)
             return response
         else:
+            print("didn't got user id")
             response = make_response("Not authorized", 401)
             return response
 class ClearSession(Resource):
@@ -238,9 +260,9 @@ api.add_resource(Home, '/api')
 api.add_resource(Account, '/api/account')
 api.add_resource(Cards, '/api/cards')
 api.add_resource(Banks, '/api/banks')
-api.add_resource(Transaction, '/api/transaction')
+api.add_resource(Transactions_List, '/api/transaction')
 api.add_resource(TransactionSeed, '/api/transactionseed')
-api.add_resource(User, '/api/user')
+api.add_resource(User_Item, '/api/user')
 api.add_resource(CheckSession, '/api/check_session')
 api.add_resource(Login, '/api/login')
 api.add_resource(Signup, '/api/signup')

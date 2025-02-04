@@ -1,14 +1,13 @@
 import React from 'react'
 import App from './App'
 import Login from './Pages/Login'
-// import Transactions from './Pages/Transactions'
-import Accounts from './Pages/Accounts'
 import Cards from './Pages/Cards'
 import Home from './Pages/Home'
 import TransactionsIndex from './Pages/TransactionsIndex'
 import TransactionId from './Pages/Transaction_id'
 import Signup from './Pages/Signup'
 import Accountsv2 from './Pages/Accountsv2'
+import Insights from './Pages/Insights'
 
 
 const routes = [
@@ -40,6 +39,10 @@ const routes = [
             {
               path:'/cards',
               element: <Cards />
+            }, 
+            {
+              path:'/insights',
+              element: <Insights />
             }
         ]
     }, 

@@ -1,10 +1,9 @@
 import React, {useContext, useState, useEffect} from 'react'
 import BankComponentv2 from '../Components/BankComponentv2'
-import Insights from '../Components/Insights'
+import Insights from '../Components/InsightsComponent'
 import AppContext from '../AppContext'
 
 function Home() {
- 
    
   return (
     <div className='home_wrapper'>

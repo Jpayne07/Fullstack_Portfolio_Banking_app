@@ -10,9 +10,6 @@ function Nav() {
   const navigate = useNavigate()
   const { user,setUser,setBanks } = useContext(AppContext);
 
-
-  
-
   const handleLogout = () => {
     fetch('/api/clear_session', {
       method: "DELETE",
@@ -29,10 +26,9 @@ function Nav() {
     <div className='main_nav_wrapper'>
         <nav className='main_nav'>
         <NavLink to="/" className="nav-link">Home</NavLink>
-        {/* <NavLink to="/transactions" className="nav-link">Transactions</NavLink> */}
-
         <NavLink to="/accounts" className="nav-link">Accounts</NavLink>
         <NavLink to="/cards" className="nav-link">Cards</NavLink>
+        <NavLink to="/insights" className="nav-link">Insights</NavLink>
         {user?<button id = "signup" onClick={handleLogout}
           >Logout</button>:
           <button id = "signup" onClick={()=>{navigate('/login')}}>Login</button>}

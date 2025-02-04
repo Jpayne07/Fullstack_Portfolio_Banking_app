@@ -13,7 +13,7 @@ import { useNavigate } from 'react-router-dom';
 function Login() {
     const navigate = useNavigate();
     const [errors, setErrors] = useState([]);
-    const { setUser,loading } = useContext(AppContext);
+    const { setUser,user, setLoading, setAccounts, setBanks, setCategories } = useContext(AppContext);
 
     const handleLoginGithub = () => {
       window.location.href = 'http://localhost:5555/api/login-github'; // Ensure the URL matches your Flask app's URL
@@ -36,7 +36,8 @@ function Login() {
             if (r.ok) {
               r.json().then((user) => {
                 setUser(user);
-                navigate('/');
+                console.log("User set:", user)
+                
               });
             } else {
               r.json().then((err) => {
@@ -51,7 +52,11 @@ function Login() {
             setSubmitting(false);  // Ensure submission is completed
           });
       }
-
+      useEffect(() => {
+        if (user) {
+            navigate('/'); // Navigate after user state updates
+        }
+    }, [user]);
 
   return (
     <main>

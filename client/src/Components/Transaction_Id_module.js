@@ -1,12 +1,14 @@
-import React, {useState} from 'react'
+import React, {useContext} from 'react'
+import AppContext from '../AppContext';
+
 import { useParams } from 'react-router-dom';
 import Pencil from '../images/Pencil.svg'
 import EditableText from './EditableText';
 
 
-function Transaction_Id_module({banks}) {
+function Transaction_Id_module() {
+  const { banks} = useContext(AppContext)
   const { id } = useParams()
-
   const uniqueDateSet = new Set();
     const transactionList = banks.map(bank=>{
       return <div className='bank_account_container'>
@@ -16,7 +18,6 @@ function Transaction_Id_module({banks}) {
       )
         .map(account=>{
           return <div style={{width:"100%"}}>
-            {/* bank_name below */}
             <h1 style={{padding:"15px 0", textAlign:"left"}}>{`${account.banks.bank_name}: ${account.account_type}`}</h1>
             <div className="transaction_headers" id='singular'>
             <h4>Description</h4>

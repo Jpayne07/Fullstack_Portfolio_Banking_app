@@ -1,8 +1,10 @@
-import React, {useContext} from 'react'
+import React, {useContext, useEffect, useState} from 'react'
 import AppContext from '../AppContext';
 
 function BanksComponentv2({stylingContext}) {
-  const { banks, loading } = useContext(AppContext)
+  const { loading, user } = useContext(AppContext)
+  const bankNames = []
+  const uniqueNames = new Set()
   const formatter = new Intl.NumberFormat('en-US', {
     style: 'currency',
     currency: 'USD',
@@ -15,38 +17,47 @@ function BanksComponentv2({stylingContext}) {
   }
 
   
-    const bankElement = banks.length > 0? banks.map(bank=>{
+    const accountElement = user.accounts.length > 0? user.accounts.sort((a, b) => a.bank_id - b.bank_id)
+    // need to only show first occurence
+    .map(account=>{
+      console.log("Begin render", account)
       if(stylingContext==="Normal"){
-        return(
-            <div style={{width: "100%"}}>
-              <h2 style={{padding:"15px 0", textAlign:"left"}}>{bank.bank_name}</h2>
+        const accountValue = (account.account_value)
+        if (!bankNames.includes(account.bank_name)) {
+          bankNames.push(account.bank_name); // Add to the list if it's not already there
+    
+          return (
+          <div style={{width: "100%"}}key={account.id} >
+          <h2 style={{padding:"15px 0", textAlign:"left"}}>{account.bank_name}</h2>
 
-                {bank.accounts.map(account=>{
-                  return(
+              <div className='bank_account_container'>
+                  <h4 ><a href={`account/${account.id}`}>{account.account_type}</a></h4>
+                  <p>{formatter.format(accountValue)}</p>
+              </div>
+ 
+        </div>)
+        }
+        else{
+        return(
+            <div style={{width: "100%"}}key={account.id}>
+              {/* <h2 style={{padding:"15px 0", textAlign:"left"}}>{account.bank_name}</h2> */}
+
                   <div className='bank_account_container'>
                       <h4 ><a href={`account/${account.id}`}>{account.account_type}</a></h4>
-                      <p>{formatter.format(account.account_value)}</p>
-                  </div>)
-                  }
-                )
-              }         
+                      <p>{formatter.format(accountValue)}</p>
+                  </div>
+     
             </div>
-        )
+        )}
     }else{
+      console.log(account)
       return(
-        <div style={{width:"100%"}}>
-          <h2 style={{padding:"15px 0", textAlign:"left"}}>{bank.bank_name}</h2>
-          <div className='account_grid'>
-            {bank.accounts.map(account=>{
-              return(
+        <div>
+          <h2 style={{padding:"15px 0", textAlign:"left"}}>{account.bank_name}</h2>
               <div className='bank_account_container'style={{ padding:"20px",width: "100%", flexWrap:"wrap", alignContent:"center", gap:"25px", backgroundImage: "linear-gradient(to right,grey,white)", borderRadius:"10px"}}>
                   <h4 style={{width:"100%"}}><a href={`account/${account.id}`}>Account Type: {account.account_type}</a></h4>
                   <p>Account Balance: {formatter.format(account.account_value)}</p>
                   <p style={{color:"red"}}>Spent This Month: 200,000</p>
-              </div>)
-              }
-            )
-          } 
           </div>        
         </div>
     )
@@ -56,8 +67,8 @@ function BanksComponentv2({stylingContext}) {
   return (
         <div className='_wrapper' id="login" style={{padding:"50px", maxWidth:"1200px"}}>
           <h1>Accounts</h1>
-          <div className='bank_id'>
-            {bankElement}
+          <div className={stylingContext==='Normal'?'bank_id':'account_grid'}>
+            {accountElement}
           </div>
       </div>
 

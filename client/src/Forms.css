@@ -83,6 +83,11 @@ form button{
     background-color: #2BFF5C;
     border-width: 0px;
     }
+.formik_labels{
+    font-size: 20px;
+        color:white;
+        margin: 0 25px 0 0;
+    }
 
 #github_Login {
     display: flex;
