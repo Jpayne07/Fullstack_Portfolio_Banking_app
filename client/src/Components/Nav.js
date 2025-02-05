@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from 'react'
+import React, { useContext, useState } from 'react'
 import '../App.css'
 import { NavLink } from 'react-router-dom'
 import { useNavigate } from 'react-router-dom';
@@ -22,9 +22,31 @@ function Nav() {
       })
       .catch((error) => console.error('Error:', error)); // Optional: handle fetch error
   };
-  return (
+
+  const [isVisible, setIsVisible] = useState(false);
+
+  const toggleLinks = () => {
+    setIsVisible((prev) => !prev);
+  };
+
+  
+  return (<div>
+    <div class="topnav">
+      <div className='mobile'><i class="fa fa-bars" id='hamburger' onClick={toggleLinks}></i></div>
+    
+        <div id="myLinks" style={{ display: isVisible ? "flex" : "none" }}>
+        <NavLink to="/" className="nav-link" id='mobile' onClick={toggleLinks}>Home</NavLink>
+        <NavLink to="/accounts" className="nav-link" id='mobile' onClick={toggleLinks}>Accounts</NavLink>
+        <NavLink to="/cards" className="nav-link" id='mobile' onClick={toggleLinks}>Cards</NavLink>
+        <NavLink to="/insights" className="nav-link" id='mobile' onClick={toggleLinks}>Insights</NavLink>
+        {user?<button id = "signup" onClick={handleLogout}
+          >Logout</button>:
+          <button id = "signup" onClick={()=>{navigate('/login')}}>Login</button>}
+        </div>
+      </div>
     <div className='main_nav_wrapper'>
-        <nav className='main_nav'>
+      
+        <nav className='main_nav' id='desktop'>
         <NavLink to="/" className="nav-link">Home</NavLink>
         <NavLink to="/accounts" className="nav-link">Accounts</NavLink>
         <NavLink to="/cards" className="nav-link">Cards</NavLink>
@@ -33,6 +55,7 @@ function Nav() {
           >Logout</button>:
           <button id = "signup" onClick={()=>{navigate('/login')}}>Login</button>}
         </nav>
+    </div>
     </div>
   )
 }

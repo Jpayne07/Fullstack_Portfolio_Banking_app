@@ -10,6 +10,73 @@
   
 }
 
+/* Divs */
+.topnav {
+  overflow: hidden;
+  background-color: white;
+  color: #171717;
+  position: relative;
+  justify-content: end;
+}
+#mobile.nav-link{
+  width: 100%;
+  text-align: right;
+}
+.mobile{
+  height: 50px;
+  text-align: end;
+  align-content: center;
+}
+.mobile i {
+  font-size: 24px;
+  color: #333;
+  transition: transform 0.3s ease-in-out;
+}
+
+@media screen and (min-width: 600px){
+  .topnav {
+   display: none;
+  }
+}
+
+@media screen and (max-width: 600px){
+  #desktop {
+   display: none;
+  }
+}
+
+
+/* Hide the links inside the navigation menu (except for logo/home) */
+.topnav #myLinks {
+  display: none;
+  justify-content: end;
+  flex-wrap: wrap;
+}
+
+/* Style navigation menu links */
+.topnav a {
+  color: white;
+  padding: 14px 16px;
+  text-decoration: none;
+  font-size: 17px;
+  display: block;
+}
+
+/* Style the hamburger menu */
+.topnav a.icon {
+  background: white;
+  display: block;
+  position: absolute;
+  right: 0;
+  top: 0;
+}
+
+/* Add a grey background color on mouse-over */
+.topnav a:hover {
+  background-color: #ddd;
+  color: black;
+}
+
 @font-face {
   font-family: "OCR A Extended";
   src: url("OCRAEXT.TTF");
@@ -90,7 +157,7 @@ body {
   /* background-color: yellow; */
   display: flex;
   flex-direction: row;
-  flex-wrap: nowrap;
+  flex-wrap: wrap;
   justify-content: center;
   background-image: 'client/src/images/01396bbb-7dc1-4010-9b61-0d13d51563da.png';
   font-size: 16px;

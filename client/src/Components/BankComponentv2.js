@@ -5,6 +5,8 @@ function BanksComponentv2({stylingContext}) {
   const { loading, user } = useContext(AppContext)
   const bankNames = []
   const uniqueNames = new Set()
+  let transactionTally = 0
+  const negativeTally = 0
   const formatter = new Intl.NumberFormat('en-US', {
     style: 'currency',
     currency: 'USD',
@@ -56,8 +58,16 @@ function BanksComponentv2({stylingContext}) {
           <h2 style={{padding:"15px 0", textAlign:"left"}}>{account.bank_name}</h2>
               <div className='bank_account_container'style={{ padding:"20px",width: "100%", flexWrap:"wrap", alignContent:"center", gap:"25px", backgroundImage: "linear-gradient(to right,grey,white)", borderRadius:"10px"}}>
                   <h4 style={{width:"100%"}}><a href={`account/${account.id}`}>Account Type: {account.account_type}</a></h4>
-                  <p>Account Balance: {formatter.format(account.account_value)}</p>
-                  <p style={{color:"red"}}>Spent This Month: 200,000</p>
+                  <p>Account Balance: {formatter.format(account.account_value)}</p><br></br>
+                  <p style={{ color: "red" }}>Total Spending: $
+                  {
+                    account.transactions.reduce((total, transaction) => {
+                      return transaction.transaction_type === "Negative"
+                        ? total + parseInt(transaction.amount)
+                        : total;
+                    }, 0) // Initial value of total
+                  }
+                </p>
           </div>        
         </div>
     )

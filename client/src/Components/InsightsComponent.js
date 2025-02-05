@@ -1,5 +1,8 @@
 import React, {useContext} from 'react'
 import AppContext from '../AppContext'
+import { PieChart } from 'react-minimal-pie-chart';
+
+
 
 function Insights() {
   const { categories } = useContext(AppContext);

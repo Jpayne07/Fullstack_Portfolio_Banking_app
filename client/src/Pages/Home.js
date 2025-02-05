@@ -11,7 +11,7 @@ function Home() {
           <BankComponentv2 stylingContext = {"Normal"}/>
       </div>
           <div className='background_wrapper'>
-          <div className='_wrapper' style={{padding:"50px"}}>  
+          <div className='_wrapper'>  
             <h2 className='transaction_header'>Spending</h2>
             <Insights />
           </div>

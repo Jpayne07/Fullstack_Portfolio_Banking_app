@@ -43,12 +43,12 @@ function TransactionIndexModule({}) {
             {/* bank_name below */}
             <h1 style={{padding:"15px 0", textAlign:"left"}}>{`${account.bank.name}: ${account.account_type}`}</h1>
             <div className="transaction_headers">
-            <h4>Description</h4>
-                  <h4>Date</h4>
-                  <h4>ID</h4>
-                  <h4>ACCT#</h4>
-                  <h4>Amount</h4>
-                  <h4>Edit</h4>
+            <span id="transaction_header_show"><h4>Description</h4></span>
+            <span id="transaction_header_show"><h4>Date</h4></span>
+            <span id="transaction_header_hide"><h4>ID</h4></span>
+            <span id="transaction_header_hide"><h4>ACCT#</h4></span>
+            <span id="transaction_header_show"><h4>Amount</h4></span>
+            <span id="transaction_header_hide"><h4>Edit</h4></span>
             </div>
             {paginatedTransactions.map((transaction) => {
               // date below
@@ -70,10 +70,10 @@ function TransactionIndexModule({}) {
                 </p> */}
                 <p id='transaction_name'>{transaction.title}</p>
                 <p>{date}</p>
-                <p>{transaction.id}</p>
-                <p>{transaction.card?transaction.card.card_number.toString().slice(-4):null}</p>
+                <p id="transaction_header_hide">{transaction.id}</p>
+                <p id="transaction_value_hide">{transaction.card?transaction.card.card_number.toString().slice(-4):null}</p>
                 <p id='Price'><span id='DollaBill'>$ </span>{transaction.transaction_type ==="Negative"?`-${transaction.amount}`:transaction.amount}</p>
-                <div><a href={`/transactions/${transaction.id}`}><svg width="20" height="20" viewBox="0 0 78 78" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <div id="transaction_value_hide"><a href={`/transactions/${transaction.id}`}><svg width="20" height="20" viewBox="0 0 78 78" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path d="M39 65H68.25M53.625 11.375C54.9179 10.0821 56.6715 9.35571 58.5 9.35571C59.4054 9.35571 60.3019 9.53404 61.1383 9.88051C61.9748 10.227 62.7348 10.7348 63.375 11.375C64.0152 12.0152 64.523 12.7752 64.8695 13.6117C65.216 14.4481 65.3943 15.3446 65.3943 16.25C65.3943 17.1554 65.216 18.0519 64.8695 18.8883C64.523 19.7248 64.0152 20.4848 63.375 21.125L22.75 61.75L9.75 65L13 52L53.625 11.375Z" stroke="#2BFF5C" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round"/>
                 </svg></a>
                 <svg width="20"height="20" viewBox="0 0 92 92" fill="none" xmlns="http://www.w3.org/2000/svg" onClick={()=>handleDelete(transaction.id)}>
@@ -92,7 +92,7 @@ function TransactionIndexModule({}) {
                   >
                     Previous
                   </button>
-                  <span style={{ margin: "0 10px" }}>
+                  <span>
                     Page {currentPage} of{" "}
                     {Math.ceil(totalTransactions / itemsPerPage)}
                   </span>
