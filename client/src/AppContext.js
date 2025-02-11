@@ -3,39 +3,80 @@ import React, { createContext, useState, useEffect } from 'react';
 const AppContext = createContext();
 
 export const AppProvider = ({ children }) => {
-  const [banks, setBanks] = useState([]);
-  const [accounts, setAccounts] = useState([]);
   const [user, setUser] = useState(undefined);
   const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [errors, setErrors] = useState([]);
 
-
-
-  
   useEffect(() => {
-    setLoading(true);
-    Promise.all([
-      fetch('/api/banks').then((r) => r.json()),
-      fetch('/api/account').then((r) => r.json()),
-      fetch('/api/insights').then((r) => r.json())
-    ]).then(([banksData, accountsData, insightsData]) => {
-      console.log("Fetched accounts data:", accountsData)
-      setBanks(banksData);
-      setAccounts(accountsData)
+      fetch('/api/insights')
+      .then((r) => r.json())
+      .then(insightsData => {
       setCategories(insightsData);
-      setLoading(false);
-      console.log("From effect:", accountsData)
     }).catch(error => {
-      console.error('Error fetching data:', error);
+      console.log("error in insights")
       setLoading(false);
+      
     });
+  }, [user]);
+
+  useEffect(() => {
+    console.log('now checking session, Loading:',loading)
+    setLoading(true);
+    fetch("/api/check_session")
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+        return response.json();
+      })
+      .then((user) => {
+        setUser(user);
+      })
+      .catch((error) => {
+        console.error("Error fetching session:", error);
+        // Optionally set an error state here
+      })
+      .finally(() => {
+        setLoading(false);
+      });
   }, []);
 
+  function handleLogin(username, password, navigate, setSubmitting) {
+    
+    fetch("/api/login", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ username, password }),
+    })
+      .then((r) => {
+        if (r.ok) {
+          r.json().then((user) => {
+            setUser(user);
+            navigate('/')
+          });
+        } else {
+          r.json().then((err) => {
+            setErrors([err.message || "Invalid login credentials. Please try again."]);
+          });
+        }
+      })
+      .catch((err) => {
+        setErrors([err.message || "Network error. Please try again later."]);
+      })
+      .finally(()=>{
+        setSubmitting(false)
+      })
+      
+  }
 
-
+  
+      
 
   return (
-    <AppContext.Provider value={{loading, banks, categories, user, accounts, setUser, setBanks, setLoading, setAccounts, setCategories }}>
+    <AppContext.Provider value={{loading, categories, user, setUser, setLoading, setCategories, handleLogin, errors }}>
       {children}
     </AppContext.Provider>
   );

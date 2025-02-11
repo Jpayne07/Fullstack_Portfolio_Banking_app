@@ -103,13 +103,12 @@ class Banks(Resource):
         else:
             return {"message": "You must sign in to see this"}, 405
         return(banks,200)
+    
 class Insights(Resource):
     def get(self):
         user = User.query.filter(User.id == session['user_id']).first()
-
         if user:
-            account_ids = [account.id for account in user.accounts] 
-            accounts = [account.to_dict() for account in Accounts.query.filter(Accounts.id.in_(account_ids)).all()]
+            accounts = [account.to_dict() for account in user.accounts]
             transaction_categories = {}
             for account in accounts:
                 for transaction in account['transactions']:
@@ -147,18 +146,18 @@ class Cards(Resource):
 class Signup(Resource):
     def post(self):
         data = request.get_json()
-        print(data)
         if data:
             user_object = User(
                 username = data["username"]
             )
             user_object.password_hash = data['password']
         else:
-            raise Unauthorized("Username or password are incorrect")
+            raise Unauthorized("Username is taken")
         
         db.session.add(user_object)
         db.session.commit()
         return("New user added", 201)
+
 class Login(Resource):
     def post(self):
         user_object = request.get_json()
@@ -167,7 +166,6 @@ class Login(Resource):
             if user.authenticate(user_object['password']):
                 session['user_id'] = user.to_dict()['id']
                 print("Session set:", session)
-
                 return user.to_dict(), 200
         return {"message": "Username or password are incorrect"}, 401
 
@@ -233,20 +231,10 @@ class CheckSession(Resource):
         if user_id:
             id = session['user_id']
             user = User.query.filter_by(id=id).first().to_dict()
-            # user_no_pass = {
-            #     'id': session['user_id'],
-            #     'username': user['username'],
-            # }
-            # iterate thorugh user.banks
-            # iterate thorugh each banks accounts
-            # set bank.accounts = filter to users accounts
-            # return user to dict
-            # copnsider throwing breakpoint
-            print("Session USer:", user)
             response = make_response(user, 200)
             return response
         else:
-            print("didn't got user id")
+            print("didn't get user id")
             response = make_response("Not authorized", 401)
             return response
 class ClearSession(Resource):

@@ -7,18 +7,18 @@ import EditableText from './EditableText';
 
 
 function Transaction_Id_module() {
-  const { banks} = useContext(AppContext)
+  const { user} = useContext(AppContext)
   const { id } = useParams()
   const uniqueDateSet = new Set();
-    const transactionList = banks.map(bank=>{
+    // const transactionList = user.map(user=>{
       return <div className='bank_account_container'>
        
-        {bank.accounts
+        {user.accounts
         .filter((account) => account.transactions.some((transaction) => transaction.id === Number(id))
       )
         .map(account=>{
           return <div style={{width:"100%"}}>
-            <h1 style={{padding:"15px 0", textAlign:"left"}}>{`${account.banks.bank_name}: ${account.account_type}`}</h1>
+            <h1 style={{padding:"15px 0", textAlign:"left"}}>{`${account.bank.name}: ${account.account_type}`}</h1>
             <div className="transaction_headers" id='singular'>
             <h4>Description</h4>
                   <h4>Date</h4>
@@ -63,17 +63,7 @@ function Transaction_Id_module() {
 )
 }
 </div>
-      
-        
-    })
-    
-  
-  return (
-    
-    <div>{transactionList}</div>
-      
-      
-  )
+
 }
 
 export default Transaction_Id_module

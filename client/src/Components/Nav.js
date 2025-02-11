@@ -1,5 +1,5 @@
 import React, { useContext, useState } from 'react'
-import '../App.css'
+import '../Styling/App.css'
 import { NavLink } from 'react-router-dom'
 import { useNavigate } from 'react-router-dom';
 import AppContext from '../AppContext';
@@ -37,7 +37,6 @@ function Nav() {
         <div id="myLinks" style={{ display: isVisible ? "flex" : "none" }}>
         <NavLink to="/" className="nav-link" id='mobile' onClick={toggleLinks}>Home</NavLink>
         <NavLink to="/accounts" className="nav-link" id='mobile' onClick={toggleLinks}>Accounts</NavLink>
-        <NavLink to="/cards" className="nav-link" id='mobile' onClick={toggleLinks}>Cards</NavLink>
         <NavLink to="/insights" className="nav-link" id='mobile' onClick={toggleLinks}>Insights</NavLink>
         {user?<button id = "signup" onClick={handleLogout}
           >Logout</button>:
@@ -49,7 +48,6 @@ function Nav() {
         <nav className='main_nav' id='desktop'>
         <NavLink to="/" className="nav-link">Home</NavLink>
         <NavLink to="/accounts" className="nav-link">Accounts</NavLink>
-        <NavLink to="/cards" className="nav-link">Cards</NavLink>
         <NavLink to="/insights" className="nav-link">Insights</NavLink>
         {user?<button id = "signup" onClick={handleLogout}
           >Logout</button>:

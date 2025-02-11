@@ -3,7 +3,7 @@ import AppContext from '../AppContext';
 import Nav from '../Components/Nav'
 import bank_image from '../images/bank_image.jpg'
 import illustrated_pixel_art_desktop_wallpaper from '../images/illustrated_pixel_art_desktop_wallpaper.svg'
-import '../App.css'
+import '../Styling/App.css'
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import { useNavigate } from 'react-router-dom';
 
@@ -12,8 +12,7 @@ import { useNavigate } from 'react-router-dom';
 
 function Login() {
     const navigate = useNavigate();
-    const [errors, setErrors] = useState([]);
-    const { setUser,user, setLoading, setAccounts, setBanks, setCategories } = useContext(AppContext);
+    const {handleLogin, errors} = useContext(AppContext);
 
     const handleLoginGithub = () => {
       window.location.href = 'http://localhost:5555/api/login-github'; // Ensure the URL matches your Flask app's URL
@@ -24,44 +23,10 @@ function Login() {
       const codeParams = urlParams.get("code")
     },[handleLoginGithub])
 
-    function handleSubmit(username, password, setSubmitting) {
-        fetch("/api/login", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ username, password }),
-        })
-          .then((r) => {
-            if (r.ok) {
-              r.json().then((user) => {
-                setUser(user);
-              });
-            } else {
-              r.json().then((err) => {
-                setErrors([err.message || "Invalid login credentials. Please try again."]);
-              });
-            }
-          })
-          .catch((err) => {
-            setErrors([err.message || "Network error. Please try again later."]);
-          })
-          .finally(() => {
-            setSubmitting(false);  // Ensure submission is completed
-          });
-      }
-      useEffect(() => {
-        if (user) {
-            navigate('/'); // Navigate after user state updates
-        }
-    }, [user]);
 
   return (
     <main>
         <div className='login_wrapper'>
-            {/* <div className='login_image_wrapper'>
-                <img src={illustrated_pixel_art_desktop_wallpaper}/>
-            </div> */}
             <div className='background_wrapper' id='login'>
             <div className='_wrapper' id='login'>
             <div className='login_content'>
@@ -71,7 +36,7 @@ function Login() {
                     </div>
                     
                     <Formik
-                        initialValues={{ username: '', password: '' }}
+                        initialValues={{ username: '', password: ''  }}
                         validate={values => {
                         const errors = {};
                         if (!values.username) {
@@ -83,7 +48,7 @@ function Login() {
                         return errors;
                         }}
                         onSubmit={(values, { setSubmitting }) => {
-                        handleSubmit(values.username, values.password, setSubmitting);
+                          handleLogin(values.username, values.password, navigate, setSubmitting)
                         }}
                     >
                         {({ isSubmitting }) => (
@@ -106,7 +71,7 @@ function Login() {
                             <button type="submit" disabled={isSubmitting} id="login_button">
                               {isSubmitting ? "Submitting..." : "Submit"}
                             </button>
-                            <p onClick={()=>{handleSubmit('Jacob','hi')}}style={{width:"100%", textAlign:"center"}}><span id = 'continue_as_guest'>OR</span> Continue as guest</p>
+                            <p onClick={()=>{handleLogin('Jacob','hi')}}style={{width:"100%", textAlign:"center"}}><span id = 'continue_as_guest'>OR</span> Continue as guest</p>
                             <button id="github_Login" onClick={handleLoginGithub}>
                               <svg
                                 xmlns="http://www.w3.org/2000/svg"

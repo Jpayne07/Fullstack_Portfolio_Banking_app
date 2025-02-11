@@ -79,13 +79,13 @@
 
 @font-face {
   font-family: "OCR A Extended";
-  src: url("OCRAEXT.TTF");
+  src: url("../OCRAEXT.TTF");
 }
 #root {
   color: white; /* Or any high-contrast color */
 }
 body {
-  background-image: url("images/01396bbb-7dc1-4010-9b61-0d13d51563da.png");
+  background-image: url("../images/01396bbb-7dc1-4010-9b61-0d13d51563da.png");
   /* background-repeat: repeat-y; */
   /* background-attachment: scroll; */
   /* background-size: 100%; */
@@ -161,6 +161,14 @@ body {
   justify-content: center;
   background-image: 'client/src/images/01396bbb-7dc1-4010-9b61-0d13d51563da.png';
   font-size: 16px;
+ }
+
+ .addAccounts{
+  margin: 20px 0px;
+  padding:0px;
+  /* height: 25px; */
+  width: 100px;
+  font-size: 14px;
  }
  
  #login.background_wrapper{

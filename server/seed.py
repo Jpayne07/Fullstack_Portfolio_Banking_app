@@ -1,7 +1,9 @@
 from app import app
-from models import db, User, Accounts, Transactions, Bank, Card
+from models import db, User, Accounts, Transactions, Bank, Cards
 from faker import Faker
-from datetime import date
+from datetime import datetime, date
+from dateutil.relativedelta import relativedelta   
+
 
 fake = Faker()
 
@@ -67,17 +69,23 @@ if __name__ =='__main__':
         db.session.add_all([account1, account2,account3])
         db.session.commit()
 
-        card1 = Card(
-            card_number = 12340123404560789,
-            expiration_date = date(2024, 1, 5)
+        card1 = Cards(
+            card_number = 123456789123,
+            expiration_date = datetime.now().date()   + relativedelta(years=3)
             
         )
     
-        card2 = Card(
-            card_number = 99990123404560789,
-            expiration_date = date(2023, 12, 15)
+        card2 = Cards(
+            card_number = 123456789124,
+            expiration_date = datetime.now().date()  + relativedelta(years=3)
             
         )
-        db.session.add_all([card1, card2])
+
+        card3 = Cards(
+            card_number = 123456789125,
+            expiration_date = datetime.now().date()  + relativedelta(years=3)
+            
+        )
+        db.session.add_all([card1, card2, card3])
         db.session.commit()
     print("Database seeded successfully!")

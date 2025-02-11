@@ -26,19 +26,15 @@ function TransactionIndexModule({}) {
     fetch(`/api/transaction/${id}`, { method: 'DELETE' })
     .then(() => alert('Transaction deleted, please refresh page'));
   }
-    const transactionList = user.accounts.map(account=>{
+    const transactionList = user.accounts
+    .filter(account=> parseInt(account.id) === parseInt(id))
+    .map(account=>{
       const totalTransactions = account.transactions.length;
             const paginatedTransactions = account.transactions.slice(
               (currentPage - 1) * itemsPerPage,
               currentPage * itemsPerPage);
       return <div className='bank_account_container' >
-{/*        
-        {user.accounts
-        .filter((account) => account.id === Number(id))
-        .map(account=>{
-          
-            // Slice transactions for the current page
-          return */}
+
            <div style={{width:"100%"}}>
             {/* bank_name below */}
             <h1 style={{padding:"15px 0", textAlign:"left"}}>{`${account.bank.name}: ${account.account_type}`}</h1>

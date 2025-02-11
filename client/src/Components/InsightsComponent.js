@@ -6,7 +6,6 @@ import { PieChart } from 'react-minimal-pie-chart';
 
 function Insights() {
   const { categories } = useContext(AppContext);
-  console.log('Categories', categories)
       return <div className='bank_account_container' style={{flexWrap:"wrap"}}>
         <div className="transaction_headers" style={{gridTemplateColumns:"3fr 2fr", width:"100%"}}>
             <h4>Category</h4>
