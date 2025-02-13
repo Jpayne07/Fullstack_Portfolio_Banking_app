@@ -7,6 +7,7 @@ import TransactionId from './Pages/Transaction_id'
 import Signup from './Pages/Signup'
 import Accountsv2 from './Pages/Accountsv2'
 import Insights from './Pages/Insights'
+import AddNewAccount from './Pages/AddNewAccount'
 
 
 const routes = [
@@ -39,6 +40,11 @@ const routes = [
             {
               path:'/insights',
               element: <Insights />
+            }, 
+          
+            {
+              path:'/add_account',
+              element: <AddNewAccount />
             }
         ]
     }, 

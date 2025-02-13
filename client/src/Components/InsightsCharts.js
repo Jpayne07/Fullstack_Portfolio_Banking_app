@@ -39,12 +39,9 @@ function InsightsCharts() {
               fontWeight: "bold",
             }}
             radius={42}
-            // lineWidth={25}
             paddingAngle={5}
-            // rounded
             animate
             
-            // segmentsShift={(index) => (index === 0 ? 7 : 2)}
             labelPosition={75} // Adjusts label position
 />
 </div>

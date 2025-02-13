@@ -7,8 +7,11 @@ import AppContext from '../AppContext';
 
 
 function Nav() {
-  const navigate = useNavigate()
+
   const { user,setUser,setBanks } = useContext(AppContext);
+  const [isVisible, setIsVisible] = useState(false);
+  const navigate = useNavigate()
+
 
   const handleLogout = () => {
     fetch('/api/clear_session', {
@@ -23,37 +26,33 @@ function Nav() {
       .catch((error) => console.error('Error:', error)); // Optional: handle fetch error
   };
 
-  const [isVisible, setIsVisible] = useState(false);
-
   const toggleLinks = () => {
     setIsVisible((prev) => !prev);
   };
 
-  
   return (<div>
-    <div class="topnav">
-      <div className='mobile'><i class="fa fa-bars" id='hamburger' onClick={toggleLinks}></i></div>
+    <div className="topnav">
+      {/* mobile menu */}
+      <div className='mobile'><i className="fa fa-bars" id='hamburger' onClick={toggleLinks}></i></div>
     
         <div id="myLinks" style={{ display: isVisible ? "flex" : "none" }}>
-        <NavLink to="/" className="nav-link" id='mobile' onClick={toggleLinks}>Home</NavLink>
-        <NavLink to="/accounts" className="nav-link" id='mobile' onClick={toggleLinks}>Accounts</NavLink>
-        <NavLink to="/insights" className="nav-link" id='mobile' onClick={toggleLinks}>Insights</NavLink>
-        {user?<button id = "signup" onClick={handleLogout}
-          >Logout</button>:
+          <NavLink to="/" className="nav-link" id='mobile' onClick={toggleLinks}>Home</NavLink>
+          <NavLink to="/accounts" className="nav-link" id='mobile' onClick={toggleLinks}>Accounts</NavLink>
+          <NavLink to="/insights" className="nav-link" id='mobile' onClick={toggleLinks}>Insights</NavLink>
+          {user ? <button id = "signup" onClick={handleLogout}>Logout</button>:
           <button id = "signup" onClick={()=>{navigate('/login')}}>Login</button>}
         </div>
       </div>
-    <div className='main_nav_wrapper'>
-      
+      {/* desktop menu */}
+      <div className='main_nav_wrapper'>
         <nav className='main_nav' id='desktop'>
-        <NavLink to="/" className="nav-link">Home</NavLink>
-        <NavLink to="/accounts" className="nav-link">Accounts</NavLink>
-        <NavLink to="/insights" className="nav-link">Insights</NavLink>
-        {user?<button id = "signup" onClick={handleLogout}
-          >Logout</button>:
+          <NavLink to="/" className="nav-link">Home</NavLink>
+          <NavLink to="/accounts" className="nav-link">Accounts</NavLink>
+          <NavLink to="/insights" className="nav-link">Insights</NavLink>
+          {user ? <button id = "signup" onClick={handleLogout}>Logout</button>:
           <button id = "signup" onClick={()=>{navigate('/login')}}>Login</button>}
         </nav>
-    </div>
+      </div>
     </div>
   )
 }

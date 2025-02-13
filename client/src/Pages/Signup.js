@@ -1,19 +1,17 @@
-import React, {useState, useEffect, useContext} from 'react'
-import AppContext from '../AppContext';
-import '../Styling/App.css'
+import React, {useContext} from 'react'
 import { useNavigate } from 'react-router-dom';
-import * as yup from 'yup';
+import AppContext from '../AppContext';
 import SignupForm from '../Components/SignupForm';
+import '../Styling/App.css'
 
 
 
 
 function Signup() {
     const navigate = useNavigate();
-    const [errors, setErrors] = useState([]);
-    const { setUser, handleLogin } = useContext(AppContext);
+    const { handleLogin } = useContext(AppContext);
 
-    function handleSubmit(username, password) {
+    function handleSubmit(username, password, setSubmitting) {
         fetch("/api/signup", {
           method: "POST",
           headers: {
@@ -23,11 +21,11 @@ function Signup() {
         })
         .then((r) => {
           if (r.ok) {
-            (handleLogin(username, password))
+            (handleLogin(username, password, setSubmitting, navigate))
           
           }
           else {
-            alert("Wrong!")
+            alert("Signup is Wrong!")
           }})
           
       }

@@ -1,27 +1,13 @@
-import React, {useContext} from 'react'
+import React, {useContext, useState} from 'react'
 import TransactionIndexModule from '../Components/Transaction_Index_Module'
 import AppContext from '../AppContext'
+import { useParams } from 'react-router-dom';
 
 function Transactions() {
 
-  const {user, setUser} = useContext(AppContext);
-      function handleClick() {
-        fetch('/api/transactionseed', {
-            method: 'POST',  // Use POST for creating data
-            headers: {
-                'Content-Type': 'application/json',  // Send request as JSON
-            },
-        })
-        .then(response => response.json())
-        // .then(fetch("/api/check_session").then((response) => {
-        //   if (response.ok) {
-        //     response.json()
-        //     .then((user) => setUser(user))
-        //   }
-        // }))  // Wait for JSON response
-        .catch(error => console.error('Error:', error));  // Handle any errors
-    }
-    
+  const {user, handleTransactionSeed} = useContext(AppContext);
+  const { id } = useParams()
+  const [deleteState, setDeleteState] = useState(false)
     
   return (
     <div className='page_wrapper'>
@@ -30,12 +16,27 @@ function Transactions() {
           <h2>Transactions</h2>
           <TransactionIndexModule user = {user}/>
           <div className='transactions_button_break'></div>
-          <button className='transactions_rng' onClick={handleClick}>
+          <button className='transactions_rng' onClick={handleTransactionSeed}>
             Generate Random Transactions 
-            <span class="tooltiptext">            
+            <span className="tooltiptext">            
               Click to Generate a random set of transactions
             </span>
           </button>
+          <button className='transactions_rng'
+          style={{background:"red"}} 
+          onClick={()=>fetch(`/api/singular_account/${id}`,{
+            method:"DELETE"
+          })
+          .then(r=>r.json)
+          
+          .then(setDeleteState(true))
+          .then(document.location.reload())
+          }> Delete Account </button>
+          {deleteState?
+          <div style={{width:"100%", justifyContent:"center"}}>
+            <p style={{textAlign:"center"}}>Account Deleted</p>
+          </div>
+          :null}
         </div>
       </div>
     </div>

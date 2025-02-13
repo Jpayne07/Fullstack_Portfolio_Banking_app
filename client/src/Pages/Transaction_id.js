@@ -1,5 +1,4 @@
 import React, {useContext} from 'react'
-// import '../App.css'
 import Transaction_Id_module from '../Components/Transaction_Id_module'
 import AppContext from '../AppContext'
 

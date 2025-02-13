@@ -1,24 +1,40 @@
-from sqlalchemy import Column, Integer, String, Float
+from sqlalchemy import Column
 from sqlalchemy.orm import validates
-from sqlalchemy.orm import relationship
 from config import db, bcrypt
 from sqlalchemy_serializer import SerializerMixin
 from sqlalchemy.ext.associationproxy import association_proxy
 from sqlalchemy.types import DateTime
-from datetime import datetime, date
+from datetime import datetime
 from dateutil.relativedelta import relativedelta   
-
 from sqlalchemy.ext.hybrid import hybrid_property
 from sqlalchemy.orm import validates
+import random
+
 
 
 
 class User(db.Model, SerializerMixin):
     __tablename__ = "users"
     id = db.Column(db.Integer, primary_key = True)
-    username = db.Column(db.String(50), unique = True)
-    # password validation handled on the frontend
-    _password_hash = db.Column(db.String)
+    username = db.Column(db.String, unique = True, nullable = False, )
+    _password_hash = db.Column(db.String, nullable = False)
+
+    @validates('username')
+    def validate_username_length(self, key, username):
+        if len(username) >20 or len(username) < 1:
+            raise ValueError("Username length must be less than 20 characters")
+        if not isinstance(username, str):
+            raise ValueError("Username must be string")
+        return username
+    
+    @validates('password')
+    def validate_password(self, key, password):
+        if len(password) >20 or len(password) < 1:
+            raise ValueError("Password length must be less than 20 characters")
+        if not isinstance(password, str):
+            raise ValueError("Password must be string")
+        
+        return password
 
     @property
     def transactions(self):
@@ -27,9 +43,6 @@ class User(db.Model, SerializerMixin):
     
     banks = association_proxy('accounts', 'banks',
             creator = lambda card_obj: Bank(card = card_obj))
-    
-    # cards = association_proxy('accounts', 'cards',
-    #         creator = lambda card_obj: Card(card = card_obj))
     
     accounts = db.relationship('Accounts', back_populates = 'user')
     serialize_rules = ('-accounts.user','-bank.user','-transactions.user',)
@@ -52,7 +65,15 @@ class User(db.Model, SerializerMixin):
 class Bank(db.Model, SerializerMixin):
     __tablename__ = "banks"
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(60), unique = True)
+    name = db.Column(db.String, unique = True, nullable = False)
+
+    @validates('name')
+    def validate_bank_name_length(self, key, bank_name):
+        if len(bank_name) >30 or len(bank_name) < 1:
+            raise ValueError("Bank name length must be less than 30 characters")
+        if not isinstance(bank_name, str):
+            raise ValueError("Bank name must be string")
+        return bank_name
 
     transactions = association_proxy('accounts', 'transactions',
         creator=lambda transaction_obj: Transactions(transactions =  transaction_obj))
@@ -65,15 +86,13 @@ class Bank(db.Model, SerializerMixin):
 
     accounts = db.relationship('Accounts', back_populates = 'bank', cascade='all, delete-orphan')
 
-    
-
     serialize_rules = ('-accounts',)
 
 class Cards(db.Model, SerializerMixin):
     __tablename__ = "cards"
     id = db.Column(db.Integer, primary_key=True)
-    card_number = db.Column(db.Integer, unique = True)
-    expiration_date = db.Column(db.Date)
+    card_number = db.Column(db.Integer, unique = True, nullable = False)
+    expiration_date = db.Column(db.Date, nullable = False)
 
     account = db.relationship('Accounts', back_populates = 'card')
 
@@ -85,12 +104,16 @@ class Cards(db.Model, SerializerMixin):
         return expiration_date
 
     @validates('card_number')
-    def validate_car_number(self, key, card_number):
+    def validate_card_number(self, key, card_number):
         if len(str(card_number)) !=12:
             raise ValueError("Card number must be exactly 12 digits")
+        if not isinstance(card_number, int):
+            raise ValueError("Card number must be integer")
         return card_number
 
     serialize_rules = ('-account','-transactions.card')
+
+    
 
 
 class Accounts(db.Model, SerializerMixin):
@@ -114,6 +137,24 @@ class Accounts(db.Model, SerializerMixin):
             print(value)
             raise ValueError("Account value can't be negative or greater than 1 Trillion")
         return value
+    
+    @validates('account_type')
+    def validate_account_type(self, key, account_type):
+        if len(account_type) >20 or len(account_type) < 1:
+            raise ValueError("Account type length must be less than 20 characters")
+        if not isinstance(account_type, str):
+            raise ValueError("Account type must be string")
+        if account_type != 'Checking' and account_type !='Savings':
+            print(account_type)
+            raise ValueError("Account type must be savings or checking")
+        return account_type
+    @staticmethod
+    def generate_unique_card_number():
+        while True:
+            card_number = random.randint(100000000000, 999999999999)  # 12-digit number
+            existing_card = db.session.query(Cards).filter_by(card_number=card_number).first()
+            if not existing_card:
+                return card_number 
 
     serialize_rules = ('-bank.accounts', '-transactions.account', '-users', '-card.account', 'transactions.card')
 
@@ -127,7 +168,7 @@ class Transactions(db.Model, SerializerMixin):
     title = db.Column(db.String(10))
     category = db.Column(db.String(10))
     created_at = Column(DateTime, default=datetime.utcnow)
-    amount = db.Column(db.Integer)
+    amount = db.Column(db.Integer,)
     transaction_type = db.Column(db.String)
 
     @validates('amount')

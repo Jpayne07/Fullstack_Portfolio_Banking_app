@@ -4,25 +4,15 @@ from config import app, db, api, GITHUB_API_URL, GITHUB_CLIENT_SECRET, GITHUB_CL
 from models import Accounts, Transactions, User, Bank, Cards
 from faker import Faker
 import random
-from werkzeug.exceptions import UnprocessableEntity, Unauthorized
-from urllib.parse import urlparse
+from werkzeug.exceptions import Unauthorized
 import requests
 import pandas as pd
 import matplotlib.pyplot as plt
+from datetime import datetime, date
+from dateutil.relativedelta import relativedelta   
 
 
-
-
-
-#Members API Route
-# @app.before_request
-# def check_if_logged_in():
-#     if not session['user_id']:
-#         return {'error': 'Unauthorized'}, 401
 fake = Faker()
-class Home(Resource):
-    def get(self):
-        return({"members": ["Mamber1","Member2", "Member3"]},200)
     
 class User_Item(Resource):
     def get(self):
@@ -35,8 +25,7 @@ class User_Item(Resource):
 class Transactions_List(Resource):
     def get(self):
         transactions = [transaction.to_dict() for transaction in Transactions.query.all()]
-        return(transactions,200)
-    
+        return(transactions,200)   
 
 class IndivdiualTransaction(Resource):
     def get(self, id):
@@ -91,17 +80,10 @@ class TransactionSeed(Resource):
 
         data = {"message": "Transactions seeded successfully"}
         return data, 201  # Return success response
-
     
 class Banks(Resource):
     def get(self):
-        user = User.query.filter(User.id == session['user_id']).first()
-
-        if user:
-            bank_ids = [account.bank_id for account in user.accounts] 
-            banks = [bank.to_dict() for bank in Bank.query.filter(Bank.id.in_(bank_ids)).all()]
-        else:
-            return {"message": "You must sign in to see this"}, 405
+        banks = [bank.to_dict() for bank in Bank.query.all()]
         return(banks,200)
     
 class Insights(Resource):
@@ -134,15 +116,76 @@ class Account(Resource):
             return user
         else:
             return {"message": "You must sign in to see this"}, 405
-        updated_accounts = [dict(account,bank_name= account['banks']['bank_name']) for account in accounts]
+        
+    def post(self):
+        if session['user_id']:
+            data = request.get_json()
+            print(data['account_type'])
+            bank = Bank.query.filter(Bank.name == data['bank_name']).first()
+            print(bank)
+            if bank:
+                bank_id = bank.to_dict()['id']
+                card = Cards.query.all()
+                card_id = card[-1].to_dict()['id'] + 1
+                account = Accounts(
+                    bank_id = bank_id,
+                    card_id = card_id,
+                    user_id = session['user_id'],
+                    account_value = float(data['account_value']),
+                    account_type = data['account_type']
+                )
+                print(account)
+                db.session.add(account)
+                db.session.commit()
+
+                new_card = Cards(
+                card_number=account.generate_unique_card_number(),
+                expiration_date=datetime.now().date() + relativedelta(years=3),
+                )
+                db.session.add(new_card)
+                db.session.commit()
+            else:
+                print(data['bank_name'])
+                new_bank = Bank(name = data['bank_name'])
+                db.session.add(new_bank)
+                db.session.commit()
+                bank = Bank.query.filter(Bank.name == data['bank_name']).first().to_dict()['id']
+                card = Cards.query.all()
+                card_id = card[-1].to_dict()['id'] + 1
+                account = Accounts(
+                    bank_id = bank,
+                    card_id = card_id,
+                    user_id = session['user_id'],
+                    account_value = float(data['account_value']),
+                    account_type = data['account_type']
+                )
+                print(account)
+                db.session.add(account)
+                db.session.commit()
+
+                new_card = Cards(
+                card_number=account.generate_unique_card_number(),
+                expiration_date=datetime.now().date() + relativedelta(years=3),
+                )
+                db.session.add(new_card)
+                db.session.commit()
+                return make_response("Adding new bank to database, bank account created", 201)
+
+                
+        else:
+            return {"message": "You must sign in to see this"}, 405
     
-        return(updated_accounts,200)
-    
-class Cards(Resource):
-    def get(self):
-        cards = [cards.to_dict() for cards in Cards.query.all()]
-        return(cards,200)
-    
+class SingularAccount(Resource):
+    def delete(self, id):
+        if session['user_id']:
+            account  = Accounts.query.filter(id == id).first()
+            db.session.delete(account)
+            db.session.commit()
+            make_response = (f"Account with id:{account.id} deleted", 204)
+            return make_response
+        else:
+            return {"message": "You must sign in to see this"}, 405
+ 
 class Signup(Resource):
     def post(self):
         data = request.get_json()
@@ -172,8 +215,6 @@ class Login(Resource):
 class LoginWithGithub(Resource):
     def get(self):
         return (redirect(f'{GITHUB_AUTH_URL}?client_id={GITHUB_CLIENT_ID}'))
-    
-
     
 class Callback(Resource):
      def get(self):
@@ -213,6 +254,7 @@ class Callback(Resource):
             return redirect('http://localhost:3000')
         else:
             new_user = User(username=username)
+            new_user.password_hash = "Test"
 
         db.session.add(new_user)
         db.session.commit()
@@ -223,7 +265,6 @@ class Callback(Resource):
 
         # Store user details in the session
        
-    
 class CheckSession(Resource):
     def get(self):
         user_id = session.get('user_id') 
@@ -237,16 +278,15 @@ class CheckSession(Resource):
             print("didn't get user id")
             response = make_response("Not authorized", 401)
             return response
+
 class ClearSession(Resource):
     def delete(self):
         session['user_id'] = None
         return {'message': '204: No Content'}, 204
 
 
-
-api.add_resource(Home, '/api')
 api.add_resource(Account, '/api/account')
-api.add_resource(Cards, '/api/cards')
+api.add_resource(SingularAccount, '/api/singular_account/<int:id>')
 api.add_resource(Banks, '/api/banks')
 api.add_resource(Transactions_List, '/api/transaction')
 api.add_resource(TransactionSeed, '/api/transactionseed')

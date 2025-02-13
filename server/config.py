@@ -31,7 +31,8 @@ convention = {
 }
 app.json.compact = False
 api = Api(app)
-metadata = MetaData(naming_convention=convention)
-db = SQLAlchemy(metadata=metadata)
-migrate = Migrate(app, db)
+metadata_obj = MetaData(naming_convention=convention)
+db = SQLAlchemy(metadata=metadata_obj)
 db.init_app(app)
+
+migrate = Migrate(app, db)

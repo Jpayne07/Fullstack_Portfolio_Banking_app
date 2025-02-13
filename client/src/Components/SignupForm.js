@@ -1,14 +1,20 @@
-import React, {useEffect} from 'react'
-import { Formik, Form, Field, ErrorMessage } from 'formik';
+import React, {useEffect, useContext} from 'react'
+import { useNavigate } from 'react-router-dom';
+import { Formik, Form, Field } from 'formik';
 import * as yup from 'yup';
+import AppContext from '../AppContext';
+
 
 
 
 function SignupForm({handleSubmit}) {
-
+      const navigate = useNavigate();
+    
     const handleLoginGithub = () => {
         window.location.href = 'http://localhost:5555/api/login-github'; // Ensure the URL matches your Flask app's URL
       };
+
+      const {  mockLogin } = useContext(AppContext);
 
     useEffect(()=>{
         const queryString = window.location.search;
@@ -43,8 +49,8 @@ function SignupForm({handleSubmit}) {
     <Formik
     initialValues={{ username: '', password: '', confirmPassword: '', confirmUsername: '' }}
     validationSchema={FormSchema}
-    onSubmit={(values) => {
-    handleSubmit(values.username, values.password);
+    onSubmit={(values, { setSubmitting }) => {
+    handleSubmit(values.username, values.password, setSubmitting);
     }}
 >
     {({ isSubmitting, errors }) => (
@@ -80,7 +86,7 @@ function SignupForm({handleSubmit}) {
         <button type="submit" disabled={isSubmitting} id='login_button'>
         Submit
         </button>
-        <p onClick={()=>{handleSubmit('Jacob','hi')}} style={{width:"100%", textAlign:"center"}}><span id = 'continue_as_guest'>OR</span> Continue as guest</p>
+        <p onClick={()=>{mockLogin('Jacob','hi', navigate)}} style={{width:"100%", textAlign:"center"}}><span id = 'continue_as_guest'>OR</span> Continue as guest</p>
         <button id="github_Login" onClick={handleLoginGithub}>
           <svg
             xmlns="http://www.w3.org/2000/svg"

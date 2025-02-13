@@ -37,9 +37,9 @@ if __name__ =='__main__':
         )
 
         bank2 = Bank(
-            name = 'Wells Fargo',
+            name = "Wells Fargo",
         )
-        
+        print(f"Bank Name: {bank2.name}")
         db.session.add_all([bank1, bank2])
         db.session.commit()
 

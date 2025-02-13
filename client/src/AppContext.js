@@ -1,12 +1,15 @@
-import React, { createContext, useState, useEffect } from 'react';
+import React, { createContext, useState, useEffect  } from 'react';
+
 
 const AppContext = createContext();
+
 
 export const AppProvider = ({ children }) => {
   const [user, setUser] = useState(undefined);
   const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(true);
   const [errors, setErrors] = useState([]);
+  const [banks, setBanks] = useState([])
 
   useEffect(() => {
       fetch('/api/insights')
@@ -14,14 +17,24 @@ export const AppProvider = ({ children }) => {
       .then(insightsData => {
       setCategories(insightsData);
     }).catch(error => {
-      console.log("error in insights")
+      console.log("Error fetching insights", error)
       setLoading(false);
       
     });
   }, [user]);
+  useEffect(() => {
+    fetch('/api/banks')
+    .then((r) => r.json())
+    .then(banks => {
+      setBanks(banks);
+  }).catch(error => {
+    console.log("Error in fetching banks", error)
+    setLoading(false);
+    
+  });
+}, []);
 
   useEffect(() => {
-    console.log('now checking session, Loading:',loading)
     setLoading(true);
     fetch("/api/check_session")
       .then((response) => {
@@ -35,14 +48,13 @@ export const AppProvider = ({ children }) => {
       })
       .catch((error) => {
         console.error("Error fetching session:", error);
-        // Optionally set an error state here
       })
       .finally(() => {
         setLoading(false);
       });
   }, []);
 
-  function handleLogin(username, password, navigate, setSubmitting) {
+  function handleLogin(username, password, setSubmitting, navigate) {
     
     fetch("/api/login", {
       method: "POST",
@@ -71,12 +83,50 @@ export const AppProvider = ({ children }) => {
       })
       
   }
-
+  // this is for the login without signup
+  function mockLogin(username, password, navigate) {
+    console.log("Nav test", navigate)
+    fetch("/api/login", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ username, password }),
+    })
+      .then((r) => {
+        if (r.ok) {
+          r.json().then((user) => {
+            setUser(user);
+            navigate('/')
+          });
+        } else {
+          r.json().then((err) => {
+            setErrors([err.message || "Invalid login credentials. Please try again."]);
+          });
+        }
+      })
+      .catch((err) => {
+        setErrors([err.message || "Network error. Please try again later."]);
+      })
+      
+  }
+  // this will seed transactions on individual account pages
+  function handleTransactionSeed() {
+    fetch('/api/transactionseed', {
+        method: 'POST',  
+        headers: {
+            'Content-Type': 'application/json',  
+        },
+    })
+    .then(response => response.json())
+    .then(document.location.reload())
+    .catch(error => console.error('Error:', error)); 
+}
   
       
 
   return (
-    <AppContext.Provider value={{loading, categories, user, setUser, setLoading, setCategories, handleLogin, errors }}>
+    <AppContext.Provider value={{loading, banks, categories, user, setUser, setLoading, setCategories, handleLogin, errors, handleTransactionSeed, mockLogin }}>
       {children}
     </AppContext.Provider>
   );
