@@ -3,8 +3,6 @@ import React, { useState } from "react";
 function EditableText({ initialText, transactionId, keyName}) {
     const [isEditing, setIsEditing] = useState(false); // Track if editing mode is active
     const [text, setText] = useState(initialText); // Store the text value
-    const [loading, setLoading] = useState(false); // Track loading state
-    const [error, setError] = useState(null); // Track error state
 
   const handleTextClick = () => {
     setIsEditing(true); // Switch to editing mode
