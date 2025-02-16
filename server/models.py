@@ -153,7 +153,7 @@ class Accounts(db.Model, SerializerMixin):
             if not existing_card:
                 return card_number 
 
-    serialize_rules = ('-bank.accounts', '-transactions.account', '-users', '-card.account', 'transactions.card')
+    serialize_rules = ('-bank.accounts', '-transactions.account', '-user', '-card.account', 'transactions.card')
 
 class Transactions(db.Model, SerializerMixin):
     __tablename__ = "transactions"
