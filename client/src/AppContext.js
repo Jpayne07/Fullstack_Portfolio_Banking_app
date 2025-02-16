@@ -2,7 +2,7 @@ import React, { createContext, useState, useEffect  } from 'react';
 
 
 const AppContext = createContext();
-
+const API_URL = process.env.REACT_APP_API_URL;
 
 export const AppProvider = ({ children }) => {
   const [user, setUser] = useState(undefined);
@@ -12,7 +12,7 @@ export const AppProvider = ({ children }) => {
   const [banks, setBanks] = useState([])
 
   useEffect(() => {
-      fetch('/api/insights')
+      fetch(`${API_URL}/api/insights`)
       .then((r) => r.json())
       .then(insightsData => {
       setCategories(insightsData);
@@ -24,7 +24,7 @@ export const AppProvider = ({ children }) => {
   }, [user]);
   
   useEffect(() => {
-    fetch('/api/banks')
+    fetch(`${API_URL}/api/banks`)
     .then((r) => r.json())
     .then(banks => {
       setBanks(banks);
@@ -37,7 +37,7 @@ export const AppProvider = ({ children }) => {
 
   useEffect(() => {
     setLoading(true);
-    fetch("/api/check_session")
+    fetch(`${API_URL}/api/check_session`)
       .then((response) => {
         if (!response.ok) {
           throw new Error('Network response was not ok');
@@ -57,7 +57,7 @@ export const AppProvider = ({ children }) => {
 
   function handleLogin(username, password, setSubmitting, navigate) {
     
-    fetch("/api/login", {
+    fetch(`${API_URL}/api/login`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -87,7 +87,7 @@ export const AppProvider = ({ children }) => {
   // this is for the login without signup
   function mockLogin(username, password, navigate) {
     console.log("Nav test", navigate)
-    fetch("/api/login", {
+    fetch("${API_URL}/api/login", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -113,7 +113,7 @@ export const AppProvider = ({ children }) => {
   }
   // this will seed transactions on individual account pages
   function handleTransactionSeed() {
-    fetch('/api/transactionseed', {
+    fetch(`${API_URL}/api/transactionseed`, {
         method: 'POST',  
         headers: {
             'Content-Type': 'application/json',  

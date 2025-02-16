@@ -30,7 +30,7 @@ function EditableText({ initialText, transactionId, keyName}) {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ [keyName]: Date.parse(text) }),
+        body: JSON.stringify({ [keyName]: text }),
       })
       .then((r) => {
       if (!r.ok) {
