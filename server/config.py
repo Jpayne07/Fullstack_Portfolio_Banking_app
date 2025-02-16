@@ -6,6 +6,7 @@ from flask_restful import Api
 from flask_bcrypt import Bcrypt
 import os
 from dotenv import load_dotenv
+from flask_cors import CORS
 
 
 
@@ -15,6 +16,7 @@ app = Flask(
     static_folder='../client/build',
     template_folder='../client/build'
 )
+CORS(app)
 app.secret_key = b'Y\xf1Xz\x00\xad|eQ\x80t \xca\x1a\x10K'
 load_dotenv()
 # app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URI')
