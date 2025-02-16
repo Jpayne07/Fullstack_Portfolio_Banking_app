@@ -68,8 +68,9 @@ export const AppProvider = ({ children }) => {
         if (r.ok) {
           r.json().then((user) => {
             setUser(user);
-            navigate('/')
-          });
+            
+          })
+          .then(navigate('/'))
         } else {
           r.json().then((err) => {
             setErrors([err.message || "Invalid login credentials. Please try again."]);
@@ -87,7 +88,7 @@ export const AppProvider = ({ children }) => {
   // this is for the login without signup
   function mockLogin(username, password, navigate) {
     console.log("Nav test", navigate)
-    fetch("${API_URL}/api/login", {
+    fetch(`${API_URL}/api/login`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
