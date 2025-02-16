@@ -34,7 +34,6 @@ function Transaction_Id_Module() {
                 year: 'numeric',
               }
             )
-          const shouldRenderDate = uniqueDateSet.has(date);
           uniqueDateSet.add(date)
           
             return(
