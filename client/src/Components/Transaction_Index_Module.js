@@ -4,7 +4,7 @@ import AppContext from '../AppContext';
 
 
 function TransactionIndexModule({}) {
-  const {user} = useContext(AppContext);
+  const {user, API_URL} = useContext(AppContext);
   const { id } = useParams()
   const [currentPage, setCurrentPage] = useState(1); // Tracks the current page
   const itemsPerPage = 10; // Number of transactions per page
@@ -21,7 +21,7 @@ function TransactionIndexModule({}) {
   };
   // handle transaction delete
   const handleDelete=(id)=>{
-    fetch(`/api/transaction/${id}`, { method: 'DELETE' })
+    fetch(`${API_URL}api/transaction/${id}`, { method: 'DELETE' })
     .then(() => alert('Transaction deleted, please refresh page'));
   }
 

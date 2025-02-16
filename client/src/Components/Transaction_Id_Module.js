@@ -6,7 +6,7 @@ import EditableText from './EditableText';
 
 
 function Transaction_Id_Module() {
-  const { user} = useContext(AppContext)
+  const { user, API_URL } = useContext(AppContext)
   const { id } = useParams()
   const uniqueDateSet = new Set();
     // const transactionList = user.map(user=>{
@@ -42,13 +42,13 @@ function Transaction_Id_Module() {
                  {/* <p className="time">
                    {shouldRenderDate?null:date}
                 </p> */}
-                <EditableText initialText={transaction.title} transactionId={id}  keyName={'title'}/>
-                <EditableText initialText={date} transactionId={id}  keyName={'created_at'}/>
+                <EditableText initialText={transaction.title} transactionId={id}  keyName={'title'} API_URL = {API_URL}/>
+                <EditableText initialText={date} transactionId={id}  keyName={'created_at'} API_URL = {API_URL}/>
                 <p>{transaction.id}</p>
                 <p>{transaction.card.card_number.toString().slice(-4)}</p>
                 <div style={{ display: "flex", alignItems: "center" }}>
                 <span style={{ marginRight: "4px" }}>$</span>
-                <EditableText initialText={transaction.amount} transactionId={id} keyName={'amount'} />
+                <EditableText initialText={transaction.amount} transactionId={id} keyName={'amount'} API_URL = {API_URL} />
                 </div>                
                         </div>
                         )

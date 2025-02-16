@@ -1,13 +1,15 @@
 import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom';
 import AddNewAccountForm from '../Components/AddNewAccountForm';
+import AppContext from '../AppContext';
 import '../Styling/App.css'
 
 function AddNewAccount() {
     const navigate = useNavigate();
+    const { API_URL } = useContext(AppContext);
     const [errorState, setErrorState] = useState(false)
     function handleNewAccountSubmission(bank_name, account_value, account_type, setSubmitting) {
-        fetch("/api/account", {
+        fetch(`${API_URL}api/account`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",

@@ -12,6 +12,7 @@ export const AppProvider = ({ children }) => {
   const [banks, setBanks] = useState([])
 
   useEffect(() => {
+      
       fetch(`${API_URL}api/insights`)
       .then((r) => r.json())
       .then(insightsData => {
@@ -138,7 +139,7 @@ export const AppProvider = ({ children }) => {
      handleLogin,
      errors,
      handleTransactionSeed,
-     mockLogin }}>
+     mockLogin, API_URL }}>
       {children}
     </AppContext.Provider>
   );

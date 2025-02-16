@@ -9,9 +9,9 @@ import AppContext from '../AppContext';
 
 function SignupForm({handleSubmit}) {
       const navigate = useNavigate();
-    
+      API_URL = process.env.REACT_APP_API_URL;
     const handleLoginGithub = () => {
-        window.location.href = 'http://localhost:5555/api/login-github'; // Ensure the URL matches your Flask app's URL
+        window.location.href = `${API_URL}api/login-github`; // Ensure the URL matches your Flask app's URL
       };
 
       const {  mockLogin } = useContext(AppContext);

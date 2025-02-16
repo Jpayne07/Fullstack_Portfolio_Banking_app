@@ -8,13 +8,13 @@ import AppContext from '../AppContext';
 
 function Nav() {
 
-  const { user,setUser,setBanks } = useContext(AppContext);
+  const { user,setUser,setBanks, API_URL } = useContext(AppContext);
   const [isVisible, setIsVisible] = useState(false);
   const navigate = useNavigate()
 
 
   const handleLogout = () => {
-    fetch('/api/clear_session', {
+    fetch(`${API_URL}api/clear_session`, {
       method: "DELETE",
     })
       .then(() => {

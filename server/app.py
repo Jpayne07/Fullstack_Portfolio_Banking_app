@@ -119,7 +119,7 @@ class Banks(Resource):
     
 class Insights(Resource):
     def get(self):
-        print('Session in insights',session)
+        print('Session in insights', session)
         user = User.query.filter(User.id == session['user_id']).first()
         if user:
             accounts = [account.to_dict() for account in user.accounts]

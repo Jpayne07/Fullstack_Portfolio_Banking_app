@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-function EditableText({ initialText, transactionId, keyName}) {
+function EditableText({ initialText, transactionId, keyName, API_URL}) {
     const [isEditing, setIsEditing] = useState(false); // Track if editing mode is active
     const [text, setText] = useState(initialText); // Store the text value
 
@@ -25,7 +25,7 @@ function EditableText({ initialText, transactionId, keyName}) {
   };
 
   const saveTextToDatabase = async () => {
-      await fetch(`/api/transaction/${transactionId}`, {
+      await fetch(`${API_URL}api/transaction/${transactionId}`, {
         method: "PATCH",
         headers: {
           "Content-Type": "application/json",

@@ -9,12 +9,12 @@ import '../Styling/App.css'
 
 function Signup() {
     const navigate = useNavigate();
-    const { handleLogin } = useContext(AppContext);
+    const { handleLogin, API_URL } = useContext(AppContext);
     const [errorState, setErrorState] = useState(false)
     const [errorMessage, seterrorMessage] = useState('')
     
     function handleSubmit(username, password, setSubmitting) {
-      fetch('/api/signup', {
+      fetch(`${API_URL}api/signup`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
