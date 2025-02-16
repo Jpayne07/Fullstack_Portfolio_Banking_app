@@ -123,28 +123,7 @@ export const AppProvider = ({ children }) => {
     .then(document.location.reload())
     .catch(error => console.error('Error:', error)); 
 }
-function handleNewAccountSubmission(bank_name, account_value, account_type, setSubmitting, navigate, setErrorState) {
-  fetch("/api/account", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({bank_name, account_value, account_type}),
-  })
-  .then((r) => {
-    if (r.ok) {
-      navigate('/accounts')
-      .then(document.location.reload())
-    
-    }
-    else {
-      console.log("Something went wrong")
-      setSubmitting(false)
-      setErrorState(true)
-      
-    }})
-    
-}
+  
       
 
   return (
@@ -158,8 +137,7 @@ function handleNewAccountSubmission(bank_name, account_value, account_type, setS
      handleLogin,
      errors,
      handleTransactionSeed,
-     mockLogin,
-     handleNewAccountSubmission }}>
+     mockLogin }}>
       {children}
     </AppContext.Provider>
   );
