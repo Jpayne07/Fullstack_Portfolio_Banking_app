@@ -1,7 +1,7 @@
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import MetaData
 from flask_migrate import Migrate
-from flask import Flask, redirect,request, session, url_for
+from flask import Flask
 from flask_restful import Api
 from flask_bcrypt import Bcrypt
 import os

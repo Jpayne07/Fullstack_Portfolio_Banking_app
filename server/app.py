@@ -1,14 +1,12 @@
 from flask import Flask, request, session, make_response, redirect, jsonify
-from flask_restful import Resource, Api
+from flask_restful import Resource
 from config import app, db, api, GITHUB_API_URL, GITHUB_CLIENT_SECRET, GITHUB_CLIENT_ID, GITHUB_AUTH_URL, GITHUB_TOKEN_URL
 from models import Accounts, Transactions, User, Bank, Cards
 from faker import Faker
 import random
-from werkzeug.exceptions import Unauthorized, BadRequest
+from werkzeug.exceptions import Unauthorized
 import requests
-import pandas as pd
-import matplotlib.pyplot as plt
-from datetime import datetime, date
+from datetime import datetime
 from dateutil.relativedelta import relativedelta   
 from sqlalchemy.exc import IntegrityError
 
