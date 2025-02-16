@@ -117,6 +117,7 @@ class Banks(Resource):
     
 class Insights(Resource):
     def get(self):
+        print('Session in insights',session)
         user = User.query.filter(User.id == session['user_id']).first()
         if user:
             accounts = [account.to_dict() for account in user.accounts]
@@ -276,7 +277,6 @@ class Callback(Resource):
 class CheckSession(Resource):
     def get(self):
         user_id = session.get('user_id') 
-        print("got user id", session.get('user_id'))
         print(session)
         if user_id:
             id = session['user_id']
@@ -311,4 +311,4 @@ api.add_resource(Insights, '/api/insights')
 
 
 if __name__ == '__main__':
-    app.run(host="0.0.0.0", port=5000, debug=True)
+    app.run(host="0.0.0.0", port=5000)
