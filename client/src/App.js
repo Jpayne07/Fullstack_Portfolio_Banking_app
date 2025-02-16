@@ -14,8 +14,7 @@ import AppContext from './AppContext';
 
 function App() {
   const navigate=useNavigate()
-  const { user, loading, setUser, setLoading } = useContext(AppContext);
-  const [sessionChecked, setSessionChecked] = useState(false);
+  const { user, loading} = useContext(AppContext);
 
   
 

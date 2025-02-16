@@ -1,5 +1,5 @@
-import React, {useEffect, useState, useContext} from 'react'
-import { Formik, Form, Field, ErrorMessage } from 'formik';
+import React, { useState, useContext} from 'react'
+import { Formik, Form, Field} from 'formik';
 import AppContext from '../AppContext';
 
 import * as yup from 'yup';
@@ -8,8 +8,7 @@ import * as yup from 'yup';
 
 function AddNewAccountForm({handleNewAccountSubmission}) {
     const [holdSuggest, setHoldSuggest] = useState('')
-    const [suggestions, setSuggestions] = useState([])
-    const { loading, banks } = useContext(AppContext)
+    const { banks } = useContext(AppContext)
     
     const bank_names = banks.filter(bank=>{
         return bank.name.toLowerCase().includes(holdSuggest.toLowerCase())
