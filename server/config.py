@@ -3,7 +3,6 @@ from sqlalchemy import MetaData
 from flask_migrate import Migrate
 from flask import Flask, redirect,request, session, url_for
 from flask_restful import Api
-import requests
 from flask_bcrypt import Bcrypt
 import os
 from dotenv import load_dotenv
