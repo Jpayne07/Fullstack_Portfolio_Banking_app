@@ -12,7 +12,9 @@ from sqlalchemy.exc import IntegrityError
 
 
 fake = Faker()
-    
+@app.before_request
+def make_session_permanent():
+    session.permanent = True 
 class User_Item(Resource):
     def get(self):
         if session['user_id']:

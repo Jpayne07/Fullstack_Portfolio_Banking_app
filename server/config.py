@@ -7,6 +7,7 @@ from flask_bcrypt import Bcrypt
 import os
 from dotenv import load_dotenv
 from flask_cors import CORS
+from datetime import timedelta
 
 
 
@@ -18,10 +19,12 @@ app = Flask(
 )
 CORS(app)
 app.secret_key = b'Y\xf1Xz\x00\xad|eQ\x80t \xca\x1a\x10K'
+app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(days=1)
 load_dotenv()
 # app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URI')
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///app.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(days=1)
 GITHUB_CLIENT_ID = os.getenv("GITHUB_CLIENT_ID")
 GITHUB_CLIENT_SECRET = os.getenv("GITHUB_CLIENT_SECRET")
 GITHUB_AUTH_URL = "https://github.com/login/oauth/authorize"
