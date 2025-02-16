@@ -2,11 +2,10 @@ import React, {useContext} from 'react'
 import AppContext from '../AppContext';
 
 import { useParams } from 'react-router-dom';
-import Pencil from '../images/Pencil.svg'
 import EditableText from './EditableText';
 
 
-function Transaction_Id_module() {
+function Transaction_Id_Module() {
   const { user} = useContext(AppContext)
   const { id } = useParams()
   const uniqueDateSet = new Set();
@@ -65,4 +64,4 @@ function Transaction_Id_module() {
 
 }
 
-export default Transaction_Id_module
+export default Transaction_Id_Module

@@ -14,11 +14,7 @@ function Login() {
     const handleLoginGithub = () => {
       window.location.href = 'http://localhost:5555/api/login-github'; // Ensure the URL matches your Flask app's URL
     };
-    useEffect(()=>{
-      const queryString = window.location.search;
-      const urlParams = new URLSearchParams(queryString);
-      const codeParams = urlParams.get("code")
-    },[handleLoginGithub])
+
 
 
   return (
