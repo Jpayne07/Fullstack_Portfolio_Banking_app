@@ -5,13 +5,13 @@ import InsightsCharts from '../Components/InsightsCharts'
 function Insights() {
   return (
     <div className='page_wrapper' style={{display:"flex", flexWrap:"wrap"}}>
-      <div className='background_wrapper' id='test' style={{width:"800px"}}>
-        <div className='_wrapper' style={{width:"800px"}} id='test'>
+      <div className='background_wrapper' id='test'>
+        <div className='_wrapper' id='test'>
           <InsightComponent/>
         </div>
       </div>
-      <div className='background_wrapper' id='test' style={{width:"800px"}}>
-        <div className='_wrapper' style={{width:"800px"}} id='test'><InsightsCharts/></div>
+      <div className='background_wrapper' id='test' >
+        <div className='_wrapper' id='test'><InsightsCharts/></div>
       </div>
     </div>
   )

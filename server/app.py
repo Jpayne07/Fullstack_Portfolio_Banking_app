@@ -4,12 +4,13 @@ from config import app, db, api, GITHUB_API_URL, GITHUB_CLIENT_SECRET, GITHUB_CL
 from models import Accounts, Transactions, User, Bank, Cards
 from faker import Faker
 import random
-from werkzeug.exceptions import Unauthorized
+from werkzeug.exceptions import Unauthorized, BadRequest
 import requests
 import pandas as pd
 import matplotlib.pyplot as plt
 from datetime import datetime, date
 from dateutil.relativedelta import relativedelta   
+from sqlalchemy.exc import IntegrityError
 
 
 fake = Faker()
@@ -17,10 +18,36 @@ fake = Faker()
 class User_Item(Resource):
     def get(self):
         if session['user_id']:
-            useri = User.query.filter_by(id=session['user_id']).first()
+            userid = User.query.filter_by(id=session['user_id']).first()
         else:
             return make_response("You must be logged in to see this content", 405)
-        return(useri.to_dict(), 200)
+        return(userid.to_dict(), 200)
+    
+class Signup(Resource):
+    def post(self):
+        data = request.get_json()        
+        if not data:
+            raise Unauthorized("Please enter a valid username and password")
+
+        try:
+            user_object = User(
+                username=data["username"]
+            )
+            # Use the password property if available; otherwise, ensure validation occurs.
+            user_object.password_hash = data['password']
+
+            db.session.add(user_object)
+            db.session.commit()
+        except ValueError as ve:
+            return {"error": str(ve)}, 400
+        except IntegrityError as ie:
+            db.session.rollback()  # Always rollback on an error
+            return {"error": f"Username is taken"}, 400
+        except Exception as e:
+            db.session.rollback()
+            return {"error": "Something went wrong: " + str(e)}, 500
+
+        return {"message": "New user added"}, 201
     
 class Transactions_List(Resource):
     def get(self):
@@ -28,28 +55,32 @@ class Transactions_List(Resource):
         return(transactions,200)   
 
 class IndivdiualTransaction(Resource):
-    def get(self, id):
-        
-        transaction = Transactions.query.filter_by(id=id).first()
-        # if transaction['account_id'] in user.
-        # if session['user_id'] = transaction
-        return(transaction.to_dict(),200)
     def delete(self, id):
         transaction = Transactions.query.filter_by(id=id).first()
-        db.session.delete(transaction)
-        db.session.commit()
+        if session:
+            if transaction.user.id == session['user_id']:
+                db.session.delete(transaction)
+                db.session.commit()
+        else:
+            return("You must be signed in to delete this transaction", 500)
+        
     def patch(self, id):
         transaction = Transactions.query.filter_by(id=id).first()
-
         data = request.get_json()
-        for key, value in data.items():
-            if hasattr(transaction, key):  # Ensure the attribute exists on the model
-                setattr(transaction, key, value)
-    
-        # Commit the changes to the database
         try:
-            db.session.commit()
-            return transaction.to_dict(), 200
+            for key, value in data.items():
+                if hasattr(transaction, key):  # Ensure the attribute exists on the model
+                    print(key, value)
+                    setattr(transaction, key, datetime.fromtimestamp(value/1000).strftime('%d-%m-%Y'))
+                    print("test")
+            # Commit the changes to the database
+            
+                db.session.commit()
+                return transaction.to_dict(), 200
+        except ValueError as e:
+            print('test')
+            db.session.rollback()
+            return {"error": str(e)}, 500
         except Exception as e:
             db.session.rollback()
             return {"error": str(e)}, 500
@@ -120,9 +151,7 @@ class Account(Resource):
     def post(self):
         if session['user_id']:
             data = request.get_json()
-            print(data['account_type'])
             bank = Bank.query.filter(Bank.name == data['bank_name']).first()
-            print(bank)
             if bank:
                 bank_id = bank.to_dict()['id']
                 card = Cards.query.all()
@@ -134,7 +163,6 @@ class Account(Resource):
                     account_value = float(data['account_value']),
                     account_type = data['account_type']
                 )
-                print(account)
                 db.session.add(account)
                 db.session.commit()
 
@@ -145,7 +173,6 @@ class Account(Resource):
                 db.session.add(new_card)
                 db.session.commit()
             else:
-                print(data['bank_name'])
                 new_bank = Bank(name = data['bank_name'])
                 db.session.add(new_bank)
                 db.session.commit()
@@ -159,7 +186,6 @@ class Account(Resource):
                     account_value = float(data['account_value']),
                     account_type = data['account_type']
                 )
-                print(account)
                 db.session.add(account)
                 db.session.commit()
 
@@ -185,21 +211,6 @@ class SingularAccount(Resource):
             return make_response
         else:
             return {"message": "You must sign in to see this"}, 405
- 
-class Signup(Resource):
-    def post(self):
-        data = request.get_json()
-        if data:
-            user_object = User(
-                username = data["username"]
-            )
-            user_object.password_hash = data['password']
-        else:
-            raise Unauthorized("Username is taken")
-        
-        db.session.add(user_object)
-        db.session.commit()
-        return("New user added", 201)
 
 class Login(Resource):
     def post(self):
@@ -268,7 +279,8 @@ class Callback(Resource):
 class CheckSession(Resource):
     def get(self):
         user_id = session.get('user_id') 
-        print("got user id")
+        print("got user id", session.get('user_id'))
+        print(session)
         if user_id:
             id = session['user_id']
             user = User.query.filter_by(id=id).first().to_dict()

@@ -1,11 +1,12 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom';
 import AddNewAccountForm from '../Components/AddNewAccountForm';
 import '../Styling/App.css'
 
 function AddNewAccount() {
     const navigate = useNavigate();
-    function handleSubmit(bank_name, account_value, account_type) {
+    const [errorState, setErrorState] = useState(false)
+    function handleNewAccountSubmission(bank_name, account_value, account_type, setSubmitting) {
         fetch("/api/account", {
           method: "POST",
           headers: {
@@ -21,6 +22,9 @@ function AddNewAccount() {
           }
           else {
             console.log("Something went wrong")
+            setSubmitting(false)
+            setErrorState(true)
+            
           }})
           
       }
@@ -33,11 +37,9 @@ function AddNewAccount() {
             <div className='_wrapper' id='login' style = {{width:"1200px", maxWidth:"600px"}}> 
               <div className='login_content'>
                 <div className='login_header'><h2>Create New Bank Account</h2>
-                  <p>Don't have an user account? 
-                    <a href='/signup' id = "signup">Signup</a>
-                  </p>
+                  {errorState?<p>Invalid account information. Bank name must be less than 30 characters and account value must be positive.</p>:null}
                 </div>
-                <AddNewAccountForm handleSubmit={handleSubmit}/>
+                <AddNewAccountForm handleNewAccountSubmission={handleNewAccountSubmission}/>
               </div>
             </div>
           </div>

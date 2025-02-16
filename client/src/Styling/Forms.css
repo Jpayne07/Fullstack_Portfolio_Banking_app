@@ -26,8 +26,15 @@
     padding:50px;
     }
     
-    
-    
+    @media screen and (max-width: 800px){
+        .login_wrapper{
+          padding:20px
+          }}
+    @media screen and (max-width: 800px){
+    #login._wrapper{
+        padding:20px
+        }}
+
     .login_content h2{ 
     font-size: 48px;
     color: white;

@@ -35,7 +35,6 @@ function Transaction_Id_module() {
                 year: 'numeric',
               }
             )
-          
           const shouldRenderDate = uniqueDateSet.has(date);
           uniqueDateSet.add(date)
           
@@ -46,7 +45,7 @@ function Transaction_Id_module() {
                    {shouldRenderDate?null:date}
                 </p> */}
                 <EditableText initialText={transaction.title} transactionId={id}  keyName={'title'}/>
-                <EditableText initialText={date} transactionId={id}  keyName={'date'}/>
+                <EditableText initialText={date} transactionId={id}  keyName={'created_at'}/>
                 <p>{transaction.id}</p>
                 <p>{transaction.card.card_number.toString().slice(-4)}</p>
                 <div style={{ display: "flex", alignItems: "center" }}>

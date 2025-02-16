@@ -113,9 +113,6 @@ class Cards(db.Model, SerializerMixin):
 
     serialize_rules = ('-account','-transactions.card')
 
-    
-
-
 class Accounts(db.Model, SerializerMixin):
     __tablename__ = "accounts"
     id = db.Column(db.Integer, primary_key="True")
@@ -158,9 +155,6 @@ class Accounts(db.Model, SerializerMixin):
 
     serialize_rules = ('-bank.accounts', '-transactions.account', '-users', '-card.account', 'transactions.card')
 
-
-    
-
 class Transactions(db.Model, SerializerMixin):
     __tablename__ = "transactions"
     id = db.Column(db.Integer, primary_key = True)
@@ -190,8 +184,19 @@ class Transactions(db.Model, SerializerMixin):
     
     @validates('created_at')
     def validate_transaction_date(self, key, date):
-        if date < '01-01-1960' or date > datetime.utcnow:
+        print('testing error')
+
+        # Define the earliest valid date
+        earliest_valid_date = datetime.strptime('01-01-1960', '%d-%m-%Y')
+
+        # Ensure 'date' is a datetime object
+        if isinstance(date, str):
+            date = datetime.strptime(date, '%d-%m-%Y')  # Adjust format as needed
+
+        # Check if the date is valid
+        if date < earliest_valid_date or date > datetime.utcnow():
             raise ValueError("Transaction date must be after Jan 1 1960 and can't be after today.")
+
         return date
 
     user = association_proxy('account', 'user',

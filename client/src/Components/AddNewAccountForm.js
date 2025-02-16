@@ -6,18 +6,19 @@ import * as yup from 'yup';
 
 
 
-function AddNewAccountForm({handleSubmit}) {
+function AddNewAccountForm({handleNewAccountSubmission}) {
     const [holdSuggest, setHoldSuggest] = useState('')
     const [suggestions, setSuggestions] = useState([])
     const { loading, banks } = useContext(AppContext)
+    
     const bank_names = banks.filter(bank=>{
         return bank.name.toLowerCase().includes(holdSuggest.toLowerCase())
     })
-    console.log(bank_names)
+
     const FormSchema = yup.object().shape({
         account_value: yup
             .number()
-            .min(2, 'Password must be 2 characters long'),
+            .min(1, 'Account value must be at least 1 characters long'),
         bank_name: yup
             .string()
             .min(5, 'bank must be 5 characters long')
@@ -33,8 +34,8 @@ function AddNewAccountForm({handleSubmit}) {
     <Formik
     initialValues={{ bank_name: '', account_value: 0, account_type: '' }}
     validationSchema={FormSchema}
-    onSubmit={(values) => {
-    handleSubmit(values.bank_name, values.account_value, values.account_type);
+    onSubmit={(values, { setSubmitting }) => {
+        handleNewAccountSubmission(values.bank_name, values.account_value, values.account_type, setSubmitting);
     }}
 >
     {({ isSubmitting, errors, handleChange }) => (

@@ -30,27 +30,34 @@ function EditableText({ initialText, transactionId, keyName}) {
     setLoading(true);
     setError(null);
 
-    try {
+   
       const response = await fetch(`/api/transaction/${transactionId}`, {
         method: "PATCH",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ [keyName]: text }),
-      });
-
-      if (!response.ok) {
-        throw new Error("Failed to save changes. Please try again.");
+        body: JSON.stringify({ [keyName]: Date.parse(text) }),
+      })
+      .then((r) => {
+      if (!r.ok) {
+        r.json()
+        .then((data)=>{
+          console.log(data.error)
+          return data.error
+        })
+        
       }
 
-      const data = await response.json();
-      console.log("Changes saved:", data);
-    } catch (err) {
-      console.error(err);
-      setError("Failed to save changes.");
-    } finally {
-      setLoading(false);
-    }
+      else{
+        r.json()
+        .then((data)=>{
+          console.log("Changes saved:", data);
+        return data
+      })
+      }
+    
+    })
+      
   };
 
   return (

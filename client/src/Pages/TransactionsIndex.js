@@ -13,7 +13,7 @@ function Transactions() {
     <div className='page_wrapper'>
       <div className='background_wrapper' id='transaction_index'>
         <div className='_wrapper' id='transaction_index'>
-          <h2>Transactions</h2>
+          <h2 style={{width:"100%", textAlign:"center"}}>Transactions</h2>
           <TransactionIndexModule user = {user}/>
           <div className='transactions_button_break'></div>
           <button className='transactions_rng' onClick={handleTransactionSeed}>
@@ -28,7 +28,6 @@ function Transactions() {
             method:"DELETE"
           })
           .then(r=>r.json)
-          
           .then(setDeleteState(true))
           .then(document.location.reload())
           }> Delete Account </button>

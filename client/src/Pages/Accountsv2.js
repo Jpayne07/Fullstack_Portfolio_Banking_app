@@ -5,9 +5,7 @@ function Accounts() {
   return (
     <div style={{display:"flex", justifyContent:"center"}}>
       <div className='login_wrapper' 
-      style={{minHeight:"600px",
-      width:"1200px",
-      maxWidth:"1200px"}}>
+      style={{minHeight:"600px"}}>
         <BanksComponentv2 stylingContext = {"Grid"}/>
       </div>
     </div>
