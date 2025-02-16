@@ -105,8 +105,8 @@ class Cards(db.Model, SerializerMixin):
 
     @validates('card_number')
     def validate_card_number(self, key, card_number):
-        if len(str(card_number)) !=12:
-            raise ValueError("Card number must be exactly 12 digits")
+        if len(str(card_number)) !=9:
+            raise ValueError("Card number must be exactly 9 digits")
         if not isinstance(card_number, int):
             raise ValueError("Card number must be integer")
         return card_number
@@ -148,7 +148,7 @@ class Accounts(db.Model, SerializerMixin):
     @staticmethod
     def generate_unique_card_number():
         while True:
-            card_number = random.randint(100000000000, 999999999999)  # 12-digit number
+            card_number = random.randint(100000000, 999999999)  # 12-digit number
             existing_card = db.session.query(Cards).filter_by(card_number=card_number).first()
             if not existing_card:
                 return card_number 
@@ -159,8 +159,8 @@ class Transactions(db.Model, SerializerMixin):
     __tablename__ = "transactions"
     id = db.Column(db.Integer, primary_key = True)
     account_id = db.Column(db.Integer, db.ForeignKey('accounts.id'))
-    title = db.Column(db.String(10))
-    category = db.Column(db.String(10))
+    title = db.Column(db.String(60))
+    category = db.Column(db.String(60))
     created_at = Column(DateTime, default=datetime.utcnow)
     amount = db.Column(db.Integer,)
     transaction_type = db.Column(db.String)

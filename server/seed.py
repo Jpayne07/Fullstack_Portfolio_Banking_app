@@ -43,6 +43,26 @@ if __name__ =='__main__':
         db.session.add_all([bank1, bank2])
         db.session.commit()
 
+        card1 = Cards(
+            card_number = 123456781,
+            expiration_date = datetime.now().date()   + relativedelta(years=3)
+            
+        )
+    
+        card2 = Cards(
+            card_number = 123456789,
+            expiration_date = datetime.now().date()  + relativedelta(years=3)
+            
+        )
+
+        card3 = Cards(
+            card_number = 123456782,
+            expiration_date = datetime.now().date()  + relativedelta(years=3)
+            
+        )
+        db.session.add_all([card1, card2, card3])
+        db.session.commit()
+
         account1 = Accounts(
             bank_id = 1,
             user_id = 1,
@@ -69,23 +89,5 @@ if __name__ =='__main__':
         db.session.add_all([account1, account2,account3])
         db.session.commit()
 
-        card1 = Cards(
-            card_number = 123456789123,
-            expiration_date = datetime.now().date()   + relativedelta(years=3)
-            
-        )
-    
-        card2 = Cards(
-            card_number = 123456789124,
-            expiration_date = datetime.now().date()  + relativedelta(years=3)
-            
-        )
 
-        card3 = Cards(
-            card_number = 123456789125,
-            expiration_date = datetime.now().date()  + relativedelta(years=3)
-            
-        )
-        db.session.add_all([card1, card2, card3])
-        db.session.commit()
     print("Database seeded successfully!")

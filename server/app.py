@@ -68,15 +68,16 @@ class IndivdiualTransaction(Resource):
         try:
             for key, value in data.items():
                 if hasattr(transaction, key):  # Ensure the attribute exists on the model
-                    print(key, value)
-                    setattr(transaction, key, datetime.fromtimestamp(value/1000).strftime('%d-%m-%Y'))
-                    print("test")
-            # Commit the changes to the database
+                    if key =='created_at':
+                        setattr(transaction, key, datetime.strptime(value,"%m/%d/%Y"))
+                    elif key =='title':
+                      setattr(transaction, key, value)
+                    elif key =='amount':
+                      setattr(transaction, key, int(value))  
             
                 db.session.commit()
                 return transaction.to_dict(), 200
         except ValueError as e:
-            print('test')
             db.session.rollback()
             return {"error": str(e)}, 500
         except Exception as e:
@@ -87,15 +88,14 @@ class TransactionSeed(Resource):
     def post(self):  # Change to POST for creating resources
         db.session.query(Transactions).delete()  # Deletes all rows in the Transactions table
         db.session.commit()
-        money_categories = ['shopping', 'coffee shops', 'subscriptions', 'food', 'groceries', 'rent']
+        money_categories = ['shopping', 'coffee ', 'subs', 'food', 'groceries', 'rent']
         transaction_type_categories = ['Negative', 'Positive']
-
         for _ in range(100):
             transaction = Transactions(
         title=fake.company(),
         category=random.choice(money_categories),  # Choose from the 5 predefined categories
         amount=round(random.uniform(1, 100), 0),  # Random amount between 1 and 1000 with 2 decimal places
-        account_id=random.choice([1, 2, 3, 4]),
+        account_id=random.choice([1, 2, 3]),
         transaction_type=random.choice(transaction_type_categories)
     )
             db.session.add(transaction)
@@ -161,14 +161,12 @@ class Account(Resource):
                     account_value = float(data['account_value']),
                     account_type = data['account_type']
                 )
-                db.session.add(account)
-                db.session.commit()
-
                 new_card = Cards(
                 card_number=account.generate_unique_card_number(),
                 expiration_date=datetime.now().date() + relativedelta(years=3),
                 )
-                db.session.add(new_card)
+                print('test2')
+                db.session.add_all([new_card, account])
                 db.session.commit()
             else:
                 new_bank = Bank(name = data['bank_name'])
@@ -176,7 +174,11 @@ class Account(Resource):
                 db.session.commit()
                 bank = Bank.query.filter(Bank.name == data['bank_name']).first().to_dict()['id']
                 card = Cards.query.all()
-                card_id = card[-1].to_dict()['id'] + 1
+                new_card = Cards(
+                card_number=account.generate_unique_card_number(),
+                expiration_date=datetime.now().date() + relativedelta(years=3),
+                )
+                card_id = card[-1].to_dict()['id']
                 account = Accounts(
                     bank_id = bank,
                     card_id = card_id,
@@ -187,10 +189,7 @@ class Account(Resource):
                 db.session.add(account)
                 db.session.commit()
 
-                new_card = Cards(
-                card_number=account.generate_unique_card_number(),
-                expiration_date=datetime.now().date() + relativedelta(years=3),
-                )
+                
                 db.session.add(new_card)
                 db.session.commit()
                 return make_response("Adding new bank to database, bank account created", 201)
