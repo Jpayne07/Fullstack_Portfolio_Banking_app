@@ -1,4 +1,5 @@
-from flask import Flask, request, session, make_response, redirect, jsonify
+from flask import Flask, request, session, make_response, redirect, jsonify, send_from_directory
+import os
 from flask_restful import Resource
 from config import app, db, api, GITHUB_API_URL, GITHUB_CLIENT_SECRET, GITHUB_CLIENT_ID, GITHUB_AUTH_URL, GITHUB_TOKEN_URL
 from models import Accounts, Transactions, User, Bank, Cards
@@ -12,6 +13,22 @@ from sqlalchemy.exc import IntegrityError
 
 
 fake = Faker()
+# Serve static assets (JS, CSS, images, etc.)
+@app.route('/static/<path:filename>')
+def serve_static(filename):
+    return send_from_directory(os.path.join(app.static_folder, 'static'), filename)
+
+# Catch-all route: serve index.html for all routes not caught by other routes
+@app.route('/', defaults={'path': ''})
+@app.route('/<path:path>')
+def serve_react(path):
+    # If the path exists as a file in the build folder, serve it.
+    if path != "" and os.path.exists(os.path.join(app.static_folder, path)):
+        return send_from_directory(app.static_folder, path)
+    # Otherwise, serve index.html (React will handle routing on the client-side)
+    return send_from_directory(app.static_folder, 'index.html')
+
+
 class User_Item(Resource):
     def get(self):
         if session['user_id']:
