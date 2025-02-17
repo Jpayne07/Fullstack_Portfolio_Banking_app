@@ -301,20 +301,27 @@ class ClearSession(Resource):
     
 @app.route('/static/<path:filename>')
 def serve_static(filename):
+    app.logger.debug(f"Serving static file: {filename}")
     return send_from_directory(os.path.join(app.static_folder, 'static'), filename)
 
 # Catch-all route: serve index.html for all routes not caught by other routes
 @app.route('/', defaults={'path': ''})
 @app.route('/<path:path>')
 def serve_react(path):
-    # If the path exists as a file in the build folder, serve it.
-    if path != "" and os.path.exists(os.path.join(app.static_folder, path)):
+    absolute_path = os.path.join(app.static_folder, path)
+    app.logger.debug(f"Request path: '{path}' | Checking path: '{absolute_path}'")
+    if path != "" and os.path.exists(absolute_path):
+        app.logger.debug(f"Found file: {absolute_path} - Serving it.")
         return send_from_directory(app.static_folder, path)
-    # Otherwise, serve index.html (React will handle routing on the client-side)
-    return send_from_directory(app.static_folder, 'index.html')
+    else:
+        app.logger.debug("File not found; serving index.html for React routing.")
+        return send_from_directory(app.static_folder, 'index.html')
+
+# Optional: Define a 404 error handler that also logs debug information
 @app.errorhandler(404)
 def not_found(e):
-    return render_template("index.html")
+    app.logger.debug(f"404 error encountered: {e}. Serving index.html")
+    return render_template("index.html"), 200
 
 
 api.add_resource(Account, '/api/account')
