@@ -20,6 +20,7 @@ function Nav() {
       .then(() => {
         alert("Logged Out");
         setUser(null)
+        sessionStorage.clear();
         setBanks(null)
         navigate('/login');
       })
