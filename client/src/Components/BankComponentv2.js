@@ -39,7 +39,7 @@ function BanksComponentv2({stylingContext}) {
     
     return(
       <div>
-        <h2 style={{padding:"15px 0", textAlign:"left"}}>{account.bank.name}</h2>
+        <h2 id = 'bank_name' style={{padding:"15px 0", textAlign:"left"}} >{account.bank.name}</h2>
         <div className='bank_account_container'
           // div styling
           style={{ padding:"20px",
@@ -73,7 +73,9 @@ function BanksComponentv2({stylingContext}) {
       <div className={stylingContext==='Normal'?'bank_id':'account_grid'}>
         {accountElement}
       </div>
-      <button className='addAccounts' onClick={()=> navigate('/add_account')}>Add Accounts</button>
+      <div className='addAccountWrapper'>
+        <button className='addAccounts' onClick={()=> navigate('/add_account')}>Add Accounts</button>
+      </div>
     </div>
   )
 }

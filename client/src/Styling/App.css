@@ -9,7 +9,21 @@
   right: auto;
   
 }
+.bank_id h2{
+  font-size:32px
+}
 
+.bank_id h4{
+  font-size: 20px;
+}
+
+.bank_id p{
+  font-size:16px
+}
+
+.addAccounts{
+  width:100%;
+}
 /* Divs */
 .topnav {
   overflow: hidden;
@@ -166,16 +180,22 @@ body {
  }
 
  .addAccounts{
-  margin: 20px 0px;
+  margin: 50px 0 0  0;
   padding:0px;
   /* height: 25px; */
-  width: 100px;
+  width: 75%;
   font-size: 14px;
+  color:navy;
  }
  
  #login.background_wrapper{
   max-width: 450px;
  }
+
+.addAccountWrapper{
+  display: flex;
+  justify-content: center;
+}
 .page_wrapper{
   display: flex;
   justify-content: center;
@@ -185,7 +205,7 @@ body {
  }
 
 a:visited{
-  color: black;
+  color: inherit;
 
 }
 
