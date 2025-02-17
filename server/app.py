@@ -317,11 +317,6 @@ def serve_react(path):
         app.logger.debug("File not found; serving index.html for React routing.")
         return send_from_directory(app.static_folder, 'index.html')
 
-# Optional: Define a 404 error handler that also logs debug information
-@app.errorhandler(404)
-def not_found(e):
-    app.logger.debug(f"404 error encountered: {e}. Serving index.html")
-    return render_template("index.html"), 200
 
 
 api.add_resource(Account, '/api/account')
