@@ -289,9 +289,10 @@ class CheckSession(Resource):
 
 class ClearSession(Resource):
     def delete(self):
-        session['user_id'] = None
         session.clear()
-        return {'message': '204: No Content'}, 204
+        response = make_response({'message': 'Logged out, session cleared.'}, 204)
+        response.delete_cookie('session')
+        return response
 
 
 api.add_resource(Account, '/api/account')
