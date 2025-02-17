@@ -290,6 +290,7 @@ class CheckSession(Resource):
 class ClearSession(Resource):
     def delete(self):
         session['user_id'] = None
+        session.clear()
         return {'message': '204: No Content'}, 204
 
 
