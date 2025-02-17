@@ -1,4 +1,4 @@
-from flask import Flask, request, session, make_response, redirect, jsonify, send_from_directory
+from flask import Flask, request, session, make_response, redirect, jsonify, send_from_directory, render_template
 import os
 from flask_restful import Resource
 from config import app, db, api, GITHUB_API_URL, GITHUB_CLIENT_SECRET, GITHUB_CLIENT_ID, GITHUB_AUTH_URL, GITHUB_TOKEN_URL
@@ -27,6 +27,9 @@ def serve_react(path):
         return send_from_directory(app.static_folder, path)
     # Otherwise, serve index.html (React will handle routing on the client-side)
     return send_from_directory(app.static_folder, 'index.html')
+@app.errorhandler(404)
+def not_found(e):
+    return render_template("index.html")
 
 
 class User_Item(Resource):
