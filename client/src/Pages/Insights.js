@@ -7,11 +7,11 @@ function Insights() {
     <div className='page_wrapper' style={{display:"flex", flexWrap:"wrap"}}>
       <div className='background_wrapper' id='test'>
         <div className='_wrapper' id='test'>
-          {/* <InsightComponent/> */}
+          <InsightComponent/>
         </div>
       </div>
       <div className='background_wrapper' id='test' >
-        {/* <div className='_wrapper' id='test'><InsightsCharts/></div> */}
+        <div className='_wrapper' id='test'><InsightsCharts/></div>
       </div>
     </div>
   )
