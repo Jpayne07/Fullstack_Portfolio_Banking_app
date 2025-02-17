@@ -38,7 +38,9 @@
    display: none;
   }
 }
-
+.fa{
+  margin:10px;
+}
 @media screen and (max-width: 600px){
   #desktop {
    display: none;
@@ -55,7 +57,7 @@
 
 /* Style navigation menu links */
 .topnav a {
-  color: white;
+  color: black;
   padding: 14px 16px;
   text-decoration: none;
   font-size: 17px;
@@ -183,7 +185,7 @@ body {
  }
 
 a:visited{
-  color: inherit;
+  color: black;
 
 }
 
