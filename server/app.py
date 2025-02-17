@@ -14,22 +14,7 @@ from sqlalchemy.exc import IntegrityError
 
 fake = Faker()
 # Serve static assets (JS, CSS, images, etc.)
-@app.route('/static/<path:filename>')
-def serve_static(filename):
-    return send_from_directory(os.path.join(app.static_folder, 'static'), filename)
 
-# Catch-all route: serve index.html for all routes not caught by other routes
-@app.route('/', defaults={'path': ''})
-@app.route('/<path:path>')
-def serve_react(path):
-    # If the path exists as a file in the build folder, serve it.
-    if path != "" and os.path.exists(os.path.join(app.static_folder, path)):
-        return send_from_directory(app.static_folder, path)
-    # Otherwise, serve index.html (React will handle routing on the client-side)
-    return send_from_directory(app.static_folder, 'index.html')
-@app.errorhandler(404)
-def not_found(e):
-    return render_template("index.html")
 
 
 class User_Item(Resource):
@@ -313,6 +298,23 @@ class ClearSession(Resource):
         response = make_response({'message': 'Logged out, session cleared.'}, 204)
         response.delete_cookie('session')
         return response
+    
+@app.route('/static/<path:filename>')
+def serve_static(filename):
+    return send_from_directory(os.path.join(app.static_folder, 'static'), filename)
+
+# Catch-all route: serve index.html for all routes not caught by other routes
+@app.route('/', defaults={'path': ''})
+@app.route('/<path:path>')
+def serve_react(path):
+    # If the path exists as a file in the build folder, serve it.
+    if path != "" and os.path.exists(os.path.join(app.static_folder, path)):
+        return send_from_directory(app.static_folder, path)
+    # Otherwise, serve index.html (React will handle routing on the client-side)
+    return send_from_directory(app.static_folder, 'index.html')
+@app.errorhandler(404)
+def not_found(e):
+    return render_template("index.html")
 
 
 api.add_resource(Account, '/api/account')
