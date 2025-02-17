@@ -14,7 +14,10 @@ from sqlalchemy.exc import IntegrityError
 
 fake = Faker()
 # Serve static assets (JS, CSS, images, etc.)
-
+@app.route('/')
+@app.route('/<int:id>')
+def index(id=0):
+    return render_template("index.html")
 
 
 class User_Item(Resource):
@@ -298,24 +301,7 @@ class ClearSession(Resource):
         response = make_response({'message': 'Logged out, session cleared.'}, 204)
         response.delete_cookie('session')
         return response
-    
-@app.route('/static/<path:filename>')
-def serve_static(filename):
-    app.logger.debug(f"Serving static file: {filename}")
-    return send_from_directory(os.path.join(app.static_folder, 'static'), filename)
 
-# Catch-all route: serve index.html for all routes not caught by other routes
-@app.route('/', defaults={'path': ''})
-@app.route('/<path:path>')
-def serve_react(path):
-    absolute_path = os.path.join(app.static_folder, path)
-    app.logger.debug(f"Request path: '{path}' | Checking path: '{absolute_path}'")
-    if path != "" and os.path.exists(absolute_path):
-        app.logger.debug(f"Found file: {absolute_path} - Serving it.")
-        return send_from_directory(app.static_folder, path)
-    else:
-        app.logger.debug("File not found; serving index.html for React routing.")
-        return send_from_directory(app.static_folder, 'index.html')
 
 
 
@@ -334,7 +320,24 @@ api.add_resource(Callback, '/callback')
 api.add_resource(IndivdiualTransaction, '/api/transaction/<int:id>')
 api.add_resource(Insights, '/api/insights')
 
+    
+@app.route('/static/<path:filename>')
+def serve_static(filename):
+    app.logger.debug(f"Serving static file: {filename}")
+    return send_from_directory(os.path.join(app.static_folder, 'static'), filename)
 
+# Catch-all route: serve index.html for all routes not caught by other routes
+@app.route('/', defaults={'path': ''})
+@app.route('/<path:path>')
+def serve_react(path):
+    absolute_path = os.path.join(app.static_folder, path)
+    app.logger.debug(f"Request path: '{path}' | Checking path: '{absolute_path}'")
+    if path != "" and os.path.exists(absolute_path):
+        app.logger.debug(f"Found file: {absolute_path} - Serving it.")
+        return send_from_directory(app.static_folder, path)
+    else:
+        app.logger.debug("File not found; serving index.html for React routing.")
+        return send_from_directory(app.static_folder, 'index.html')
 if __name__ == '__main__':
     port = int(os.environ.get('PORT', 5000))
     app.run(host="0.0.0.0", port=port)
