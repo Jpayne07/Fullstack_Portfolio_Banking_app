@@ -12,7 +12,7 @@ function Login() {
     const {handleLogin, mockLogin, errors, API_URL} = useContext(AppContext);
 
     const handleLoginGithub = () => {
-      window.location.href = `api/login-github`; // Ensure the URL matches your Flask app's URL
+      window.location.href = `/api/login-github`; // Ensure the URL matches your Flask app's URL
     };
 
 

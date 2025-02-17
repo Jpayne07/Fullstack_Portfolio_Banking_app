@@ -341,8 +341,12 @@ def serve_react(path):
 # Optional: Custom error handler for 404 (if needed)
 @app.errorhandler(404)
 def not_found(e):
+    # If the request path starts with /api, return a JSON response
+    if request.path.startswith('/api/'):
+        return jsonify({"error": "API endpoint not found"}), 404
+    # Otherwise, serve the React app
     print(f"404 error encountered: {e}. Serving index.html")
-    return render_template("index.html"), 200
+    return send_from_directory(app.static_folder, 'index.html')
 
 if __name__ == '__main__':
     port = int(os.environ.get('PORT', 5000))

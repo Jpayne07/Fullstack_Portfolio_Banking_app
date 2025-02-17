@@ -13,7 +13,7 @@ export const AppProvider = ({ children }) => {
 
   useEffect(() => {
       
-      fetch(`api/insights`,{
+      fetch(`/api/insights`,{
         method: 'GET',
         credentials: 'include'
       })
@@ -28,7 +28,7 @@ export const AppProvider = ({ children }) => {
   }, []);
   
   useEffect(() => {
-    fetch(`api/banks`,{
+    fetch(`/api/banks`,{
       method: 'GET',
       credentials: 'include'
     })
@@ -44,21 +44,30 @@ export const AppProvider = ({ children }) => {
 
   useEffect(() => {
     setLoading(true);
-    fetch(`api/check_session`,{
+    fetch(`/api/check_session`,{
       method: 'GET',
       credentials: 'include'
     })
-      .then((response) => {
+      .then(response => {
         if (!response.ok) {
           throw new Error('Network response was not ok');
         }
         return response.json();
       })
-      .then((user) => {
-        setUser(user);
+      .then(data => {
+        console.log("Session response:", data);
+        
+        // Check if data contains a valid user_id or similar flag
+        if (data.id) {
+          setUser(data);
+          console.log(data)
+        } else {
+          setUser(null);
+        }
       })
-      .catch((error) => {
+      .catch(error => {
         console.error("Error fetching session:", error);
+        setUser(null);
       })
       .finally(() => {
         setLoading(false);
@@ -67,7 +76,7 @@ export const AppProvider = ({ children }) => {
 
   function handleLogin(username, password, setSubmitting, navigate) {
     
-    fetch(`api/login`, {
+    fetch(`/api/login`, {
       method: "POST",
       credentials: 'include',
       headers: {
@@ -98,7 +107,7 @@ export const AppProvider = ({ children }) => {
   // this is for the login without signup
   function mockLogin(username, password, navigate) {
     console.log("Nav test", navigate)
-    fetch(`api/login`, {
+    fetch(`/api/login`, {
       method: "POST",
       credentials: 'include',
       headers: {
@@ -125,7 +134,7 @@ export const AppProvider = ({ children }) => {
   }
   // this will seed transactions on individual account pages
   function handleTransactionSeed() {
-    fetch(`api/transactionseed`, {
+    fetch(`/api/transactionseed`, {
         method: 'POST', 
         credentials: 'include',
         headers: {
