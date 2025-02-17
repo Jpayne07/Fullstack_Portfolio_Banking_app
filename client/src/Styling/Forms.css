@@ -59,7 +59,7 @@
     .formik_fields {
     /* padding: 10px; */
     font-size: 16px;
-    height: 20px;
+    height: 24px;
     border: 1px solid #ccc;
     border-radius: 4px;
     outline: none;
@@ -92,7 +92,7 @@ form button{
     border-width: 0px;
     }
 .formik_labels{
-    font-size: 20px;
+    font-size: 24px;
     color:white;
     }
 
