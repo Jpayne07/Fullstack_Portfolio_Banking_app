@@ -128,7 +128,7 @@ export const AppProvider = ({ children }) => {
   function handleTransactionSeed() {
     fetch(`${API_URL}api/transactionseed`, {
         method: 'POST', 
-        credentials: 'include'
+        credentials: 'include',
         headers: {
             'Content-Type': 'application/json',  
         },
