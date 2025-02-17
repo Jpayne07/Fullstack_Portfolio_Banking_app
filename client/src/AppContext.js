@@ -25,7 +25,7 @@ export const AppProvider = ({ children }) => {
       setLoading(false);
       
     });
-  }, [user]);
+  }, []);
   
   useEffect(() => {
     fetch(`${API_URL}api/banks`,{
@@ -79,9 +79,8 @@ export const AppProvider = ({ children }) => {
         if (r.ok) {
           r.json().then((user) => {
             setUser(user);
-            
+            navigate('/');
           })
-          .then(navigate('/'))
         } else {
           r.json().then((err) => {
             setErrors([err.message || "Invalid login credentials. Please try again."]);
