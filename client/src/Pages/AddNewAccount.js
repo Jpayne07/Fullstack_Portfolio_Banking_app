@@ -13,8 +13,9 @@ function AddNewAccount() {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
-            credentials: 'include'
+            
           },
+          credentials: 'include',
           body: JSON.stringify({bank_name, account_value, account_type}),
         })
         .then((r) => {
