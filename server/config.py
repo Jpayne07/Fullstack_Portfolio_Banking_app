@@ -24,6 +24,8 @@ load_dotenv()
 app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URI')
 # app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///app.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+app.config['SESSION_TYPE'] = 'sqlalchemy'
+app.config['SESSION_SQLALCHEMY'] = db
 app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(days=1)
 GITHUB_CLIENT_ID = os.getenv("GITHUB_CLIENT_ID")
 GITHUB_CLIENT_SECRET = os.getenv("GITHUB_CLIENT_SECRET")
