@@ -16,9 +16,6 @@ function App() {
   const navigate=useNavigate()
   const { user, loading} = useContext(AppContext);
 
-  
-
-
   useEffect(() => {
     if (!loading && !user) {
       console.log("Loading in use effect:", loading)

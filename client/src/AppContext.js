@@ -13,7 +13,7 @@ export const AppProvider = ({ children }) => {
 
   useEffect(() => {
       
-      fetch(`${API_URL}api/insights`,{
+      fetch(`api/insights`,{
         method: 'GET',
         credentials: 'include'
       })
@@ -28,7 +28,7 @@ export const AppProvider = ({ children }) => {
   }, []);
   
   useEffect(() => {
-    fetch(`${API_URL}api/banks`,{
+    fetch(`api/banks`,{
       method: 'GET',
       credentials: 'include'
     })
@@ -44,7 +44,7 @@ export const AppProvider = ({ children }) => {
 
   useEffect(() => {
     setLoading(true);
-    fetch(`${API_URL}api/check_session`,{
+    fetch(`api/check_session`,{
       method: 'GET',
       credentials: 'include'
     })
@@ -67,7 +67,7 @@ export const AppProvider = ({ children }) => {
 
   function handleLogin(username, password, setSubmitting, navigate) {
     
-    fetch(`${API_URL}api/login`, {
+    fetch(`api/login`, {
       method: "POST",
       credentials: 'include',
       headers: {
@@ -98,7 +98,7 @@ export const AppProvider = ({ children }) => {
   // this is for the login without signup
   function mockLogin(username, password, navigate) {
     console.log("Nav test", navigate)
-    fetch(`${API_URL}api/login`, {
+    fetch(`api/login`, {
       method: "POST",
       credentials: 'include',
       headers: {
@@ -125,7 +125,7 @@ export const AppProvider = ({ children }) => {
   }
   // this will seed transactions on individual account pages
   function handleTransactionSeed() {
-    fetch(`${API_URL}api/transactionseed`, {
+    fetch(`api/transactionseed`, {
         method: 'POST', 
         credentials: 'include',
         headers: {

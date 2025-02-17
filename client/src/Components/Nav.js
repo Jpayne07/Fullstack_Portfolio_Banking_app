@@ -14,7 +14,7 @@ function Nav() {
 
 
   const handleLogout = () => {
-    fetch(`${API_URL}api/clear_session`, {
+    fetch(`api/clear_session`, {
       method: "DELETE",
     })
       .then(() => {

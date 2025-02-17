@@ -25,7 +25,7 @@ function EditableText({ initialText, transactionId, keyName, API_URL}) {
   };
 
   const saveTextToDatabase = async () => {
-      await fetch(`${API_URL}api/transaction/${transactionId}`, {
+      await fetch(`api/transaction/${transactionId}`, {
         method: "PATCH",
         headers: {
           "Content-Type": "application/json",
