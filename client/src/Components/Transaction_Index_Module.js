@@ -21,7 +21,7 @@ function TransactionIndexModule({}) {
   };
   // handle transaction delete
   const handleDelete=(id)=>{
-    fetch(`${API_URL}api/transaction/${id}`, { method: 'DELETE' })
+    fetch(`api/transaction/${id}`, { method: 'DELETE' })
     .then(() => alert('Transaction deleted, please refresh page'));
   }
 

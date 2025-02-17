@@ -320,10 +320,9 @@ api.add_resource(Callback, '/callback')
 api.add_resource(IndivdiualTransaction, '/api/transaction/<int:id>')
 api.add_resource(Insights, '/api/insights')
 
-    
 @app.route('/static/<path:filename>')
 def serve_static(filename):
-    app.logger.debug(f"Serving static file: {filename}")
+    print(f"Serving static file: {filename}")
     return send_from_directory(os.path.join(app.static_folder, 'static'), filename)
 
 # Catch-all route: serve index.html for all routes not caught by other routes
@@ -331,13 +330,21 @@ def serve_static(filename):
 @app.route('/<path:path>')
 def serve_react(path):
     absolute_path = os.path.join(app.static_folder, path)
-    app.logger.debug(f"Request path: '{path}' | Checking path: '{absolute_path}'")
+    print(f"Requested path: '{path}' resolves to '{absolute_path}'")
     if path != "" and os.path.exists(absolute_path):
-        app.logger.debug(f"Found file: {absolute_path} - Serving it.")
+        print(f"Found file: {absolute_path}. Serving file.")
         return send_from_directory(app.static_folder, path)
     else:
-        app.logger.debug("File not found; serving index.html for React routing.")
+        print("File not found; serving index.html for React routing.")
         return send_from_directory(app.static_folder, 'index.html')
+
+# Optional: Custom error handler for 404 (if needed)
+@app.errorhandler(404)
+def not_found(e):
+    print(f"404 error encountered: {e}. Serving index.html")
+    return render_template("index.html"), 200
+
 if __name__ == '__main__':
     port = int(os.environ.get('PORT', 5000))
-    app.run(host="0.0.0.0", port=port)
+    print(f"Starting app on port {port}")
+    app.run(host='0.0.0.0', port=port, debug=True)

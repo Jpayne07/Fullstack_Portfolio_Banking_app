@@ -24,7 +24,7 @@ function Transactions() {
           </button>
           <button className='transactions_rng'
           style={{background:"red"}} 
-          onClick={()=>fetch(`${API_URL}/api/singular_account/${id}`,{
+          onClick={()=>fetch(`api/singular_account/${id}`,{
             method:"DELETE"
           })
           .then(r=>r.json)
