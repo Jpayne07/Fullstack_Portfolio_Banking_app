@@ -14,7 +14,7 @@ function Signup() {
     const [errorMessage, seterrorMessage] = useState('')
     
     function handleSubmit(username, password, setSubmitting) {
-      fetch(`api/signup`, {
+      fetch(`/api/signup`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

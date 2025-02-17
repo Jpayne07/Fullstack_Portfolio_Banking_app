@@ -9,7 +9,7 @@ function AddNewAccount() {
     const { API_URL } = useContext(AppContext);
     const [errorState, setErrorState] = useState(false)
     function handleNewAccountSubmission(bank_name, account_value, account_type, setSubmitting) {
-        fetch(`api/account`, {
+        fetch(`/api/account`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
