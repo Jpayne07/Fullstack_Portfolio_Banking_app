@@ -17,7 +17,7 @@ app = Flask(
     static_folder='../client/build',
     template_folder='../client/build'
 )
-CORS(app)
+CORS(app, supports_credentials=True)
 app.secret_key = os.environ.get('APP_SECRET_KEY')
 app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(days=1)
 load_dotenv()

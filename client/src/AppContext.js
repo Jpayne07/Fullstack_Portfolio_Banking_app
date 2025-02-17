@@ -13,7 +13,10 @@ export const AppProvider = ({ children }) => {
 
   useEffect(() => {
       
-      fetch(`${API_URL}api/insights`)
+      fetch(`${API_URL}api/insights`,{
+        method: 'GET',
+        credentials: 'include'
+      })
       .then((r) => r.json())
       .then(insightsData => {
       setCategories(insightsData);
@@ -25,7 +28,10 @@ export const AppProvider = ({ children }) => {
   }, [user]);
   
   useEffect(() => {
-    fetch(`${API_URL}api/banks`)
+    fetch(`${API_URL}api/banks`,{
+      method: 'GET',
+      credentials: 'include'
+    })
     .then((r) => r.json())
     .then(banks => {
       setBanks(banks);
@@ -38,7 +44,10 @@ export const AppProvider = ({ children }) => {
 
   useEffect(() => {
     setLoading(true);
-    fetch(`${API_URL}api/check_session`)
+    fetch(`${API_URL}api/check_session`,{
+      method: 'GET',
+      credentials: 'include'
+    })
       .then((response) => {
         if (!response.ok) {
           throw new Error('Network response was not ok');
@@ -60,6 +69,7 @@ export const AppProvider = ({ children }) => {
     
     fetch(`${API_URL}api/login`, {
       method: "POST",
+      credentials: 'include',
       headers: {
         "Content-Type": "application/json",
       },
@@ -91,6 +101,7 @@ export const AppProvider = ({ children }) => {
     console.log("Nav test", navigate)
     fetch(`${API_URL}api/login`, {
       method: "POST",
+      credentials: 'include',
       headers: {
         "Content-Type": "application/json",
       },
@@ -116,7 +127,8 @@ export const AppProvider = ({ children }) => {
   // this will seed transactions on individual account pages
   function handleTransactionSeed() {
     fetch(`${API_URL}api/transactionseed`, {
-        method: 'POST',  
+        method: 'POST', 
+        credentials: 'include'
         headers: {
             'Content-Type': 'application/json',  
         },
