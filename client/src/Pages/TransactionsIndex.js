@@ -8,7 +8,7 @@ function Transactions() {
   const {user, handleTransactionSeed} = useContext(AppContext);
   const { id } = useParams()
   const [deleteState, setDeleteState] = useState(false)
-    
+  const API_URL = process.env.REACT_APP_API_URL;
   return (
     <div className='page_wrapper'>
       <div className='background_wrapper' id='transaction_index'>
@@ -24,7 +24,7 @@ function Transactions() {
           </button>
           <button className='transactions_rng'
           style={{background:"red"}} 
-          onClick={()=>fetch(`/api/singular_account/${id}`,{
+          onClick={()=>fetch(`${API_URL}/api/singular_account/${id}`,{
             method:"DELETE"
           })
           .then(r=>r.json)
