@@ -93,24 +93,28 @@ class IndivdiualTransaction(Resource):
     
 class TransactionSeed(Resource):
     def post(self):  # Change to POST for creating resources
+        data = request.get_json()
+        print(data)
+        id = data['id']
         db.session.query(Transactions).delete()  # Deletes all rows in the Transactions table
         db.session.commit()
         money_categories = ['shopping', 'coffee ', 'subs', 'food', 'groceries', 'rent']
         transaction_type_categories = ['Negative', 'Positive']
         for _ in range(100):
             transaction = Transactions(
-        title=fake.company(),
-        category=random.choice(money_categories),  # Choose from the 5 predefined categories
-        amount=round(random.uniform(1, 100), 0),  # Random amount between 1 and 1000 with 2 decimal places
-        account_id=random.choice([1, 2, 3]),
-        transaction_type=random.choice(transaction_type_categories)
-    )
+            title=fake.company(),
+            category=random.choice(money_categories),  # Choose from the 5 predefined categories
+            amount=round(random.uniform(1, 100), 0),  # Random amount between 1 and 1000 with 2 decimal places
+            account_id=id,
+            transaction_type=random.choice(transaction_type_categories)
+        )
             db.session.add(transaction)
+            
 
         db.session.commit()
-        random_integer = random.randint(1, 2)
-        account = db.session.query(Accounts).filter_by(id=random_integer).first()
+        account = db.session.query(Accounts).filter_by(id=id).first()
         if account:
+            print("in account")
             account.transaction_id = transaction.id  # Update transaction reference
             db.session.commit()
 

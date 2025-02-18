@@ -125,7 +125,7 @@ class Accounts(db.Model, SerializerMixin):
 
     bank = db.relationship('Bank', back_populates = 'accounts')
     card = db.relationship('Cards', back_populates = 'account')
-    transactions = db.relationship('Transactions', back_populates = 'account')
+    transactions = db.relationship('Transactions', back_populates = 'account', order_by='Transactions.id')
     user = db.relationship('User', back_populates = 'accounts')
 
     @validates('account_value')
@@ -159,8 +159,8 @@ class Transactions(db.Model, SerializerMixin):
     __tablename__ = "transactions"
     id = db.Column(db.Integer, primary_key = True)
     account_id = db.Column(db.Integer, db.ForeignKey('accounts.id'))
-    title = db.Column(db.String(60))
-    category = db.Column(db.String(60))
+    title = db.Column(db.String (60))
+    category = db.Column(db.String)
     created_at = Column(DateTime, default=datetime.utcnow)
     amount = db.Column(db.Integer,)
     transaction_type = db.Column(db.String)

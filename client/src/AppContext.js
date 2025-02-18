@@ -133,13 +133,14 @@ export const AppProvider = ({ children }) => {
       
   }
   // this will seed transactions on individual account pages
-  function handleTransactionSeed() {
+  function handleTransactionSeed(id) {
     fetch(`/api/transactionseed`, {
         method: 'POST', 
         credentials: 'include',
         headers: {
             'Content-Type': 'application/json',  
         },
+        body: JSON.stringify({ id }),
     })
     .then(response => response.json())
     .then(document.location.reload())

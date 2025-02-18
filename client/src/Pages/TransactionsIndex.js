@@ -16,7 +16,7 @@ function Transactions() {
           <h2 style={{width:"100%", textAlign:"center"}}>Transactions</h2>
           <TransactionIndexModule user = {user}/>
           <div className='transactions_button_break'></div>
-          <button className='transactions_rng' onClick={handleTransactionSeed}>
+          <button className='transactions_rng' onClick={()=>handleTransactionSeed(id)}>
             Generate Random Transactions 
             <span className="tooltiptext">            
               Click to Generate a random set of transactions
