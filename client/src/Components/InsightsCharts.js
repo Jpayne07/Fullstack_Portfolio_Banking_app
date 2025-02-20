@@ -6,7 +6,8 @@ import { PieChart } from 'react-minimal-pie-chart';
 
 
 function InsightsCharts() {
-  const [hovered, setHovered] = useState(null);
+  const [hovered, setHoveredTitle] = useState(null);
+  const [hoveredValue, setHoveredValue] = useState(null);
     const {categories} = useContext(AppContext)
     const colors = [
       "#2BFF5C", // Base Bright Green
@@ -25,27 +26,62 @@ function InsightsCharts() {
       color: colors[index % colors.length]
   }));
 
-  return (<div>
-    <h2>Spending</h2>
+//   return (<div>
+//     <h2>Spending</h2>
+//     <PieChart
+//     data={arrofObjects}
+//     // background={color}
+//     label={({ dataEntry }) => (hovered === dataEntry.title ? `${dataEntry.title}: ${dataEntry.value}` : dataEntry.value)}
+//             onMouseOut={() => setHovered(null)}
+//             labelStyle={{
+//               fontSize: "5px",
+//               fill: "#fff",
+//               fontWeight: "bold",
+//             }}
+//             radius={42}
+//             paddingAngle={1}
+//             animate
+//             lineWidth={30}
+//             labelPosition={75} // Adjusts label position
+// />
+// </div>
+//   )
+return (
+  <div style={{ width: '300px', height: '300px', position: 'relative' }}>
+    {/* The PieChart itself */}
     <PieChart
-    data={arrofObjects}
-    // background={color}
-    label={({ dataEntry }) => (hovered === dataEntry.title ? `${dataEntry.title}: ${dataEntry.value}` : dataEntry.value)}
-            onMouseOver={(_, index) => setHovered(arrofObjects[index].title)}
-            onMouseOut={() => setHovered(null)}
-            labelStyle={{
-              fontSize: "3px",
-              fill: "#fff",
-              fontWeight: "bold",
-            }}
-            radius={42}
-            paddingAngle={5}
-            animate
-            
-            labelPosition={75} // Adjusts label position
-/>
-</div>
-  )
+    //     label={({ dataEntry }) => (hovered === dataEntry.title ? `${dataEntry.title}: ${dataEntry.value}` : dataEntry.value)}
+
+      data={arrofObjects}
+      onMouseOver={(_, index) => {
+        setHoveredTitle(arrofObjects[index].title)
+        setHoveredValue(arrofObjects[index].value)}}
+      onMouseOut={() => {
+        setHoveredTitle(null)
+        setHoveredValue(null)}}
+      lineWidth={30}
+      paddingAngle={2}
+      rounded
+      segmentsStyle={{ transition: 'stroke .3s', cursor: 'pointer' }}
+      segmentsShift={1}
+    />
+
+    {/* The center label */}
+    <div
+      style={{
+        position: 'absolute',
+        top: '50%',
+        left: '50%',
+        transform: 'translate(-50%, -50%)',
+        textAlign: 'center',
+        pointerEvents: 'none', // ensures the label doesn't block chart hover
+      }}
+    >
+      <div style={{ fontWeight: 'bold', fontSize: '2rem' }}>{hovered}:</div>
+      <div style={{ fontSize: '2rem' }}> ${hoveredValue}</div>
+    </div>
+  </div>
+);
 }
 
 export default InsightsCharts

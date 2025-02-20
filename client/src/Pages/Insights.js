@@ -11,7 +11,7 @@ function Insights() {
         </div>
       </div>
       <div className='background_wrapper' id='test' >
-        <div className='_wrapper' id='test'><InsightsCharts/></div>
+        <div className='_wrapper' style={{display:"flex", justifyContent:"center"}}><InsightsCharts/></div>
       </div>
     </div>
   )
