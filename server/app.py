@@ -96,7 +96,6 @@ class TransactionSeed(Resource):
         data = request.get_json()
         print(data)
         id = data['id']
-        db.session.query(Transactions).delete()  # Deletes all rows in the Transactions table
         db.session.commit()
         money_categories = ['shopping', 'coffee ', 'subs', 'food', 'groceries', 'rent']
         transaction_type_categories = ['Negative', 'Positive']
@@ -324,23 +323,23 @@ api.add_resource(Callback, '/callback')
 api.add_resource(IndivdiualTransaction, '/api/transaction/<int:id>')
 api.add_resource(Insights, '/api/insights')
 
-@app.route('/static/<path:filename>')
-def serve_static(filename):
-    print(f"Serving static file: {filename}")
-    return send_from_directory(os.path.join(app.static_folder, 'static'), filename)
+# @app.route('/static/<path:filename>')
+# def serve_static(filename):
+#     print(f"Serving static file: {filename}")
+#     return send_from_directory(os.path.join(app.static_folder, 'static'), filename)
 
-# Catch-all route: serve index.html for all routes not caught by other routes
-@app.route('/', defaults={'path': ''})
-@app.route('/<path:path>')
-def serve_react(path):
-    absolute_path = os.path.join(app.static_folder, path)
-    print(f"Requested path: '{path}' resolves to '{absolute_path}'")
-    if path != "" and os.path.exists(absolute_path):
-        print(f"Found file: {absolute_path}. Serving file.")
-        return send_from_directory(app.static_folder, path)
-    else:
-        print("File not found; serving index.html for React routing.")
-        return send_from_directory(app.static_folder, 'index.html')
+# # Catch-all route: serve index.html for all routes not caught by other routes
+# @app.route('/', defaults={'path': ''})
+# @app.route('/<path:path>')
+# def serve_react(path):
+#     absolute_path = os.path.join(app.static_folder, path)
+#     print(f"Requested path: '{path}' resolves to '{absolute_path}'")
+#     if path != "" and os.path.exists(absolute_path):
+#         print(f"Found file: {absolute_path}. Serving file.")
+#         return send_from_directory(app.static_folder, path)
+#     else:
+#         print("File not found; serving index.html for React routing.")
+#         return send_from_directory(app.static_folder, 'index.html')
 
 # Optional: Custom error handler for 404 (if needed)
 @app.errorhandler(404)
