@@ -2,6 +2,7 @@ import React, {useContext, useState} from 'react'
 import TransactionIndexModule from '../Components/Transaction_Index_Module'
 import AppContext from '../AppContext'
 import { useParams } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom'
 
 function Transactions() {
 
@@ -9,6 +10,7 @@ function Transactions() {
   const { id } = useParams()
   const [deleteState, setDeleteState] = useState(false)
   const API_URL = process.env.REACT_APP_API_URL;
+  const navigate = useNavigate();
   return (
     <div className='page_wrapper'>
       <div className='background_wrapper' id='transaction_index'>
@@ -29,7 +31,9 @@ function Transactions() {
           })
           .then(r=>r.json)
           .then(setDeleteState(true))
-          .then(document.location.reload())
+          .then(()=>{
+            navigate('/accounts')
+            document.location.reload()})
           }> Delete Account </button>
           {deleteState?
           <div style={{width:"100%", justifyContent:"center"}}>
