@@ -25,7 +25,7 @@ export const AppProvider = ({ children }) => {
       setLoading(false);
       
     });
-  }, []);
+  }, [user]);
   
   useEffect(() => {
     fetch(`/api/banks`,{
