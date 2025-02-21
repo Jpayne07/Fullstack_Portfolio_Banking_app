@@ -48,18 +48,19 @@ function BanksComponentv2({stylingContext}) {
           alignContent:"center",
           gap:"25px",
           backgroundImage: "linear-gradient(to right,grey,white)",
-          borderRadius:"10px"}}>
+          borderRadius:"10px"}}
+          id = "accountIndex">
           
-          <h4 style={{width:"100%"}}><a href={`account/${account.id}`}>Account Type: {account.account_type}</a></h4>
-          <p>Account Balance: {formatter.format(account.account_value)}</p><br></br>
-          <p style={{ color: "red", width:"100%"}}>Total Spending: $
+          <h4 style={{width:"100%", fontSize:"1.5rem"}}><a href={`account/${account.id}`} style = {{color:"white"}}>Account Type: {account.account_type}</a></h4>
+          <p style={{fontSize:"1.2rem"}}>Account Balance: {formatter.format(account.account_value)}</p><br></br>
+          <p style={{ color: "red", width:"100%", fontSize:"1.2rem"}}>Total Spending: $
             {
               account.transactions.reduce((total, transaction) => {
                 return transaction.transaction_type === "Negative" ? total + parseInt(transaction.amount) : total}, 0) 
                   // Initial value of total
             }
           </p>
-          <p>Card Ending in: #{account.card.card_number.toString().slice(-4)}</p>
+          <p style={{fontSize:"1.2rem"}}>Card Ending in: #{account.card.card_number.toString().slice(-4)}</p>
 
         </div>        
       </div>
