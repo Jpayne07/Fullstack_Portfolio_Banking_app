@@ -44,7 +44,7 @@ function AddNewAccountForm({handleNewAccountSubmission}) {
         {/* <div className='form_row'> */}
         <div className='form_fields'>
             <div className='form_row'>
-                <label className="formik_labels">Bank Name: </label>
+                <label className="formik_labels" id = "accountAdd">Bank Name: </label>
                 <Field
                 as="input"
                 type="text" 
@@ -64,12 +64,12 @@ function AddNewAccountForm({handleNewAccountSubmission}) {
                 {errors.bank_name && <p>{errors.bank_name}</p>}
             </div>
             <div className='form_row'>
-                <label className="formik_labels">Account Value: </label>
+                <label className="formik_labels" id = "accountAdd">Account Value: </label>
                 <Field type="text" name="account_value" className="formik_fields"/>
                 {errors.account_value && <p>{errors.account_value}</p>}
             </div>
             <div className='form_row'>
-                <label className="formik_labels">Account Type: </label>
+                <label className="formik_labels" id = "accountAdd">Account Type: </label>
                 <Field type="text" name="account_type" className="formik_fields"/>
                 {errors.account_type && <p>{errors.account_type}</p>}
             </div>

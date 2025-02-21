@@ -30,15 +30,15 @@
   background-color: white;
   color: #171717;
   position: relative;
-  justify-content: end;
+  justify-content: start;
 }
 #mobile.nav-link{
   width: 100%;
-  text-align: right;
+  text-align: left;
 }
 .mobile{
   height: 50px;
-  text-align: end;
+  text-align: start;
   align-content: center;
 }
 .mobile i {
@@ -65,7 +65,7 @@
 /* Hide the links inside the navigation menu (except for logo/home) */
 .topnav #myLinks {
   display: none;
-  justify-content: end;
+  justify-content: start;
   flex-wrap: wrap;
 }
 

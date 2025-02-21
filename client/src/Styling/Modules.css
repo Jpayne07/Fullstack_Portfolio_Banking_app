@@ -292,6 +292,6 @@ transition: opacity 0.3s;
   align-content: center;
   gap: 25px;
   background-color: gray;
-  border: 2.5px solid#2BFF5C;  /* Combines border-width, style, and color */
+  border: 2.5px white;  /* Combines border-width, style, and color */
   border-radius: 10px;
   }
