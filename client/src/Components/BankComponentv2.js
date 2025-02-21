@@ -41,14 +41,7 @@ function BanksComponentv2({stylingContext}) {
       <div>
         <h2 id = 'bank_name' style={{padding:"15px 0", textAlign:"left"}} >{account.bank.name}</h2>
         <div className='bank_account_container'
-          // div styling
-          style={{ padding:"20px",
-          width: "100%",
-          flexWrap:"wrap",
-          alignContent:"center",
-          gap:"25px",
-          backgroundImage: "linear-gradient(to right,grey,white)",
-          borderRadius:"10px"}}
+
           id = "accountIndex">
           
           <h4 style={{width:"100%", fontSize:"1.5rem"}}><a href={`account/${account.id}`} style = {{color:"white"}}>Account Type: {account.account_type}</a></h4>

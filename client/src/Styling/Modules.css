@@ -283,3 +283,15 @@ transition: opacity 0.3s;
     padding: 0 0 5px 0;
     width: 100%;
   }
+
+  #accountIndex.bank_account_container{
+    display: flex;            /* Needed for flex properties to work */
+  padding: 20px;
+  width: 100%;
+  flex-wrap: wrap;
+  align-content: center;
+  gap: 25px;
+  background-color: gray;
+  border: 2.5px solid#2BFF5C;  /* Combines border-width, style, and color */
+  border-radius: 10px;
+  }
