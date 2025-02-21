@@ -38,7 +38,7 @@ function AddNewAccount() {
     <main>
         <div className='login_wrapper'>
           <div className='background_wrapper' id='login'style = {{width:"1200px", maxWidth:"600px"}}>
-            <div className='_wrapper' id='login' style = {{width:"1200px", maxWidth:"600px"}}> 
+            <div className='_wrapper' id='login' > 
               <div className='login_content'>
                 <div className='login_header'><h2>Create New Bank Account</h2>
                   {errorState?<p>Invalid account information. Bank name must be less than 30 characters and account value must be positive.</p>:null}

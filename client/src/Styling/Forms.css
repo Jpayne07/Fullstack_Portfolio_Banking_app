@@ -66,6 +66,27 @@
     transition: border-color 0.3s;
     width: 50%;
     }
+    .login_header h2{
+        font-size: 1.75rem;
+        padding:10px 0;
+    }
+    
+    
+    .formik_fields {
+    /* padding: 10px; */
+    font-size: 16px;
+    height: 24px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    outline: none;
+    transition: border-color 0.3s;
+    width: 50%;
+    }
+    #accountAdd.formik_labels {
+    font-size: 1.25rem;
+    max-width: 2.5rem;
+    }
+    
 
 
 .form_row{
