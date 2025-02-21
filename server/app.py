@@ -94,7 +94,6 @@ class IndivdiualTransaction(Resource):
 class TransactionSeed(Resource):
     def post(self):  # Change to POST for creating resources
         data = request.get_json()
-        print(data)
         id = data['id']
         db.session.commit()
         money_categories = ['shopping', 'coffee ', 'subs', 'food', 'groceries', 'rent']
@@ -127,16 +126,12 @@ class Banks(Resource):
     
 class Insights(Resource):
     def get(self):
-        print('Session in insights', session)
         user = User.query.filter(User.id == session['user_id']).first()
         if user:
-            print('user')
             accounts = [account.to_dict() for account in user.accounts]
             transaction_categories = {}
             for account in accounts:
-                print(account)
                 for transaction in account['transactions']:
-                    print(transaction)
                     category = transaction['category']
                     # only calculating spending
                     if transaction['transaction_type'] == "Negative":
