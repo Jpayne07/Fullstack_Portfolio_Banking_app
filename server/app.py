@@ -209,12 +209,14 @@ class Account(Resource):
     
 class SingularAccount(Resource):
     def delete(self, id):
-        if session['user_id']:
-            account  = Accounts.query.filter(id == id).first()
-            db.session.delete(account)
-            db.session.commit()
-            make_response = (f"Account with id:{account.id} deleted", 204)
-            return make_response
+        if 'user_id' in session:
+            account = Accounts.query.get(id)
+            if account:
+                db.session.delete(account)
+                db.session.commit()
+                return {"message": f"Account with id {id} deleted"}, 204
+            else:
+                return {"message": "Account not found"}, 404
         else:
             return {"message": "You must sign in to see this"}, 405
 

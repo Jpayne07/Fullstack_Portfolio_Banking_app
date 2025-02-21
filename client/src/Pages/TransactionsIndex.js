@@ -29,8 +29,7 @@ function Transactions() {
           onClick={()=>fetch(`/api/singular_account/${id}`,{
             method:"DELETE"
           })
-          .then(r=>r.json)
-          .then(setDeleteState(true))
+          .then(()=>setDeleteState(true))
           .then(()=>{
             navigate('/accounts')
             document.location.reload()})

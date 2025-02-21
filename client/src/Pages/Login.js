@@ -9,12 +9,14 @@ import { useNavigate } from 'react-router-dom';
 
 function Login() {
     const navigate = useNavigate();
-    const {handleLogin, mockLogin, errors, API_URL} = useContext(AppContext);
+    const {handleLogin, mockLogin, errors, user} = useContext(AppContext);
 
     const handleLoginGithub = () => {
       window.location.href = `/api/login-github`; // Ensure the URL matches your Flask app's URL
     };
-
+    if (user){
+      navigate('/')
+    }
 
   return (
     <main>
