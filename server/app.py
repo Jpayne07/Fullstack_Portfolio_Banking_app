@@ -268,7 +268,7 @@ class Callback(Resource):
         # Existing user: log them in by saving their info in the session
             session["user_id"] = user.to_dict()['id']
             print('already logged in')
-            return redirect('http://localhost:3000')
+            return redirect('/')
         else:
             new_user = User(username=username)
             new_user.password_hash = "Test"
@@ -278,7 +278,7 @@ class Callback(Resource):
         print(User.query.filter_by(username=new_user.username).first().id)
         # Log them in by saving their info in the session
         session["user_id"] = User.query.filter_by(username=new_user.username).first().id
-        return redirect('http://localhost:3000')
+        return redirect('/')
 
         # Store user details in the session
        
@@ -321,25 +321,6 @@ api.add_resource(Callback, '/callback')
 api.add_resource(IndivdiualTransaction, '/api/transaction/<int:id>')
 api.add_resource(Insights, '/api/insights')
 
-# @app.route('/static/<path:filename>')
-# def serve_static(filename):
-#     print(f"Serving static file: {filename}")
-#     return send_from_directory(os.path.join(app.static_folder, 'static'), filename)
-
-# # Catch-all route: serve index.html for all routes not caught by other routes
-# @app.route('/', defaults={'path': ''})
-# @app.route('/<path:path>')
-# def serve_react(path):
-#     absolute_path = os.path.join(app.static_folder, path)
-#     print(f"Requested path: '{path}' resolves to '{absolute_path}'")
-#     if path != "" and os.path.exists(absolute_path):
-#         print(f"Found file: {absolute_path}. Serving file.")
-#         return send_from_directory(app.static_folder, path)
-#     else:
-#         print("File not found; serving index.html for React routing.")
-#         return send_from_directory(app.static_folder, 'index.html')
-
-# Optional: Custom error handler for 404 (if needed)
 @app.errorhandler(404)
 def not_found(e):
     # If the request path starts with /api, return a JSON response
