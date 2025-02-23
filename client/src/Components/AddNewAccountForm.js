@@ -9,7 +9,7 @@ import * as yup from 'yup';
 
 function AddNewAccountForm({setErrorState}) {
     const [holdSuggest, setHoldSuggest] = useState('')
-    const { banks, handleNewAccountSubmission, accounts } = useContext(AppContext)
+    const { banks, handleNewAccountSubmission} = useContext(AppContext)
     const navigate = useNavigate()
     const bank_names = banks.filter(bank=>{
         return bank.name.toLowerCase().includes(holdSuggest.toLowerCase())

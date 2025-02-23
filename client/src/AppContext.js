@@ -100,10 +100,6 @@ export const AppProvider = ({ children }) => {
   })
   setinsights(transactionCategories)
   },[user])
- 
-  
-
-
   
   useEffect(() => {
     if (!user) return;
@@ -119,7 +115,7 @@ export const AppProvider = ({ children }) => {
     setLoading(false);
     
   });
-}, []);
+}, [user]);
 
 function handleNewAccountSubmission(bank_name,
   account_value,
@@ -134,29 +130,27 @@ function handleNewAccountSubmission(bank_name,
     credentials: 'include',
     body: JSON.stringify({bank_name, account_value, account_type}),
   })
-  .then((r) => r.json())
-  .then(data=>{
+    .then((r) => r.json())
+    .then(data=>{
 
-    if (data) {
-      console.log(data)
-      console.log(accounts)
-      setAccounts([...accounts, data])
-      console.log(accounts)
-      navigate('/accounts')
+        if (data) {
+          console.log(data)
+          console.log(accounts)
+          setAccounts([...accounts, data])
+          console.log(accounts)
+          navigate('/accounts')
+          
+        }
+        else {
+          console.log("Something went wrong")
+          setSubmitting(false)
+          setErrorState(true)
+          
+        }
       
-    }
-    else {
-      console.log("Something went wrong")
-      setSubmitting(false)
-      setErrorState(true)
-      
-    }
-    
-  }
+      }
   
-  )
-
-  }
+    )}
 
 
   function handleAccountDeletion(navigate, id){
@@ -245,6 +239,14 @@ function handleNewAccountSubmission(bank_name,
     .catch(error => console.error('Error:', error)); 
 }
   
+const handleTransactionDelete=(transactionID, accountID)=>{
+  fetch(`/api/transaction/${transactionID}`, { method: 'DELETE' })
+  .then(() => {
+    const newTransactionList = transactions.filter(transaction=>parseInt(transaction.id) !==parseInt(transactionID))
+    setTransactions(newTransactionList)
+
+  })
+}
       
 
   return (
@@ -263,6 +265,7 @@ function handleNewAccountSubmission(bank_name,
      errorState,
      handleTransactionSeed,
      handleNewAccountSubmission,
+     handleTransactionDelete,
      mockLogin, 
      API_URL }}>
       {children}

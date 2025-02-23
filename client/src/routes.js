@@ -44,7 +44,7 @@ const routes = [
             }, 
           
             {
-              path:'/new_account',
+              path:'/account/new',
               element: <AddNewAccount />
             }
         ]

@@ -66,7 +66,7 @@ function BanksComponentv2({stylingContext}) {
         {accountElement}
       </div>
       <div className='addAccountWrapper'>
-        <button className='addAccounts' onClick={()=> navigate('/new_account')}>Add Accounts</button>
+        <button className='addAccounts' onClick={()=> navigate('/account/new')}>Add Accounts</button>
       </div>
     </div>
   )
