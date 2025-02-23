@@ -1,39 +1,13 @@
-import React, { useState, useContext } from 'react'
-import { useNavigate } from 'react-router-dom';
+import React, { useContext, useEffect } from 'react'
 import AddNewAccountForm from '../Components/AddNewAccountForm';
 import AppContext from '../AppContext';
+import { useNavigate } from 'react-router-dom';
 import '../Styling/App.css'
 
 function AddNewAccount() {
-    const navigate = useNavigate();
-    const { API_URL } = useContext(AppContext);
-    const [errorState, setErrorState] = useState(false)
-    function handleNewAccountSubmission(bank_name, account_value, account_type, setSubmitting) {
-        fetch(`/api/account`, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            
-          },
-          credentials: 'include',
-          body: JSON.stringify({bank_name, account_value, account_type}),
-        })
-        .then((r) => {
-          if (r.ok) {
-            navigate('/accounts')
-            .then(document.location.reload())
-          
-          }
-          else {
-            console.log("Something went wrong")
-            setSubmitting(false)
-            setErrorState(true)
-            
-          }})
-          
-      }
 
-
+  const {errorState} = useContext(AppContext)
+  
   return (
     <main>
         <div className='login_wrapper'>
@@ -43,7 +17,7 @@ function AddNewAccount() {
                 <div className='login_header'><h2>Create New Bank Account</h2>
                   {errorState?<p>Invalid account information. Bank name must be less than 30 characters and account value must be positive.</p>:null}
                 </div>
-                <AddNewAccountForm handleNewAccountSubmission={handleNewAccountSubmission}/>
+                <AddNewAccountForm />
               </div>
             </div>
           </div>

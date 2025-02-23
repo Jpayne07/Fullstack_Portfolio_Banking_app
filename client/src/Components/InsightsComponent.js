@@ -4,14 +4,17 @@ import AppContext from '../AppContext'
 
 
 function Insights() {
-  const { categories } = useContext(AppContext);
+  const { insights } = useContext(AppContext);
+  console.log(insights)
+
+ 
   return (
   <div className='bank_account_container' style={{flexWrap:"wrap"}}>
     <div className="transaction_headers" style={{gridTemplateColumns:"3fr 2fr", width:"100%",fontSize:"1.5rem"}}>
       <h4>Category</h4>
       <h4>Amount</h4>
     </div>
-    {Object.entries(categories)
+    {Object.entries(insights)
       .map(([key, value])=>{
         return(
         <div style={{width:"100%"}}key={key} >

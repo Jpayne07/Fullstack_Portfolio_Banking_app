@@ -4,7 +4,7 @@ import AppContext from '../AppContext';
 
 
 function TransactionIndexModule({}) {
-  const {user} = useContext(AppContext);
+  const {transactions} = useContext(AppContext);
   const { id } = useParams()
   const [currentPage, setCurrentPage] = useState(1); // Tracks the current page
   const itemsPerPage = 10; // Number of transactions per page
@@ -24,32 +24,17 @@ function TransactionIndexModule({}) {
     fetch(`/api/transaction/${id}`, { method: 'DELETE' })
     .then(() => alert('Transaction deleted, please refresh page'));
   }
-
+  console.log(transactions)
   // map transactions
-    const transactionList = user.accounts
-    .filter(account=> parseInt(account.id) === parseInt(id))
-    .map(account=>{
-      const totalTransactions = account.transactions.length;
-        const paginatedTransactions = account.transactions.slice(
-          (currentPage - 1) * itemsPerPage,
-          currentPage * itemsPerPage);
-
-      return (
-        <div className='bank_account_container' >
-        <div style={{width:"100%"}}>
-          {/* H1 Bank: Account Name */}
-        <h1 style={{padding:"15px 0", textAlign:"left" }}>{`${account.bank.name}: ${account.account_type}`}</h1>
-          {/* Begin Headers */}
-        <div className="transaction_headers">
-        <span id="transaction_header_show"><h4>Description</h4></span>
-        <span id="transaction_header_show"><h4>Date</h4></span>
-        <span id="transaction_header_hide"><h4>ID</h4></span>
-        <span id="transaction_header_hide"><h4>ACCT#</h4></span>
-        <span id="transaction_header_show"><h4>Amount</h4></span>
-        <span id="transaction_header_hide"><h4>Edit</h4></span>
-        </div>
-        {/* begin transactions */}
-        {paginatedTransactions.map((transaction) => {
+  const totalTransactions = transactions.length;
+  
+    const finalTransactions =  transactions
+    .filter(transaction=> parseInt(transaction.account_id) === parseInt(id))
+    .slice(
+      (currentPage - 1) * itemsPerPage,
+      currentPage * itemsPerPage)
+    .map(transaction=>{
+        
           // date below
           const date = new Date(transaction.created_at).toLocaleDateString('en-US', {
             day: '2-digit',
@@ -77,33 +62,32 @@ function TransactionIndexModule({}) {
             </svg>
           </div>
         </div>
-        )
-      })}
-
-    {/* Pagination Controls */}
+        )})
+          {/* Pagination Controls */}
+    
+  return(
+    <div>{finalTransactions}
     <div className="pagination_controls" style={{ marginTop: "20px" }}>
-      <button
-        onClick={handlePreviousPage}
-        disabled={currentPage === 1}>
-        Previous
-      </button>
-      <span>
-        Page {currentPage} of{" "}
-        {Math.ceil(totalTransactions / itemsPerPage)}
-      </span>
-      <button
-        onClick={handleNextPage}
-        disabled={currentPage * itemsPerPage >= totalTransactions}>
-        Next
-      </button>
-    </div>
-  </div>
-</div>)     
-    })
-
-  return (
-    <div>{transactionList}</div> 
+    <button
+      onClick={handlePreviousPage}
+      disabled={currentPage === 1}>
+      Previous
+    </button>
+    <span>
+      Page {currentPage} of{" "}
+      {Math.ceil(totalTransactions / itemsPerPage)}
+    </span>
+    <button
+      onClick={handleNextPage}
+      disabled={currentPage * itemsPerPage >= totalTransactions}>
+      Next
+    </button>
+  </div></div>
   )
 }
+
+  
+     
+
 
 export default TransactionIndexModule

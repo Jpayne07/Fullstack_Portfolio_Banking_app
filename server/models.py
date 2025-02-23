@@ -40,6 +40,7 @@ class User(db.Model, SerializerMixin):
     def transactions(self):
         return [transaction for account in self.accounts for transaction in account.transactions]
 
+
     
     banks = association_proxy('accounts', 'banks',
             creator = lambda card_obj: Bank(card = card_obj))

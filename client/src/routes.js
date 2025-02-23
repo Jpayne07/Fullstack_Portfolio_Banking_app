@@ -2,10 +2,10 @@ import React from 'react'
 import App from './App'
 import Login from './Pages/Login'
 import Home from './Pages/Home'
-import TransactionsIndex from './Pages/TransactionsIndex'
+import TransactionsIndex from './Pages/AccountID'
 import TransactionId from './Pages/Transaction_id'
 import Signup from './Pages/Signup'
-import Accountsv2 from './Pages/Accountsv2'
+import Accountsv2 from './Pages/AccountsIndex'
 import Insights from './Pages/Insights'
 import AddNewAccount from './Pages/AddNewAccount'
 
@@ -19,6 +19,7 @@ const routes = [
               path:"/",
               element: <Home />
             }, 
+            
             {
               path:'/login',
               element: <Login />
@@ -43,7 +44,7 @@ const routes = [
             }, 
           
             {
-              path:'/add_account',
+              path:'/new_account',
               element: <AddNewAccount />
             }
         ]

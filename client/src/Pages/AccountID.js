@@ -6,17 +6,35 @@ import { useNavigate } from 'react-router-dom'
 
 function Transactions() {
 
-  const {user, handleTransactionSeed} = useContext(AppContext);
+  const {user, handleTransactionSeed, accounts, handleAccountDeletion, deleteState} = useContext(AppContext);
   const { id } = useParams()
-  const [deleteState, setDeleteState] = useState(false)
-  const API_URL = process.env.REACT_APP_API_URL;
+  
   const navigate = useNavigate();
+  const account = accounts.filter((account) => parseInt(account.id) === parseInt(id))[0]
+  console.log(account)
   return (
     <div className='page_wrapper'>
       <div className='background_wrapper' id='transaction_index'>
         <div className='_wrapper' id='transaction_index'>
           <h2 style={{width:"100%", textAlign:"center"}}>Transactions</h2>
+          <h1 style={{padding:"15px 0", textAlign:"left" }}>{`${account.bank.name}: ${account.account_type}`}</h1>
+          <div className='bank_account_container' >
+        <div style={{width:"100%"}}>
+          {/* H1 Bank: Account Name */}
+        {/* <h1 style={{padding:"15px 0", textAlign:"left" }}>{`${account.bank.name}: ${account.account_type}`}</h1> */}
+          {/* Begin Headers */}
+        <div className="transaction_headers">
+        <span id="transaction_header_show"><h4>Description</h4></span>
+        <span id="transaction_header_show"><h4>Date</h4></span>
+        <span id="transaction_header_hide"><h4>ID</h4></span>
+        <span id="transaction_header_hide"><h4>ACCT#</h4></span>
+        <span id="transaction_header_show"><h4>Amount</h4></span>
+        <span id="transaction_header_hide"><h4>Edit</h4></span>
+        </div>
+
           <TransactionIndexModule user = {user}/>
+          </div>
+          </div>
           <div className='transactions_button_break'></div>
           <button className='transactions_rng' onClick={()=>handleTransactionSeed(id)}>
             Generate Random Transactions 
@@ -26,14 +44,8 @@ function Transactions() {
           </button>
           <button className='transactions_rng'
           style={{background:"red"}} 
-          onClick={()=>fetch(`/api/singular_account/${id}`,{
-            method:"DELETE"
-          })
-          .then(()=>setDeleteState(true))
-          .then(()=>{
-            navigate('/accounts')
-            document.location.reload()})
-          }> Delete Account </button>
+          onClick={()=>handleAccountDeletion(navigate, id)}
+          > Delete Account </button>
           {deleteState?
           <div style={{width:"100%", justifyContent:"center"}}>
             <p style={{textAlign:"center"}}>Account Deleted</p>

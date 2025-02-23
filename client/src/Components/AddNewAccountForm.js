@@ -1,15 +1,16 @@
-import React, { useState, useContext} from 'react'
+import React, { useState, useContext, useEffect} from 'react'
 import { Formik, Form, Field} from 'formik';
 import AppContext from '../AppContext';
+import { useNavigate } from 'react-router-dom';
 
 import * as yup from 'yup';
 
 
 
-function AddNewAccountForm({handleNewAccountSubmission}) {
+function AddNewAccountForm({setErrorState}) {
     const [holdSuggest, setHoldSuggest] = useState('')
-    const { banks } = useContext(AppContext)
-    
+    const { banks, handleNewAccountSubmission, accounts } = useContext(AppContext)
+    const navigate = useNavigate()
     const bank_names = banks.filter(bank=>{
         return bank.name.toLowerCase().includes(holdSuggest.toLowerCase())
     })
@@ -29,14 +30,21 @@ function AddNewAccountForm({handleNewAccountSubmission}) {
 
         });
 
+        // useEffect(()=>{
+        //     if (accounts.length) {
+        //         navigate('/accounts');
+        //       }
+        // },[accounts])
+
   return (
     <Formik
     initialValues={{ bank_name: '', account_value: 0, account_type: '' }}
     validationSchema={FormSchema}
     onSubmit={(values, { setSubmitting }) => {
-        handleNewAccountSubmission(values.bank_name, values.account_value, values.account_type, setSubmitting);
+        handleNewAccountSubmission(values.bank_name, values.account_value, values.account_type, setSubmitting, navigate)
+        
     }}
->
+>   
     {({ isSubmitting, errors, handleChange }) => (
       
     <Form className='login_form_body'>

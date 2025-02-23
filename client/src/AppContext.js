@@ -6,28 +6,107 @@ const API_URL = process.env.REACT_APP_API_URL;
 
 export const AppProvider = ({ children }) => {
   const [user, setUser] = useState(undefined);
-  const [categories, setCategories] = useState([]);
+  const [insights, setinsights] = useState([]);
   const [loading, setLoading] = useState(true);
   const [errors, setErrors] = useState([]);
+  const [errorState, setErrorState] = useState(false)
   const [banks, setBanks] = useState([])
+  const [accounts, setAccounts] = useState([])
+  const [transactions, setTransactions] = useState([])
+  const [deleteState, setDeleteState] = useState(false)
 
-  useEffect(() => {
-      
-      fetch(`/api/insights`,{
-        method: 'GET',
-        credentials: 'include'
+  function handleLogin(username, password, setSubmitting, navigate) {
+    
+    fetch(`/api/login`, {
+      method: "POST",
+      credentials: 'include',
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ username, password }),
+    })
+      .then((r) => {
+        console.log(r)
+        if (r.ok) {
+          r.json().then((user) => {
+            console.log("User", user)
+            setUser(user)
+            setAccounts(user.accounts)
+            setTransactions(user.transactions)
+            navigate('/');
+          })
+        } else {
+          r.json().then((err) => {
+            setErrors([err.message || "Invalid login credentials. Please try again."]);
+          });
+        }
       })
-      .then((r) => r.json())
-      .then(insightsData => {
-      setCategories(insightsData);
-    }).catch(error => {
-      console.log("Error fetching insights", error)
-      setLoading(false);
+      .catch((err) => {
+        setErrors([err.message || "Network error. Please try again later."]);
+      })
+      .finally(()=>{
+        setSubmitting(false)
+      })
       
-    });
-  }, [user]);
+  }
+  // this is for the login without signup
+  function mockLogin(username, password, navigate) {
+    fetch(`/api/login`, {
+      method: "POST",
+      credentials: 'include',
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ username, password }),
+    })
+      .then((r) => {
+        if (r.ok) {
+          r.json().then((user) => {
+            setUser(user);
+            setUser(user)
+            setAccounts(user.accounts)
+
+            const transactionsList = user.accounts.reduce((acc, account) => {
+              return [...acc, ...account.transactions]})
+
+            setTransactions(transactionsList)
+            console.log(transactions)
+            navigate('/')
+          });
+        } else {
+          r.json().then((err) => {
+            setErrors([err.message || "Invalid login credentials. Please try again."]);
+          });
+        }
+      })
+      .catch((err) => {
+        setErrors([err.message || "Network error. Please try again later."]);
+      })
+      
+  }
+  useEffect(()=>{
+  let transactionCategories =[]
+  accounts.forEach(account => {
+    account.transactions.forEach((transaction)=>{
+      if (transaction.type = "Negative"){
+        if (transactionCategories[transaction.category]){
+          transactionCategories[transaction.category] += transaction.amount;
+        }
+        else{
+          transactionCategories[transaction.category] = transaction.amount;
+        }
+      }
+    })
+  })
+  setinsights(transactionCategories)
+  },[user])
+ 
+  
+
+
   
   useEffect(() => {
+    if (!user) return;
     fetch(`/api/banks`,{
       method: 'GET',
       credentials: 'include'
@@ -41,6 +120,57 @@ export const AppProvider = ({ children }) => {
     
   });
 }, []);
+
+function handleNewAccountSubmission(bank_name,
+  account_value,
+  account_type,
+  setSubmitting,
+  navigate) {
+  fetch(`/api/accounts`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    credentials: 'include',
+    body: JSON.stringify({bank_name, account_value, account_type}),
+  })
+  .then((r) => r.json())
+  .then(data=>{
+
+    if (data) {
+      console.log(data)
+      console.log(accounts)
+      setAccounts([...accounts, data])
+      console.log(accounts)
+      navigate('/accounts')
+      
+    }
+    else {
+      console.log("Something went wrong")
+      setSubmitting(false)
+      setErrorState(true)
+      
+    }
+    
+  }
+  
+  )
+
+  }
+
+
+  function handleAccountDeletion(navigate, id){
+    fetch(`/api/singular_account/${id}`,{
+      method:"DELETE"
+    })
+    .then(()=>setDeleteState(true))
+    .then(()=>{
+      const newAccountSet = accounts.filter((account)=>parseInt(account.id) !== parseInt(id))
+      setAccounts(newAccountSet)
+      
+      })
+      .then(navigate('/accounts'))
+  }
 
   useEffect(() => {
     setLoading(true);
@@ -60,7 +190,11 @@ export const AppProvider = ({ children }) => {
         // Check if data contains a valid user_id or similar flag
         if (data.id) {
           setUser(data);
-          console.log(data)
+          setAccounts(data.accounts);
+          const transactionsList = data.accounts.reduce((acc, account) => {
+            return [...acc, ...account.transactions];
+          }, []);
+          setTransactions(transactionsList);
         } else {
           setUser(null);
         }
@@ -74,64 +208,6 @@ export const AppProvider = ({ children }) => {
       });
   }, []);
 
-  function handleLogin(username, password, setSubmitting, navigate) {
-    
-    fetch(`/api/login`, {
-      method: "POST",
-      credentials: 'include',
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ username, password }),
-    })
-      .then((r) => {
-        if (r.ok) {
-          r.json().then((user) => {
-            setUser(user);
-            navigate('/');
-          })
-        } else {
-          r.json().then((err) => {
-            setErrors([err.message || "Invalid login credentials. Please try again."]);
-          });
-        }
-      })
-      .catch((err) => {
-        setErrors([err.message || "Network error. Please try again later."]);
-      })
-      .finally(()=>{
-        setSubmitting(false)
-      })
-      
-  }
-  // this is for the login without signup
-  function mockLogin(username, password, navigate) {
-    console.log("Nav test", navigate)
-    fetch(`/api/login`, {
-      method: "POST",
-      credentials: 'include',
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ username, password }),
-    })
-      .then((r) => {
-        if (r.ok) {
-          r.json().then((user) => {
-            setUser(user);
-            navigate('/')
-          });
-        } else {
-          r.json().then((err) => {
-            setErrors([err.message || "Invalid login credentials. Please try again."]);
-          });
-        }
-      })
-      .catch((err) => {
-        setErrors([err.message || "Network error. Please try again later."]);
-      })
-      
-  }
   // this will seed transactions on individual account pages
   function handleTransactionSeed(id) {
     fetch(`/api/transactionseed`, {
@@ -143,7 +219,29 @@ export const AppProvider = ({ children }) => {
         body: JSON.stringify({ id }),
     })
     .then(response => response.json())
-    .then(document.location.reload())
+    .then(data=>{
+      const accountID = data[0]['account_id']
+      setTransactions([...transactions, ...data])
+      const accountToUpdate = accounts.find(account => parseInt(account.id) === parseInt(accountID));
+
+      if (accountToUpdate) {
+        // Create a new transactions array for the matching account
+        const updatedTransactions = [...accountToUpdate.transactions, ...data];
+
+        // Map over accounts to update the correct account immutably
+        const updatedAccounts = accounts.map(account => 
+          parseInt(account.id) === parseInt(accountID)
+            ? { ...account, transactions: updatedTransactions }
+            : account
+        );
+
+        setAccounts(updatedAccounts);
+      }
+
+
+    }
+      
+    )
     .catch(error => console.error('Error:', error)); 
 }
   
@@ -151,16 +249,22 @@ export const AppProvider = ({ children }) => {
 
   return (
     <AppContext.Provider value={{loading,
+     transactions,
      banks,
-     categories,
+     accounts,
      user,
      setUser,
      setLoading,
-     setCategories,
      handleLogin,
+     deleteState,
+     handleAccountDeletion,
+     insights,
      errors,
+     errorState,
      handleTransactionSeed,
-     mockLogin, API_URL }}>
+     handleNewAccountSubmission,
+     mockLogin, 
+     API_URL }}>
       {children}
     </AppContext.Provider>
   );

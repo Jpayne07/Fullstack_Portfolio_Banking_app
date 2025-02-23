@@ -28,9 +28,6 @@ function Signup() {
             return r.json()
           } else {
             return r.json().then((data) => {
-              // Now data is the parsed JSON object
-              console.log(data);
-              console.log(data.error);
               setErrorState(true);
               seterrorMessage(data.error)
               setSubmitting(false);

@@ -56,7 +56,10 @@ class Signup(Resource):
     
 class Transactions_List(Resource):
     def get(self):
-        transactions = [transaction.to_dict() for transaction in Transactions.query.all()]
+        if session['user_id']:
+            user = User.query.filter(User.id == session['user_id']).first()
+            transactions = [transaction.to_dict() for transaction in user.transactions]
+            return transactions
         return(transactions,200)   
 
 class IndivdiualTransaction(Resource):
@@ -93,19 +96,21 @@ class IndivdiualTransaction(Resource):
     
 class TransactionSeed(Resource):
     def post(self):  # Change to POST for creating resources
+
         data = request.get_json()
         id = data['id']
         db.session.commit()
         money_categories = ['shopping', 'coffee ', 'subs', 'food', 'groceries', 'rent']
         transaction_type_categories = ['Negative', 'Positive']
-        for _ in range(100):
+        transaction_list_Index = []
+        for _ in range(25):
             transaction = Transactions(
             title=fake.company(),
             category=random.choice(money_categories),  # Choose from the 5 predefined categories
             amount=round(random.uniform(1, 100), 0),  # Random amount between 1 and 1000 with 2 decimal places
             account_id=id,
             transaction_type=random.choice(transaction_type_categories)
-        )
+        );  transaction_list_Index.append(transaction)
             db.session.add(transaction)
             
 
@@ -115,9 +120,10 @@ class TransactionSeed(Resource):
             print("in account")
             account.transaction_id = transaction.id  # Update transaction reference
             db.session.commit()
+        transaction_list = [transaction.to_dict() for transaction in transaction_list_Index]
 
-        data = {"message": "Transactions seeded successfully"}
-        return data, 201  # Return success response
+      
+        return transaction_list, 201  # Return success response
     
 class Banks(Resource):
     def get(self):
@@ -150,14 +156,16 @@ class Insights(Resource):
 class Account(Resource):
     def get(self):
         if session['user_id']:
-            user = User.query.filter(User.id == session['user_id']).first().to_dict()
-            return user
+            user = User.query.filter(User.id == session['user_id']).first()
+            accounts = [account.to_dict() for account in user.accounts]
+            return accounts
         else:
             return {"message": "You must sign in to see this"}, 405
         
     def post(self):
         if session['user_id']:
             data = request.get_json()
+            new_bank_id = Bank.query.all()[-1].to_dict()['id'] + 1
             bank = Bank.query.filter(Bank.name == data['bank_name']).first()
             if bank:
                 bank_id = bank.to_dict()['id']
@@ -174,34 +182,30 @@ class Account(Resource):
                 card_number=account.generate_unique_card_number(),
                 expiration_date=datetime.now().date() + relativedelta(years=3),
                 )
-                print('test2')
                 db.session.add_all([new_card, account])
                 db.session.commit()
+                return (account.to_dict(), 201)
             else:
                 new_bank = Bank(name = data['bank_name'])
                 db.session.add(new_bank)
                 db.session.commit()
-                bank = Bank.query.filter(Bank.name == data['bank_name']).first().to_dict()['id']
+                
                 card = Cards.query.all()
-                new_card = Cards(
-                card_number=account.generate_unique_card_number(),
-                expiration_date=datetime.now().date() + relativedelta(years=3),
-                )
-                card_id = card[-1].to_dict()['id']
+                card_id = card[-1].to_dict()['id'] + 1
                 account = Accounts(
-                    bank_id = bank,
+                    bank_id = new_bank_id,
                     card_id = card_id,
                     user_id = session['user_id'],
                     account_value = float(data['account_value']),
                     account_type = data['account_type']
                 )
-                db.session.add(account)
+                new_card = Cards(
+                card_number=account.generate_unique_card_number(),
+                expiration_date=datetime.now().date() + relativedelta(years=3),
+                )
+                db.session.add_all([new_card, account])
                 db.session.commit()
-
-                
-                db.session.add(new_card)
-                db.session.commit()
-                return make_response("Adding new bank to database, bank account created", 201)
+                return make_response(account.to_dict(), 201)
 
                 
         else:
@@ -227,7 +231,6 @@ class Login(Resource):
         if user:
             if user.authenticate(user_object['password']):
                 session['user_id'] = user.to_dict()['id']
-                print("Session set:", session)
                 return user.to_dict(), 200
         return {"message": "Username or password are incorrect"}, 401
 
@@ -308,10 +311,10 @@ class ClearSession(Resource):
 
 
 
-api.add_resource(Account, '/api/account')
+api.add_resource(Account, '/api/accounts')
 api.add_resource(SingularAccount, '/api/singular_account/<int:id>')
 api.add_resource(Banks, '/api/banks')
-api.add_resource(Transactions_List, '/api/transaction')
+api.add_resource(Transactions_List, '/api/transactions')
 api.add_resource(TransactionSeed, '/api/transactionseed')
 api.add_resource(User_Item, '/api/user')
 api.add_resource(CheckSession, '/api/check_session')

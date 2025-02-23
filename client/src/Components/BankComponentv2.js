@@ -3,9 +3,8 @@ import AppContext from '../AppContext';
 import { useNavigate } from 'react-router-dom';
 
 function BanksComponentv2({stylingContext}) {
-  const { loading, user } = useContext(AppContext)
+  const { loading, accounts } = useContext(AppContext)
   const navigate = useNavigate();
-
   const formatter = new Intl.NumberFormat('en-US', {
     style: 'currency',
     currency: 'USD',
@@ -15,8 +14,7 @@ function BanksComponentv2({stylingContext}) {
   if (loading) {
     return <p>Loading...</p>;
   }
-  
-  const accountElement = user.accounts.length > 0? user.accounts.sort((a, b) => a.bank_id - b.bank_id)
+  const accountElement = accounts.length > 0? accounts.sort((a, b) => a.bank_id - b.bank_id)
   // need to only show first occurence
   .map(account=>{
     // for styling context on home page
@@ -68,7 +66,7 @@ function BanksComponentv2({stylingContext}) {
         {accountElement}
       </div>
       <div className='addAccountWrapper'>
-        <button className='addAccounts' onClick={()=> navigate('/add_account')}>Add Accounts</button>
+        <button className='addAccounts' onClick={()=> navigate('/new_account')}>Add Accounts</button>
       </div>
     </div>
   )

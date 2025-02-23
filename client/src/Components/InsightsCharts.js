@@ -8,7 +8,7 @@ import { PieChart } from 'react-minimal-pie-chart';
 function InsightsCharts() {
   const [hovered, setHoveredTitle] = useState(null);
   const [hoveredValue, setHoveredValue] = useState(null);
-    const {categories} = useContext(AppContext)
+    const {insights} = useContext(AppContext)
     const colors = [
       "#2BFF5C", // Base Bright Green
       "#1EAA46", // Darker Green for Depth
@@ -20,32 +20,12 @@ function InsightsCharts() {
       "#FF69B4", // Vibrant Pink (Energetic)
       "#8A2BE2"  // Rich Purple (Sophisticated Touch)
     ];
-    const arrofObjects = Object.entries(categories).map(([key, value],index) => ({
+    const arrofObjects = Object.entries(insights).map(([key, value],index) => ({
       title: key,
       value: value,
       color: colors[index % colors.length]
   }));
 
-//   return (<div>
-//     <h2>Spending</h2>
-//     <PieChart
-//     data={arrofObjects}
-//     // background={color}
-//     label={({ dataEntry }) => (hovered === dataEntry.title ? `${dataEntry.title}: ${dataEntry.value}` : dataEntry.value)}
-//             onMouseOut={() => setHovered(null)}
-//             labelStyle={{
-//               fontSize: "5px",
-//               fill: "#fff",
-//               fontWeight: "bold",
-//             }}
-//             radius={42}
-//             paddingAngle={1}
-//             animate
-//             lineWidth={30}
-//             labelPosition={75} // Adjusts label position
-// />
-// </div>
-//   )
 return (
   <div style={{ width: '300px', height: '300px', position: 'relative' }}>
     {/* The PieChart itself */}
