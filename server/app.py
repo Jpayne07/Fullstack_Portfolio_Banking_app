@@ -130,29 +130,6 @@ class Banks(Resource):
         banks = [bank.to_dict() for bank in Bank.query.all()]
         return(banks,200)
     
-class Insights(Resource):
-    def get(self):
-        user = User.query.filter(User.id == session['user_id']).first()
-        if user:
-            accounts = [account.to_dict() for account in user.accounts]
-            transaction_categories = {}
-            for account in accounts:
-                for transaction in account['transactions']:
-                    category = transaction['category']
-                    # only calculating spending
-                    if transaction['transaction_type'] == "Negative":
-                        if category in transaction_categories:
-
-                            # key += value
-                            transaction_categories[category] += transaction['amount']
-                        else:
-                            # setting first find of transaction category
-                            transaction_categories[category] = transaction['amount']
-
-        else:
-            return {"message": "You must sign in to see this"}, 405
-        return(transaction_categories,200)
-    
 class Account(Resource):
     def get(self):
         if session['user_id']:
@@ -324,7 +301,6 @@ api.add_resource(LoginWithGithub, '/api/login-github')
 api.add_resource(ClearSession, '/api/clear_session')
 api.add_resource(Callback, '/callback')
 api.add_resource(IndivdiualTransaction, '/api/transaction/<int:id>')
-api.add_resource(Insights, '/api/insights')
 
 @app.errorhandler(404)
 def not_found(e):
