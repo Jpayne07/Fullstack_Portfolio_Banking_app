@@ -70,8 +70,9 @@ function TransactionIndexModule({}) {
     <div className="pagination_controls" style={{ marginTop: "20px" }}>
     <button
       onClick={handlePreviousPage}
-      disabled={currentPage === 1}>
-      Previous
+      disabled={currentPage === 1}
+      style = {{width:"4rem"}}>
+      &larr;
     </button>
     <span>
       Page {currentPage} of{" "}
@@ -79,8 +80,9 @@ function TransactionIndexModule({}) {
     </span>
     <button
       onClick={handleNextPage}
-      disabled={currentPage * itemsPerPage >=  filteredTransactions.length}>
-      Next
+      disabled={currentPage * itemsPerPage >=  filteredTransactions.length}
+      style = {{width:"4rem"}}>
+      &rarr;
     </button>
   </div></div>
   )

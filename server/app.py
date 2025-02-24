@@ -13,11 +13,7 @@ from sqlalchemy.exc import IntegrityError
 
 
 fake = Faker()
-# Serve static assets (JS, CSS, images, etc.)
-@app.route('/')
-@app.route('/<int:id>')
-def index(id=0):
-    return render_template("index.html")
+
 
 
 class User_Item(Resource):
@@ -142,47 +138,64 @@ class Account(Resource):
     def post(self):
         if session['user_id']:
             data = request.get_json()
+            print(data)
             new_bank_id = Bank.query.all()[-1].to_dict()['id'] + 1
             bank = Bank.query.filter(Bank.name == data['bank_name']).first()
-            if bank:
-                bank_id = bank.to_dict()['id']
-                card = Cards.query.all()
-                card_id = card[-1].to_dict()['id'] + 1
-                account = Accounts(
-                    bank_id = bank_id,
-                    card_id = card_id,
-                    user_id = session['user_id'],
-                    account_value = float(data['account_value']),
-                    account_type = data['account_type']
-                )
-                new_card = Cards(
-                card_number=account.generate_unique_card_number(),
-                expiration_date=datetime.now().date() + relativedelta(years=3),
-                )
-                db.session.add_all([new_card, account])
-                db.session.commit()
-                return (account.to_dict(), 201)
-            else:
-                new_bank = Bank(name = data['bank_name'])
-                db.session.add(new_bank)
-                db.session.commit()
-                
-                card = Cards.query.all()
-                card_id = card[-1].to_dict()['id'] + 1
-                account = Accounts(
-                    bank_id = new_bank_id,
-                    card_id = card_id,
-                    user_id = session['user_id'],
-                    account_value = float(data['account_value']),
-                    account_type = data['account_type']
-                )
-                new_card = Cards(
-                card_number=account.generate_unique_card_number(),
-                expiration_date=datetime.now().date() + relativedelta(years=3),
-                )
-                db.session.add_all([new_card, account])
-                db.session.commit()
-                return make_response(account.to_dict(), 201)
+            try:
+                if bank:
+                    bank_id = bank.to_dict()['id']
+                    card = Cards.query.all()
+                    card_id = card[-1].to_dict()['id'] + 1
+                    account = Accounts(
+                        bank_id = bank_id,
+                        card_id = card_id,
+                        user_id = session['user_id'],
+                        account_value = float(data['account_value']),
+                        account_type = data['account_type'],
+                    )
+                    new_card = Cards(
+                    card_number=data['cardNumber'],
+                    expiration_date=datetime.now().date() + relativedelta(years=3),
+                    )
+                    db.session.add(new_card)
+                    db.session.commit()
+                    db.session.add(account)
+                    db.session.commit()
+                    return (account.to_dict(), 201)
+                else:
+                    new_bank = Bank(name = data['bank_name'])
+                    db.session.add(new_bank)
+                    db.session.commit()
+                    
+                    card = Cards.query.all()
+                    card_id = card[-1].to_dict()['id'] + 1
+                    account = Accounts(
+                        bank_id = new_bank_id,
+                        card_id = card_id,
+                        user_id = session['user_id'],
+                        account_value = float(data['account_value']),
+                        account_type = data['account_type']
+                    )
+                    new_card = Cards(
+                    card_number=data['cardNumber'],
+                    expiration_date=datetime.now().date() + relativedelta(years=3),
+                    )
+                    db.session.add(new_card)
+                    db.session.commit()
+                    db.session.add(account)
+                    db.session.commit()
+                    return (account.to_dict(), 201)
+            except ValueError as ve:
+                return {"error": str(ve)}, 400
+            except IntegrityError as ie:
+                db.session.rollback()
+                print('test')  # Always rollback on an error
+
+                return ('card is taken'), 400
+            except Exception as e:
+                db.session.rollback()
+                return {"error": "Something went wrong: " + str(e)}, 500
+
 
                 
         else:

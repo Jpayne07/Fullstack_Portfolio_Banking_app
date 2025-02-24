@@ -7,18 +7,17 @@ import * as yup from 'yup';
 
 
 
-function AddNewAccountForm({setErrorState}) {
+function AddNewAccountForm() {
+   
     const [holdSuggest, setHoldSuggest] = useState('')
-    const { banks, handleNewAccountSubmission} = useContext(AppContext)
+    const { banks, handleNewAccountSubmission, errors, errorState} = useContext(AppContext)
     const navigate = useNavigate()
     const bank_names = banks.filter(bank=>{
         return bank.name.toLowerCase().includes(holdSuggest.toLowerCase())
     })
-
     const FormSchema = yup.object().shape({
         account_value: yup
-            .number()
-            .min(1, 'Account value must be at least 1 characters long'),
+            .number().min(1, 'Account value must be at least 1 characters long'),
         bank_name: yup
             .string()
             .min(5, 'bank must be 5 characters long')
@@ -26,22 +25,20 @@ function AddNewAccountForm({setErrorState}) {
             .matches(/[A-Z]/, 'username requires an uppercase letter'),
         account_type: yup
             .string()
-            .matches(/^(Checking|Savings)$/, "Account type should be 'Checking' or 'Savings'")
+            .matches(/^(Checking|Savings)$/, "Account type should be 'Checking' or 'Savings'"),
+        cardNumber: yup.string()
+            .matches(/^\d+$/, 'Must contain only digits')
+            .length(9, 'Must be at least 9 characters long')
 
         });
 
-        // useEffect(()=>{
-        //     if (accounts.length) {
-        //         navigate('/accounts');
-        //       }
-        // },[accounts])
-
   return (
+    <div>
     <Formik
-    initialValues={{ bank_name: '', account_value: 0, account_type: '' }}
+    initialValues={{ bank_name: '', account_value: '', account_type: 'Checking', cardNumber: 0 }}
     validationSchema={FormSchema}
     onSubmit={(values, { setSubmitting }) => {
-        handleNewAccountSubmission(values.bank_name, values.account_value, values.account_type, setSubmitting, navigate)
+        handleNewAccountSubmission(values.bank_name, values.account_value, values.account_type, parseInt(values.cardNumber), setSubmitting, navigate)
         
     }}
 >   
@@ -78,8 +75,16 @@ function AddNewAccountForm({setErrorState}) {
             </div>
             <div className='form_row'>
                 <label className="formik_labels" id = "accountAdd">Account Type: </label>
-                <Field type="text" name="account_type" className="formik_fields"/>
+                <Field as="select"  name="account_type" className="formik_fields">
+                    <option value="Checking">Checking</option>
+                    <option value="Savings">Savings</option>
+                </Field>
                 {errors.account_type && <p>{errors.account_type}</p>}
+            </div>
+            <div className='form_row'>
+                <label className="formik_labels" id = "accountAdd">Card Number</label>
+                <Field type ="text" name="cardNumber" className="formik_fields"/>
+                {errors.cardNumber && <p>{errors.cardNumber}</p>}
             </div>
           </div>
         
@@ -88,11 +93,15 @@ function AddNewAccountForm({setErrorState}) {
         <button type="submit" disabled={isSubmitting} id='login_button'>
         Submit
         </button>
-      
+        
         </div>
     </Form>
+    
     )}
+    
 </Formik>
+    {errorState?errors:null}
+</div>
   )
 }
 

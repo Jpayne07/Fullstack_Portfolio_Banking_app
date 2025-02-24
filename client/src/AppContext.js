@@ -62,7 +62,6 @@ export const AppProvider = ({ children }) => {
       .then((r) => {
         if (r.ok) {
           r.json().then((user) => {
-            setUser(user);
             setUser(user)
             setAccounts(user.accounts)
 
@@ -99,7 +98,7 @@ export const AppProvider = ({ children }) => {
     })
   })
   setinsights(transactionCategories)
-  },[user])
+  },[user, accounts])
   
   useEffect(() => {
     if (!user) return;
@@ -120,37 +119,42 @@ export const AppProvider = ({ children }) => {
 function handleNewAccountSubmission(bank_name,
   account_value,
   account_type,
+  cardNumber,
   setSubmitting,
   navigate) {
+    console.log(account_type)
   fetch(`/api/accounts`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
     },
     credentials: 'include',
-    body: JSON.stringify({bank_name, account_value, account_type}),
+    body: JSON.stringify({bank_name, account_value, account_type, cardNumber}),
   })
-    .then((r) => r.json())
-    .then(data=>{
-
-        if (data) {
-          console.log(data)
-          console.log(accounts)
+    .then((r) => {
+      if (r.ok){
+        r.json()
+        .then((data)=>{
+          console.log('test')
           setAccounts([...accounts, data])
-          console.log(accounts)
           navigate('/accounts')
-          
-        }
-        else {
-          console.log("Something went wrong")
+        })
+      }
+      else {
+        r.json().then((err)=>{
           setSubmitting(false)
           setErrorState(true)
-          
-        }
-      
+          setErrors(err)
+
+        })
       }
-  
-    )}
+    })
+    .catch((err) => {
+
+      setErrors([err || "Network error. Please try again later."]);
+    })
+    
+}
 
 
   function handleAccountDeletion(navigate, id){
@@ -159,11 +163,15 @@ function handleNewAccountSubmission(bank_name,
     })
     .then(()=>setDeleteState(true))
     .then(()=>{
+      setLoading(true)
+      navigate('/accounts')
       const newAccountSet = accounts.filter((account)=>parseInt(account.id) !== parseInt(id))
       setAccounts(newAccountSet)
+      console.log(accounts)
+      setLoading(false)}
       
-      })
-      .then(navigate('/accounts'))
+      )
+      
   }
 
   useEffect(() => {

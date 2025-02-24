@@ -1,4 +1,4 @@
-import React, {useContext, useState} from 'react'
+import React, {useContext} from 'react'
 import TransactionIndexModule from '../Components/Transaction_Index_Module'
 import AppContext from '../AppContext'
 import { useParams } from 'react-router-dom';
@@ -6,22 +6,22 @@ import { useNavigate } from 'react-router-dom'
 
 function Transactions() {
 
-  const {user, handleTransactionSeed, accounts, handleAccountDeletion, deleteState} = useContext(AppContext);
+  const {user, handleTransactionSeed, accounts, handleAccountDeletion, deleteState, loading} = useContext(AppContext);
   const { id } = useParams()
   
   const navigate = useNavigate();
-  const account = accounts.filter((account) => parseInt(account.id) === parseInt(id))[0]
-  console.log(account)
+  const account = accounts.find((account) => parseInt(account.id) === parseInt(id))
+  if (loading) {
+    return <div>Loading...</div>; // Display loading indicator
+  }
   return (
     <div className='page_wrapper'>
       <div className='background_wrapper' id='transaction_index'>
         <div className='_wrapper' id='transaction_index'>
           <h2 style={{width:"100%", textAlign:"center"}}>Transactions</h2>
-          <h1 style={{padding:"15px 0", textAlign:"left" }}>{`${account.bank.name}: ${account.account_type}`}</h1>
+          {account?<h1 style={{padding:"15px 0", textAlign:"left" }}>{`${account.bank.name}: ${account.bank.name}`}</h1>:null}
           <div className='bank_account_container' >
         <div style={{width:"100%"}}>
-          {/* H1 Bank: Account Name */}
-        {/* <h1 style={{padding:"15px 0", textAlign:"left" }}>{`${account.bank.name}: ${account.account_type}`}</h1> */}
           {/* Begin Headers */}
         <div className="transaction_headers">
         <span id="transaction_header_show"><h4>Description</h4></span>
