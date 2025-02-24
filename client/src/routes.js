@@ -8,44 +8,54 @@ import Signup from './Pages/Signup'
 import Accountsv2 from './Pages/AccountsIndex'
 import Insights from './Pages/Insights'
 import AddNewAccount from './Pages/AddNewAccount'
+import Error from './Pages/Error'
 
 
 const routes = [
       {
         path: '/',
         element: <App />,
+        errorElement:<Error />,
+        
         children: [
               {
               path:"/",
-              element: <Home />
+              element: <Home />,
+              errorElement:<Error />,
             }, 
             
             {
               path:'/login',
-              element: <Login />
+              element: <Login />,
+              errorElement:<Error />,
             },
             {
               path:'/accounts',
-              element: <Accountsv2 />
+              element: <Accountsv2 />,
+              errorElement:<Error />,
             }, 
             {
               path:'/account/:id',
-              element: <TransactionsIndex />
+              element: <TransactionsIndex />,
+              errorElement:<Error />,
             }, 
             {
               path:'/transactions/:id',
-              element: <TransactionId />
+              element: <TransactionId />,
+              errorElement:<Error />,
             }
             , 
           
             {
               path:'/insights',
-              element: <Insights />
+              element: <Insights />,
+              errorElement:<Error />,
             }, 
           
             {
               path:'/account/new',
-              element: <AddNewAccount />
+              element: <AddNewAccount />,
+              errorElement:<Error />,
             }
         ]
     }, 

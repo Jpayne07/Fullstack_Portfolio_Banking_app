@@ -14,12 +14,13 @@ function Transactions() {
   if (loading) {
     return <div>Loading...</div>; // Display loading indicator
   }
-  return (
+  if (account)
+   return (
     <div className='page_wrapper'>
       <div className='background_wrapper' id='transaction_index'>
         <div className='_wrapper' id='transaction_index'>
           <h2 style={{width:"100%", textAlign:"center"}}>Transactions</h2>
-          {account?<h1 style={{padding:"15px 0", textAlign:"left" }}>{`${account.bank.name}: ${account.bank.name}`}</h1>:null}
+          <h1 style={{padding:"15px 0", textAlign:"left" }}>{`${account.bank.name}: ${account.bank.name}`}</h1>
           <div className='bank_account_container' >
         <div style={{width:"100%"}}>
           {/* Begin Headers */}
@@ -55,6 +56,11 @@ function Transactions() {
       </div>
     </div>
   )
+  else{return (<div className='page_wrapper'>
+    <div className='background_wrapper' id='transaction_index'>
+      <div className='_wrapper' id='transaction_index'>
+        <h2 style={{width:"100%", textAlign:"center"}}>No accounts Exist Here - Please Navigate to <a href = "/accounts">Accounts</a></h2></div></div></div>)}
+  
 }
 
 export default Transactions
