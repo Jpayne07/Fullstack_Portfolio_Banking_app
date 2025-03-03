@@ -1,6 +1,7 @@
 import React, {useContext} from 'react'
 import AppContext from '../AppContext';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+
 
 function BanksComponentv2({stylingContext}) {
   const { loading, accounts } = useContext(AppContext)
@@ -25,7 +26,7 @@ function BanksComponentv2({stylingContext}) {
         <div style={{width: "100%"}}key={account.id}>
           <h2 style={{padding:"15px 0", textAlign:"left"}}>{account.bank.name}</h2>
           <div className='bank_account_container'>
-              <h4 ><a href={`account/${account.id}`} id = "accountLinks">{account.account_type}</a></h4>
+              <h4 id = "accountLinks"><Link to={`/account/${account.id}`}>{account.account_type}</Link></h4>
               <p>{formatter.format(accountValue)}</p>
           </div>
         </div>

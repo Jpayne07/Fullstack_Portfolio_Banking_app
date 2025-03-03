@@ -8,13 +8,30 @@ import * as yup from 'yup';
 
 
 function AddNewAccountForm() {
-   
+    
+
     const [holdSuggest, setHoldSuggest] = useState('')
-    const { banks, handleNewAccountSubmission, errors, errorState} = useContext(AppContext)
+    const {handleNewAccountSubmission, errors, errorState, setLoading} = useContext(AppContext)
     const navigate = useNavigate()
+    const [banks, setBanks] = useState([])
     const bank_names = banks.filter(bank=>{
         return bank.name.toLowerCase().includes(holdSuggest.toLowerCase())
     })
+    
+    useEffect(() => {
+        fetch(`/api/banks`,{
+          method: 'GET',
+          credentials: 'include'
+        })
+        .then((r) => r.json())
+        .then(banks => {
+          setBanks(banks);
+      }).catch(error => {
+        console.log("Error in fetching banks", error)
+        setLoading(false);
+        
+      });
+    }, []);
     const FormSchema = yup.object().shape({
         account_value: yup
             .number().min(1, 'Account value must be at least 1 characters long'),
@@ -63,6 +80,7 @@ function AddNewAccountForm() {
                 
                 <datalist id="bankList">
                 {bank_names.map((bank, key) =>
+
                   <option key={key} value={bank.name} />
                 )}
                 </datalist>

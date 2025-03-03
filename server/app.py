@@ -139,7 +139,6 @@ class Account(Resource):
         if session['user_id']:
             data = request.get_json()
             print(data)
-            new_bank_id = Bank.query.all()[-1].to_dict()['id'] + 1
             bank = Bank.query.filter(Bank.name == data['bank_name']).first()
             try:
                 if bank:
@@ -166,11 +165,10 @@ class Account(Resource):
                     new_bank = Bank(name = data['bank_name'])
                     db.session.add(new_bank)
                     db.session.commit()
-                    
                     card = Cards.query.all()
                     card_id = card[-1].to_dict()['id'] + 1
                     account = Accounts(
-                        bank_id = new_bank_id,
+                        bank_id = new_bank.id,
                         card_id = card_id,
                         user_id = session['user_id'],
                         account_value = float(data['account_value']),
