@@ -3,6 +3,7 @@ import TransactionIndexModule from '../Components/Transaction_Index_Module'
 import AppContext from '../AppContext'
 import { useParams } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom'
+import { Link } from 'react-router-dom';
 
 function Transactions() {
 
@@ -59,7 +60,7 @@ function Transactions() {
   else{return (<div className='page_wrapper'>
     <div className='background_wrapper' id='transaction_index'>
       <div className='_wrapper' id='transaction_index'>
-        <h2 style={{width:"100%", textAlign:"center"}}>No accounts Exist Here - Please Navigate to <a href = "/accounts">Accounts</a></h2></div></div></div>)}
+        <h2 style={{width:"100%", textAlign:"center"}}>No accounts Exist Here - Please Navigate to <Link to="/accounts">Accounts</Link></h2></div></div></div>)}
   
 }
 

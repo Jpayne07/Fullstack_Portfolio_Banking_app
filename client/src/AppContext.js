@@ -26,14 +26,17 @@ export const AppProvider = ({ children }) => {
       body: JSON.stringify({ username, password }),
     })
       .then((r) => {
-        console.log(r)
         if (r.ok) {
-          r.json().then((user) => {
-            console.log("User", user)
-            setUser(user)
-            setAccounts(user.accounts)
-            setTransactions(user.transactions)
-            navigate('/');
+          r.json().then((data) => {
+            setUser(data)
+            setAccounts(data.accounts)
+
+            const transactionsList = data.accounts.reduce((acc, account) => {
+              return [...acc, ...account.transactions];
+            }, []);
+
+            setTransactions(transactionsList)
+            navigate('/')
           })
         } else {
           r.json().then((err) => {
@@ -61,15 +64,17 @@ export const AppProvider = ({ children }) => {
     })
       .then((r) => {
         if (r.ok) {
-          r.json().then((user) => {
-            setUser(user)
-            setAccounts(user.accounts)
+          r.json().then((data) => {
+            setUser(data)
+            console.log(data.accounts)
+            setAccounts(data.accounts)
 
-            const transactionsList = user.accounts.reduce((acc, account) => {
-              return [...acc, ...account.transactions]})
+            const transactionsList = data.accounts.reduce((acc, account) => {
+              return [...acc, ...account.transactions];
+            }, []);
 
             setTransactions(transactionsList)
-            console.log(transactions)
+            console.log("T LIST:", transactionsList)
             navigate('/')
           });
         } else {
@@ -100,21 +105,7 @@ export const AppProvider = ({ children }) => {
   setinsights(transactionCategories)
   },[user, accounts])
   
-  useEffect(() => {
-    if (!user) return;
-    fetch(`/api/banks`,{
-      method: 'GET',
-      credentials: 'include'
-    })
-    .then((r) => r.json())
-    .then(banks => {
-      setBanks(banks);
-  }).catch(error => {
-    console.log("Error in fetching banks", error)
-    setLoading(false);
-    
-  });
-}, [user]);
+
 
 function handleNewAccountSubmission(bank_name,
   account_value,
@@ -135,7 +126,6 @@ function handleNewAccountSubmission(bank_name,
       if (r.ok){
         r.json()
         .then((data)=>{
-          console.log('test')
           setAccounts([...accounts, data])
           navigate('/accounts')
         })
@@ -187,7 +177,6 @@ function handleNewAccountSubmission(bank_name,
         return response.json();
       })
       .then(data => {
-        console.log("Session response:", data);
         
         // Check if data contains a valid user_id or similar flag
         if (data.id) {
@@ -197,6 +186,7 @@ function handleNewAccountSubmission(bank_name,
             return [...acc, ...account.transactions];
           }, []);
           setTransactions(transactionsList);
+          console.log("Test", transactionsList)
         } else {
           setUser(null);
         }

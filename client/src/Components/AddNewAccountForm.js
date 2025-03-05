@@ -14,9 +14,8 @@ function AddNewAccountForm() {
     const {handleNewAccountSubmission, errors, errorState, setLoading} = useContext(AppContext)
     const navigate = useNavigate()
     const [banks, setBanks] = useState([])
-    const bank_names = banks.filter(bank=>{
-        return bank.name.toLowerCase().includes(holdSuggest.toLowerCase())
-    })
+
+    
     
     useEffect(() => {
         fetch(`/api/banks`,{
@@ -32,6 +31,10 @@ function AddNewAccountForm() {
         
       });
     }, []);
+    const bank_names = banks.filter(bank=>{
+        return bank.name.toLowerCase().includes(holdSuggest.toLowerCase())
+    })
+    
     const FormSchema = yup.object().shape({
         account_value: yup
             .number().min(1, 'Account value must be at least 1 characters long'),

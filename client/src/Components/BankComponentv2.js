@@ -43,7 +43,7 @@ function BanksComponentv2({stylingContext}) {
 
           id = "accountIndex">
           
-          <h4 style={{width:"100%", fontSize:"1.5rem"}}><a href={`account/${account.id}`} style = {{color:"white"}}>Account Type: {account.account_type}</a></h4>
+          <h4 style={{width:"100%", fontSize:"1.5rem"}}><Link to={`/account/${account.id}`} style = {{color:"white"}}>Account Type: {account.account_type}</Link></h4>
           <p style={{fontSize:"1.2rem"}}>Account Balance: {formatter.format(account.account_value)}</p>
           <p style={{ color: "red", width:"100%", fontSize:"1.2rem"}}>Total Spending: $
             {

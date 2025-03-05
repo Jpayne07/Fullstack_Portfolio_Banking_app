@@ -18,8 +18,6 @@ function App() {
 
   useEffect(() => {
     if (!loading && !user) {
-      console.log("Loading in use effect:", loading)
-      console.log('User state:', user);
       navigate('/login'); // Redirect only if not loading and user is null
     }
   }, [loading, user, navigate]);

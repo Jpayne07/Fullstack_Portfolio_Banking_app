@@ -2,7 +2,7 @@ import React, { useEffect, useContext} from 'react'
 import AppContext from '../AppContext';
 import '../Styling/App.css'
 import { Formik, Form, Field, ErrorMessage } from 'formik';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 
 
 
@@ -26,7 +26,7 @@ function Login() {
               <div className='login_content'>
                 <div className='login_header'><h2>Login</h2>
                   <p>Don't have an account? 
-                    <a href='/signup' id = "signup">Signup</a>
+                  <Link to='/signup' id = "signup">Signup</Link>
                   </p>
                   
                 </div>
