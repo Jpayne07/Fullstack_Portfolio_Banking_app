@@ -8,7 +8,7 @@ import AppContext from '../AppContext';
 
 function Nav() {
 
-  const { user,setUser,setBanks, API_URL } = useContext(AppContext);
+  const { user,setUser, setBanks, API_URL } = useContext(AppContext);
   const [isVisible, setIsVisible] = useState(false);
   const navigate = useNavigate()
 
@@ -18,13 +18,11 @@ function Nav() {
       method: "DELETE",
     })
       .then(() => {
-        alert("Logged Out");
         setUser(null)
         sessionStorage.clear();
-        setBanks(null)
         navigate('/login');
       })
-      .catch((error) => console.error('Error:', error)); // Optional: handle fetch error
+      // .catch((error) => console.error('Error:', error)); // Optional: handle fetch error
   };
 
   const toggleLinks = () => {

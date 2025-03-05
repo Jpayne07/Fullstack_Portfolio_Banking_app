@@ -18,6 +18,7 @@ function BanksComponentv2({stylingContext}) {
   const accountElement = accounts.length > 0? accounts.sort((a, b) => a.bank_id - b.bank_id)
   // need to only show first occurence
   .map(account=>{
+    
     // for styling context on home page
     if(stylingContext==="Normal"){
       const accountValue = (account.account_value)
@@ -37,7 +38,7 @@ function BanksComponentv2({stylingContext}) {
   else{
     
     return(
-      <div>
+      <div key={account.id}>
         <h2 id = 'bank_name' style={{padding:"15px 0", textAlign:"left"}} >{account.bank.name}</h2>
         <div className='bank_account_container'
 
@@ -61,7 +62,7 @@ function BanksComponentv2({stylingContext}) {
   <p>No banks available.</p>
   )
   return (
-    <div className='_wrapper' id="login" style={{padding:"50px", maxWidth:"1200px"}}>
+    <div className='_wrapper' id="login" style={{padding:"50px", maxWidth:"1200px"}} >
       <h1>Accounts</h1>
       <div className={stylingContext==='Normal'?'bank_id':'account_grid'}>
         {accountElement}

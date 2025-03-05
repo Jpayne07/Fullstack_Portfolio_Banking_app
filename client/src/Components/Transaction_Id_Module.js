@@ -16,7 +16,7 @@ function Transaction_Id_Module() {
         .filter((account) => account.transactions.some((transaction) => transaction.id === Number(id))
       )
         .map(account=>{
-          return <div style={{width:"100%"}}>
+          return <div style={{width:"100%"}}key={account.id}>
             <h1 style={{padding:"15px 0", textAlign:"left"}}>{`${account.bank.name}: ${account.account_type}`}</h1>
             <div className="transaction_headers" id='singular'>
             <h4>Description</h4>

@@ -44,7 +44,7 @@ if __name__ =='__main__':
         db.session.commit()
 
         card1 = Cards(
-            card_number = 123456781,
+            card_number = 111111111,
             expiration_date = datetime.now().date()   + relativedelta(years=3)
             
         )

@@ -5,7 +5,6 @@ import AppContext from '../AppContext'
 
 function Insights() {
   const { insights } = useContext(AppContext);
-  console.log(insights)
 
  
   return (

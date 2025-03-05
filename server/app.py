@@ -106,17 +106,25 @@ class TransactionSeed(Resource):
             amount=round(random.uniform(1, 100), 0),  # Random amount between 1 and 1000 with 2 decimal places
             account_id=id,
             transaction_type=random.choice(transaction_type_categories)
-        );  transaction_list_Index.append(transaction)
+        );  
+            transaction_list_Index.append(transaction)
             db.session.add(transaction)
             
 
         db.session.commit()
         account = db.session.query(Accounts).filter_by(id=id).first()
+        cardItem = Accounts.query.filter_by(id=id).first().to_dict()['card']
+
         if account:
             print("in account")
             account.transaction_id = transaction.id  # Update transaction reference
             db.session.commit()
-        transaction_list = [transaction.to_dict() for transaction in transaction_list_Index]
+
+        transaction_list = []
+        for transaction in transaction_list_Index:
+            t_dict = transaction.to_dict()
+            t_dict['card'] = cardItem
+            transaction_list.append(t_dict)
 
       
         return transaction_list, 201  # Return success response

@@ -66,7 +66,6 @@ export const AppProvider = ({ children }) => {
         if (r.ok) {
           r.json().then((data) => {
             setUser(data)
-            console.log(data.accounts)
             setAccounts(data.accounts)
 
             const transactionsList = data.accounts.reduce((acc, account) => {
@@ -74,7 +73,6 @@ export const AppProvider = ({ children }) => {
             }, []);
 
             setTransactions(transactionsList)
-            console.log("T LIST:", transactionsList)
             navigate('/')
           });
         } else {
@@ -186,7 +184,7 @@ function handleNewAccountSubmission(bank_name,
             return [...acc, ...account.transactions];
           }, []);
           setTransactions(transactionsList);
-          console.log("Test", transactionsList)
+          console.log("Transactions", transactionsList)
         } else {
           setUser(null);
         }
