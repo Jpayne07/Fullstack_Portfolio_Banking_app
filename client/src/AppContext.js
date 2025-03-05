@@ -212,6 +212,7 @@ function handleNewAccountSubmission(bank_name,
     })
     .then(response => response.json())
     .then(data=>{
+      console.log(data)
       const accountID = data[0]['account_id']
       setTransactions([...transactions, ...data])
       const accountToUpdate = accounts.find(account => parseInt(account.id) === parseInt(accountID));

@@ -6,13 +6,13 @@ import EditableText from './EditableText';
 
 
 function Transaction_Id_Module() {
-  const { user, API_URL } = useContext(AppContext)
+  const { user,accounts, API_URL } = useContext(AppContext)
   const { id } = useParams()
   const uniqueDateSet = new Set();
     // const transactionList = user.map(user=>{
       return <div className='bank_account_container'>
        
-        {user.accounts
+        {accounts
         .filter((account) => account.transactions.some((transaction) => transaction.id === Number(id))
       )
         .map(account=>{
@@ -45,7 +45,7 @@ function Transaction_Id_Module() {
                 <EditableText initialText={transaction.title} transactionId={id}  keyName={'title'} API_URL = {API_URL}/>
                 <EditableText initialText={date} transactionId={id}  keyName={'created_at'} API_URL = {API_URL}/>
                 <p>{transaction.id}</p>
-                <p>{transaction.card.card_number.toString().slice(-4)}</p>
+                <p>{transaction.card?transaction.card.card_number.toString().slice(-4):null}</p>
                 <div style={{ display: "flex", alignItems: "center" }}>
                 <span style={{ marginRight: "4px" }}>$</span>
                 <EditableText initialText={transaction.amount} transactionId={id} keyName={'amount'} API_URL = {API_URL} />
