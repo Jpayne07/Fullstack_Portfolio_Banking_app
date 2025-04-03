@@ -1,0 +1,17 @@
+{
+  "files": {
+    "main.css": "/static/css/main.cd9ed145.css",
+    "main.js": "/static/js/main.cdbcdd39.js",
+    "static/js/453.419a5d54.chunk.js": "/static/js/453.419a5d54.chunk.js",
+    "static/media/01396bbb-7dc1-4010-9b61-0d13d51563da.png": "/static/media/01396bbb-7dc1-4010-9b61-0d13d51563da.b870363424808fcfe4a3.png",
+    "static/media/OCRAEXT.TTF": "/static/media/OCRAEXT.130fa79c8eef75219200.TTF",
+    "index.html": "/index.html",
+    "main.cd9ed145.css.map": "/static/css/main.cd9ed145.css.map",
+    "main.cdbcdd39.js.map": "/static/js/main.cdbcdd39.js.map",
+    "453.419a5d54.chunk.js.map": "/static/js/453.419a5d54.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.cd9ed145.css",
+    "static/js/main.cdbcdd39.js"
+  ]
+}
