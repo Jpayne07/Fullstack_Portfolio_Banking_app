@@ -17,7 +17,7 @@ export const AppProvider = ({ children }) => {
 
   function handleLogin(username, password, setSubmitting, navigate) {
     
-    fetch(`/api/login`, {
+    fetch(`${API_URL}/api/login`, {
       method: "POST",
       credentials: 'include',
       headers: {
@@ -54,7 +54,7 @@ export const AppProvider = ({ children }) => {
   }
   // this is for the login without signup
   function mockLogin(username, password, navigate) {
-    fetch(`/api/login`, {
+    fetch(`${API_URL}/api/login`, {
       method: "POST",
       credentials: 'include',
       headers: {
@@ -112,7 +112,7 @@ function handleNewAccountSubmission(bank_name,
   setSubmitting,
   navigate) {
     console.log(account_type)
-  fetch(`/api/accounts`, {
+  fetch(`${API_URL}/api/accounts`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -146,7 +146,7 @@ function handleNewAccountSubmission(bank_name,
 
 
   function handleAccountDeletion(navigate, id){
-    fetch(`/api/singular_account/${id}`,{
+    fetch(`${API_URL}/api/singular_account/${id}`,{
       method:"DELETE"
     })
     .then(()=>setDeleteState(true))
@@ -164,7 +164,7 @@ function handleNewAccountSubmission(bank_name,
 
   useEffect(() => {
     setLoading(true);
-    fetch(`/api/check_session`,{
+    fetch(`${API_URL}/api/check_session`,{
       method: 'GET',
       credentials: 'include'
     })
@@ -200,7 +200,7 @@ function handleNewAccountSubmission(bank_name,
 
   // this will seed transactions on individual account pages
   function handleTransactionSeed(id) {
-    fetch(`/api/transactionseed`, {
+    fetch(`${API_URL}/api/transactionseed`, {
         method: 'POST', 
         credentials: 'include',
         headers: {
@@ -237,7 +237,7 @@ function handleNewAccountSubmission(bank_name,
 }
   
 const handleTransactionDelete=(transactionID, accountID)=>{
-  fetch(`/api/transaction/${transactionID}`, { method: 'DELETE' })
+  fetch(`${API_URL}/api/transaction/${transactionID}`, { method: 'DELETE' })
   .then(() => {
     const newTransactionList = transactions.filter(transaction=>parseInt(transaction.id) !==parseInt(transactionID))
     setTransactions(newTransactionList)
