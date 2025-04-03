@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "proxy": "http://localhost:5000",
+  "homepage": "https://github.com/Jpayne07/Fullstack_Portfolio_Banking_app",
   "dependencies": {
     "@testing-library/jest-dom": "^5.17.0",
     "@testing-library/react": "^13.4.0",
@@ -20,10 +21,10 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "build": "BUILD_PATH='./docs' react-scripts build",
+    "build": "BUILD_PATH='../docs' react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "deploy": "npm run build &&  touch docs/.nojekyll && git add docs && git commit -m 'Deploy' && git push"
+    "deploy": "npm run build && cd .. && touch docs/.nojekyll && git add docs && git commit -m 'Deploy' && git push"
   },
   "eslintConfig": {
     "extends": [
