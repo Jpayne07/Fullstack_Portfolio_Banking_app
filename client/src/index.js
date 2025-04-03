@@ -7,7 +7,9 @@ import { AppProvider } from './AppContext';
 
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
-const router = createBrowserRouter(routes)
+const router = createBrowserRouter(routes, {
+  basename: "/Fullstack_Portfolio_Banking_app"
+})
 root.render(
 <AppProvider>
     <RouterProvider router={router} />
