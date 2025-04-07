@@ -3,8 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "proxy": "https://fullstack-portfolio-banking-app.onrender.com/bank/",
-  "homepage": "http://localhost:3001/Fullstack_Portfolio_Banking_app/"
-,
+  "homepage": "https://jpayne07.github.io/Fullstack_Portfolio_Banking_app/",
   "dependencies": {
     "@testing-library/jest-dom": "^5.17.0",
     "@testing-library/react": "^13.4.0",
@@ -23,7 +22,7 @@
   "scripts": {
   "start": "react-scripts start --open-page Fullstack_Portfolio_Banking_app",
   "build": "BUILD_PATH='../docs' react-scripts build",
-  "postbuild": "cp docs/404.html ../docs/404.html",
+  "postbuild": "cp public/404.html ../docs/404.html",
   "test": "react-scripts test",
   "eject": "react-scripts eject",
   "deploy": "npm run build && cd .. && touch docs/.nojekyll && git add docs && git commit -m 'Deploy' && git push",
