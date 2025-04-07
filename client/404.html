@@ -1,19 +1,17 @@
-<!-- public/404.html -->
 <!DOCTYPE html>
-<html>
+<html lang="en">
   <head>
     <meta charset="UTF-8" />
     <title>Redirecting…</title>
     <script>
+      // Set this to your actual repo name
       const base = "/Fullstack_Portfolio_Banking_app";
-      const currentPath = location.pathname;
 
-      // Only redirect if we're not already at the root path
-      if (
-        currentPath !== base &&
-        currentPath !== base + "/" &&
-        !location.hash.startsWith("#/")
-      ) {
+      const currentPath = location.pathname;
+      const isAtRoot =
+        currentPath === base || currentPath === base + "/" || location.hash.startsWith("#/");
+
+      if (!isAtRoot) {
         const path = currentPath.replace(base, "").replace(/^\/+/, "");
         const newUrl = `${base}/#/${path}${location.search}${location.hash}`;
         window.location.replace(newUrl);
