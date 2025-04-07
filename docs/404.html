@@ -1,0 +1,26 @@
+<!-- public/404.html -->
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Redirecting…</title>
+    <script>
+      const base = "/Fullstack_Portfolio_Banking_app";
+      const currentPath = location.pathname;
+
+      // Only redirect if we're not already at the root path
+      if (
+        currentPath !== base &&
+        currentPath !== base + "/" &&
+        !location.hash.startsWith("#/")
+      ) {
+        const path = currentPath.replace(base, "").replace(/^\/+/, "");
+        const newUrl = `${base}/#/${path}${location.search}${location.hash}`;
+        window.location.replace(newUrl);
+      }
+    </script>
+  </head>
+  <body>
+    <p>Redirecting…</p>
+  </body>
+</html>
