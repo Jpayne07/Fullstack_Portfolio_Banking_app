@@ -17,7 +17,7 @@ function AddNewAccountForm() {
     
     
     useEffect(() => {
-        fetch(`${API_URL}/api/bank`,{
+        fetch(`${API_URL}/api/bank/banks`,{
           method: 'GET',
           credentials: 'include'
         })
