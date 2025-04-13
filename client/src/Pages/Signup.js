@@ -16,7 +16,7 @@ function Signup() {
       navigate('/')
     }
     function handleSubmit(username, password, setSubmitting) {
-      fetch(`${API_URL}/api/signup`, {
+      fetch(`${API_URL}/api/bank/signup`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

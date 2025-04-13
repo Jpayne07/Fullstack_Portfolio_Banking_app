@@ -9,16 +9,15 @@ import * as yup from 'yup';
 
 function AddNewAccountForm() {
     
-    const API_URL = process.env.REACT_APP_API_URL;
     const [holdSuggest, setHoldSuggest] = useState('')
-    const {handleNewAccountSubmission, errors, errorState, setLoading} = useContext(AppContext)
+    const {handleNewAccountSubmission, errors, errorState, setLoading, API_URL} = useContext(AppContext)
     const navigate = useNavigate()
     const [banks, setBanks] = useState([])
 
     
     
     useEffect(() => {
-        fetch(`${API_URL}/api/banks`,{
+        fetch(`${API_URL}/api/bank`,{
           method: 'GET',
           credentials: 'include'
         })

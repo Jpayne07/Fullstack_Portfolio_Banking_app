@@ -21,7 +21,7 @@ function Transactions() {
       <div className='background_wrapper' id='transaction_index'>
         <div className='_wrapper' id='transaction_index'>
           <h2 style={{width:"100%", textAlign:"center"}}>Transactions</h2>
-          <h1 style={{padding:"15px 0", textAlign:"left" }}>{`${account.bank.name}: ${account.bank.name}`}</h1>
+          <h1 style={{padding:"15px 0", textAlign:"left" }}>{`${account.bank.name}: ${account.account_type}`}</h1>
           <div className='bank_account_container' >
         <div style={{width:"100%"}}>
           {/* Begin Headers */}

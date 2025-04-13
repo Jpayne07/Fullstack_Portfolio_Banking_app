@@ -2,8 +2,8 @@ import React, { createContext, useState, useEffect  } from 'react';
 
 
 const AppContext = createContext();
-const API_URL = process.env.REACT_APP_API_URL;
-
+const API_URL_FROM_ENV = process.env.REACT_APP_API_URL;
+const API_URL = API_URL_FROM_ENV ? API_URL_FROM_ENV:''
 export const AppProvider = ({ children }) => {
   const [user, setUser] = useState(undefined);
   const [insights, setinsights] = useState([]);
@@ -17,7 +17,7 @@ export const AppProvider = ({ children }) => {
 
   function handleLogin(username, password, setSubmitting, navigate) {
     
-    fetch(`${API_URL}/api/login`, {
+    fetch(`${API_URL}/api/bank/login`, {
       method: "POST",
       credentials: 'include',
       headers: {
@@ -54,7 +54,7 @@ export const AppProvider = ({ children }) => {
   }
   // this is for the login without signup
   function mockLogin(username, password, navigate) {
-    fetch(`${API_URL}/api/login`, {
+    fetch(`${API_URL}/api/bank/login`, {
       method: "POST",
       credentials: 'include',
       headers: {
@@ -112,7 +112,7 @@ function handleNewAccountSubmission(bank_name,
   setSubmitting,
   navigate) {
     console.log(account_type)
-  fetch(`${API_URL}/api/accounts`, {
+  fetch(`${API_URL}/api/bank/accounts`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -146,7 +146,7 @@ function handleNewAccountSubmission(bank_name,
 
 
   function handleAccountDeletion(navigate, id){
-    fetch(`${API_URL}/api/singular_account/${id}`,{
+    fetch(`${API_URL}/api/bank/singular_account/${id}`,{
       method:"DELETE"
     })
     .then(()=>setDeleteState(true))
@@ -164,7 +164,7 @@ function handleNewAccountSubmission(bank_name,
 
   useEffect(() => {
     setLoading(true);
-    fetch(`${API_URL}/api/check_session`,{
+    fetch(`${API_URL}/api/bank/check_session`,{
       method: 'GET',
       credentials: 'include'
     })
@@ -200,7 +200,7 @@ function handleNewAccountSubmission(bank_name,
 
   // this will seed transactions on individual account pages
   function handleTransactionSeed(id) {
-    fetch(`${API_URL}/api/transactionseed`, {
+    fetch(`${API_URL}/api/bank/transactionseed`, {
         method: 'POST', 
         credentials: 'include',
         headers: {
@@ -237,7 +237,7 @@ function handleNewAccountSubmission(bank_name,
 }
   
 const handleTransactionDelete=(transactionID, accountID)=>{
-  fetch(`${API_URL}/api/transaction/${transactionID}`, { method: 'DELETE' })
+  fetch(`${API_URL}/api/bank/transaction/${transactionID}`, { method: 'DELETE' })
   .then(() => {
     const newTransactionList = transactions.filter(transaction=>parseInt(transaction.id) !==parseInt(transactionID))
     setTransactions(newTransactionList)
