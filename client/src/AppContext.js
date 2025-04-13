@@ -3,6 +3,7 @@ import React, { createContext, useState, useEffect  } from 'react';
 
 const AppContext = createContext();
 const API_URL_FROM_ENV = process.env.REACT_APP_API_URL;
+console.log(API_URL_FROM_ENV)
 const API_URL = API_URL_FROM_ENV ? API_URL_FROM_ENV:''
 export const AppProvider = ({ children }) => {
   const [user, setUser] = useState(undefined);
