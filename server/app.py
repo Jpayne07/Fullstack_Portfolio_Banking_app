@@ -307,19 +307,19 @@ class ClearSession(Resource):
 
 
 
-api.add_resource(Account, '/api/accounts')
-api.add_resource(SingularAccount, '/api/singular_account/<int:id>')
-api.add_resource(Banks, '/api/banks')
-api.add_resource(Transactions_List, '/api/transactions')
-api.add_resource(TransactionSeed, '/api/transactionseed')
-api.add_resource(User_Item, '/api/user')
-api.add_resource(CheckSession, '/api/check_session')
-api.add_resource(Login, '/api/login')
-api.add_resource(Signup, '/api/signup')
-api.add_resource(LoginWithGithub, '/api/login-github')
-api.add_resource(ClearSession, '/api/clear_session')
+api.add_resource(Account, '/api/bank/accounts')
+api.add_resource(SingularAccount, '/api/bank/singular_account/<int:id>')
+api.add_resource(Banks, '/api/bank/banks')
+api.add_resource(Transactions_List, '/api/bank/transactions')
+api.add_resource(TransactionSeed, '/api/bank/transactionseed')
+api.add_resource(User_Item, '/api/bank/user')
+api.add_resource(CheckSession, '/api/bank/check_session')
+api.add_resource(Login, '/api/bank/login')
+api.add_resource(Signup, '/api/bank/signup')
+api.add_resource(LoginWithGithub, '/api/bank/login-github')
+api.add_resource(ClearSession, '/api/bank/clear_session')
 api.add_resource(Callback, '/callback')
-api.add_resource(IndivdiualTransaction, '/api/transaction/<int:id>')
+api.add_resource(IndivdiualTransaction, '/api/bank/transaction/<int:id>')
 
 @app.errorhandler(404)
 def not_found(e):
