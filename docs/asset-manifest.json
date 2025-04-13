@@ -1,17 +1,17 @@
 {
   "files": {
     "main.css": "/Fullstack_Portfolio_Banking_app/static/css/main.1010aa65.css",
-    "main.js": "/Fullstack_Portfolio_Banking_app/static/js/main.ffa74b45.js",
+    "main.js": "/Fullstack_Portfolio_Banking_app/static/js/main.d255e265.js",
     "static/js/453.419a5d54.chunk.js": "/Fullstack_Portfolio_Banking_app/static/js/453.419a5d54.chunk.js",
     "static/media/01396bbb-7dc1-4010-9b61-0d13d51563da.png": "/Fullstack_Portfolio_Banking_app/static/media/01396bbb-7dc1-4010-9b61-0d13d51563da.b870363424808fcfe4a3.png",
     "static/media/OCRAEXT.TTF": "/Fullstack_Portfolio_Banking_app/static/media/OCRAEXT.130fa79c8eef75219200.TTF",
     "index.html": "/Fullstack_Portfolio_Banking_app/index.html",
     "main.1010aa65.css.map": "/Fullstack_Portfolio_Banking_app/static/css/main.1010aa65.css.map",
-    "main.ffa74b45.js.map": "/Fullstack_Portfolio_Banking_app/static/js/main.ffa74b45.js.map",
+    "main.d255e265.js.map": "/Fullstack_Portfolio_Banking_app/static/js/main.d255e265.js.map",
     "453.419a5d54.chunk.js.map": "/Fullstack_Portfolio_Banking_app/static/js/453.419a5d54.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.1010aa65.css",
-    "static/js/main.ffa74b45.js"
+    "static/js/main.d255e265.js"
   ]
 }
