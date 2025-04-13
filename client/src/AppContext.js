@@ -156,8 +156,10 @@ function handleNewAccountSubmission(bank_name,
       navigate('/accounts')
       const newAccountSet = accounts.filter((account)=>parseInt(account.id) !== parseInt(id))
       setAccounts(newAccountSet)
-      console.log(accounts)
-      setLoading(false)}
+      setLoading(false)
+      setTimeout(() => {
+        setDeleteState(false);
+      }, 3000)}
       
       )
       
