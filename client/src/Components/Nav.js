@@ -16,6 +16,7 @@ function Nav() {
   const handleLogout = () => {
     fetch(`${API_URL}/api/bank/clear_session`, {
       method: "DELETE",
+      credentials: "include"
     })
       .then(() => {
         setUser(null)
