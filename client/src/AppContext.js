@@ -3,7 +3,6 @@ import React, { createContext, useState, useEffect  } from 'react';
 
 const AppContext = createContext();
 const API_URL_FROM_ENV = process.env.REACT_APP_API_URL;
-console.log(API_URL_FROM_ENV)
 const API_URL = API_URL_FROM_ENV ? API_URL_FROM_ENV:''
 export const AppProvider = ({ children }) => {
   const [user, setUser] = useState(undefined);
@@ -148,7 +147,8 @@ function handleNewAccountSubmission(bank_name,
 
   function handleAccountDeletion(navigate, id){
     fetch(`${API_URL}/api/bank/singular_account/${id}`,{
-      method:"DELETE"
+      method:"DELETE",
+      credentials: 'include',
     })
     .then(()=>setDeleteState(true))
     .then(()=>{
@@ -240,7 +240,10 @@ function handleNewAccountSubmission(bank_name,
 }
   
 const handleTransactionDelete=(transactionID, accountID)=>{
-  fetch(`${API_URL}/api/bank/transaction/${transactionID}`, { method: 'DELETE' })
+  fetch(`${API_URL}/api/bank/transaction/${transactionID}`, { 
+    method: 'DELETE',
+    credentials: 'include', 
+  })
   .then(() => {
     const newTransactionList = transactions.filter(transaction=>parseInt(transaction.id) !==parseInt(transactionID))
     setTransactions(newTransactionList)
