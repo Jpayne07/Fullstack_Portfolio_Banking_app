@@ -47,6 +47,11 @@ function AddNewAccountForm() {
             .matches(/^(Checking|Savings)$/, "Account type should be 'Checking' or 'Savings'"),
         cardNumber: yup.string()
             .matches(/^\d+$/, 'Must contain only digits')
+            .test(
+                'no-zero',
+                'Value cannot contain the digit 0',
+                value => typeof value === 'string' && !value.includes('0')
+              )
             .length(9, 'Must be at least 9 characters long')
 
         });
