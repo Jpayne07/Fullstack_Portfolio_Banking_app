@@ -147,8 +147,8 @@ function handleNewAccountSubmission(bank_name,
 
   function handleAccountDeletion(navigate, id){
     fetch(`${API_URL}/api/bank/singular_account/${id}`,{
-      method:"DELETE",
-      credentials: 'include',
+      method:"DELETE", 
+      credentials:"include"
     })
     .then(()=>setDeleteState(true))
     .then(()=>{
