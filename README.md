@@ -21,7 +21,7 @@ While it does require setup from a user, the benefits include:
 
 ### How to use this app:
 1. Users can sign up via the signup page:  
-   [https://fullstack-portfolio-banking-app.onrender.com/signup](https://fullstack-portfolio-banking-app.onrender.com/signup)
+   [https://jacobpaynecodes.com/Fullstack_Portfolio_Banking_app/signup](https://jacobpaynecodes.com/Fullstack_Portfolio_Banking_app/signup)
 2. From there they can store their information and create accounts to get started:
    1. Simply enter the name of the bank and the existing dollar amount.
    2. You can then import transactions and store them in the file *(in progress)*:
@@ -36,7 +36,7 @@ While it does require setup from a user, the benefits include:
 List any required software or system requirements (e.g., Node.js version, Python version, etc.).
 
 - **Frontend:** This app has a React frontend built with Create React App.
-- **Backend:** The backend uses Flask with SQLAlchemy.
+- **Backend:** The backend uses Flask with SQLAlchemy Models.
 - **Hosting:** The server infrastructure is hosted by Render.
 
 ---
