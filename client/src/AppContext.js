@@ -37,7 +37,6 @@ export const AppProvider = ({ children }) => {
             const transactionsList = data.accounts.reduce((acc, account) => {
               return [...acc, ...account.transactions];
             }, []);
-
             setTransactions(transactionsList)
             navigate('/')
           })
@@ -191,7 +190,6 @@ function handleNewAccountSubmission(bank_name,
             return [...acc, ...account.transactions];
           }, []);
           setTransactions(transactionsList);
-          console.log("Transactions", transactionsList)
         } else {
           setUser(null);
         }
@@ -259,6 +257,7 @@ const handleTransactionDelete=(transactionID)=>{
   return (
     <AppContext.Provider value={{loading,
      transactions,
+     setTransactions,
      banks,
      accounts,
      user,
