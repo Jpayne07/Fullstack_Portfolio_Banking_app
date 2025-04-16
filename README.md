@@ -1,5 +1,9 @@
 ## Overview
 Created by Jacob Payne - February 2025
+
+This project is coded in React frontend and Flask backend using SQLalchemy for the ORM and modeling. The demo is hosted on a live web service with my other backend infrastructure and the frontend has it's own repo, welcome!
+
+This project will run locally on your machine, simply follow the installation at the bottom. Additionally, you can simply view the live demo and follow along in the source code here. [https://jacobpaynecodes.com/Fullstack_Portfolio_Banking_app/login](https://jacobpaynecodes.com/Fullstack_Portfolio_Banking_app/login)
 ### What is this project about?
 This project exists to provide a simple solution to budgeting and insights.
 
@@ -21,7 +25,7 @@ While it does require setup from a user, the benefits include:
 
 ### How to use this app:
 1. Users can sign up via the signup page:  
-   [https://jacobpaynecodes.com/Fullstack_Portfolio_Banking_app/signup](https://jacobpaynecodes.com/Fullstack_Portfolio_Banking_app/signup)
+  [https://jacobpaynecodes.com/Fullstack_Portfolio_Banking_app/signup](https://jacobpaynecodes.com/Fullstack_Portfolio_Banking_app/signup)
 2. From there they can store their information and create accounts to get started:
    1. Simply enter the name of the bank and the existing dollar amount.
    2. You can then import transactions and store them in the file *(in progress)*:
@@ -41,9 +45,9 @@ List any required software or system requirements (e.g., Node.js version, Python
 
 ---
 
+
 ## Installation
 
-Steps or commands to clone or download the repository and install dependencies:
+Installation steps are coming! For now enjoy the experience in the demo [https://jacobpaynecodes.com/Fullstack_Portfolio_Banking_app/login](https://jacobpaynecodes.com/Fullstack_Portfolio_Banking_app/login) and follow along here!
 
-```bash
-git clone https://github.com/Jpayne07/Fullstack_Portfolio_Banking_app/
+
