@@ -1,9 +1,8 @@
 import React, { useState } from "react";
 
-function EditableText({ initialText, transactionId, keyName, API_URL}) {
+function EditableText({ initialText, transactionId, keyName, API_URL, transactions}) {
     const [isEditing, setIsEditing] = useState(false); // Track if editing mode is active
     const [text, setText] = useState(initialText); // Store the text value
-
   const handleTextClick = () => {
     setIsEditing(true); // Switch to editing mode
   };
@@ -38,6 +37,7 @@ function EditableText({ initialText, transactionId, keyName, API_URL}) {
         r.json()
         .then((data)=>{
           console.log(data.error)
+          
           return data.error
         })
         
@@ -46,7 +46,11 @@ function EditableText({ initialText, transactionId, keyName, API_URL}) {
       else{
         r.json()
         .then((data)=>{
-          console.log("Changes saved:", data);
+          const updatedTransaction = transactions.filter(transaction =>{
+            return parseInt(transaction.id) === parseInt(transactionId)})
+            updatedTransaction[0][keyName] = data[keyName]
+            // setTransactions()
+            console.log(updatedTransaction)
         return data
       })
       }

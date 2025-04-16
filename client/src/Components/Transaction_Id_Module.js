@@ -1,4 +1,4 @@
-import React, {useContext} from 'react'
+import React, {useContext, useState} from 'react'
 import AppContext from '../AppContext';
 
 import { useParams } from 'react-router-dom';
@@ -6,7 +6,7 @@ import EditableText from './EditableText';
 
 
 function Transaction_Id_Module() {
-  const { user,accounts, API_URL } = useContext(AppContext)
+  const { user,accounts, API_URL, transactions, setTransactions } = useContext(AppContext)
   const { id } = useParams()
   const uniqueDateSet = new Set();
     // const transactionList = user.map(user=>{
@@ -42,13 +42,13 @@ function Transaction_Id_Module() {
                  {/* <p className="time">
                    {shouldRenderDate?null:date}
                 </p> */}
-                <EditableText initialText={transaction.title} transactionId={id}  keyName={'title'} API_URL = {API_URL}/>
-                <EditableText initialText={date} transactionId={id}  keyName={'created_at'} API_URL = {API_URL}/>
+                <EditableText initialText={transaction.title} setTransactions = {setTransactions} transactions = {transactions} transactionId={id}  keyName={'title'} API_URL = {API_URL}/>
+                <EditableText initialText={date} transactionId={id} setTransactions = {setTransactions} transactions = {transactions} keyName={'created_at'} API_URL = {API_URL}/>
                 <p>{transaction.id}</p>
                 <p>{transaction.card?transaction.card.card_number.toString().slice(-4):null}</p>
                 <div style={{ display: "flex", alignItems: "center" }}>
                 <span style={{ marginRight: "4px" }}>$</span>
-                <EditableText initialText={transaction.amount} transactionId={id} keyName={'amount'} API_URL = {API_URL} />
+                <EditableText initialText={transaction.amount} setTransactions = {setTransactions} transactions = {transactions} transactionId={id} keyName={'amount'} API_URL = {API_URL} />
                 </div>                
                         </div>
                         )
