@@ -11,8 +11,10 @@ function Insights() {
           <InsightComponent/>
         </div>
       </div>
+      
       <div className='background_wrapper' id='test' >
-        <div className='_wrapper' style={{display:"flex", justifyContent:"center"}}><InsightsCharts/></div>
+       
+        <div className='_wrapper' style={{display:"flex", justifyContent:"center", flexWrap:"wrap", textAlign:"center"}}><h1 style = {{padding:"20px"}}>View Spending Chart</h1><InsightsCharts/></div>
       </div>
     </div>
   )
