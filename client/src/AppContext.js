@@ -2,6 +2,7 @@ import React, { createContext, useState, useEffect  } from 'react';
 
 
 const AppContext = createContext();
+// checking for API url in dev vs prod
 const API_URL_FROM_ENV = process.env.REACT_APP_API_URL;
 const API_URL = API_URL_FROM_ENV ? API_URL_FROM_ENV:''
 export const AppProvider = ({ children }) => {
@@ -15,6 +16,7 @@ export const AppProvider = ({ children }) => {
   const [transactions, setTransactions] = useState([])
   const [deleteState, setDeleteState] = useState(false)
 
+  // login function
   function handleLogin(username, password, setSubmitting, navigate) {
     
     fetch(`${API_URL}/api/bank/login`, {
@@ -28,6 +30,7 @@ export const AppProvider = ({ children }) => {
       .then((r) => {
         if (r.ok) {
           r.json().then((data) => {
+            // setting user to contain most data we'll reference
             setUser(data)
             setAccounts(data.accounts)
 
@@ -86,6 +89,7 @@ export const AppProvider = ({ children }) => {
       })
       
   }
+  // setting the value for the categories section
   useEffect(()=>{
   let transactionCategories =[]
   accounts.forEach(account => {
@@ -104,7 +108,7 @@ export const AppProvider = ({ children }) => {
   },[user, accounts])
   
 
-
+// handle new bank account creation
 function handleNewAccountSubmission(bank_name,
   account_value,
   account_type,
@@ -114,10 +118,10 @@ function handleNewAccountSubmission(bank_name,
     console.log(account_type)
   fetch(`${API_URL}/api/bank/accounts`, {
     method: "POST",
+    credentials: 'include',
     headers: {
       "Content-Type": "application/json",
     },
-    credentials: 'include',
     body: JSON.stringify({bank_name, account_value, account_type, cardNumber}),
   })
     .then((r) => {
@@ -144,7 +148,7 @@ function handleNewAccountSubmission(bank_name,
     
 }
 
-
+  // handle bank account deletion
   function handleAccountDeletion(navigate, id){
     fetch(`${API_URL}/api/bank/singular_account/${id}`,{
       method:"DELETE", 
@@ -164,12 +168,12 @@ function handleNewAccountSubmission(bank_name,
       )
       
   }
-
+  // check session ensures a user is still logged in between refreshes
   useEffect(() => {
     setLoading(true);
     fetch(`${API_URL}/api/bank/check_session`,{
       method: 'GET',
-      credentials: 'include'
+      credentials: 'include',
     })
       .then(response => {
         if (!response.ok) {
@@ -201,7 +205,7 @@ function handleNewAccountSubmission(bank_name,
       });
   }, []);
 
-  // this will seed transactions on individual account pages
+  // this will seed transactions on individual account pages - simply mock data to show frontend capability
   function handleTransactionSeed(id) {
     fetch(`${API_URL}/api/bank/transactionseed`, {
         method: 'POST', 
@@ -238,8 +242,8 @@ function handleNewAccountSubmission(bank_name,
     )
     .catch(error => console.error('Error:', error)); 
 }
-  
-const handleTransactionDelete=(transactionID, accountID)=>{
+// function to delete individual transactions
+const handleTransactionDelete=(transactionID)=>{
   fetch(`${API_URL}/api/bank/transaction/${transactionID}`, { 
     method: 'DELETE',
     credentials: 'include', 

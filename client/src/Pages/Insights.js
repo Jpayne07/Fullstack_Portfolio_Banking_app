@@ -3,6 +3,7 @@ import InsightComponent from '../Components/InsightsComponent'
 import InsightsCharts from '../Components/InsightsCharts'
 
 function Insights() {
+  // insights displays all of the transactions and the spend based on the category
   return (
     <div className='page_wrapper' style={{display:"flex", flexWrap:"wrap"}}>
       <div className='background_wrapper' id='test'>

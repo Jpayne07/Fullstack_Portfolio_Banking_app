@@ -31,9 +31,10 @@ function AddNewAccountForm() {
       });
     }, []);
     const bank_names = banks.filter(bank=>{
+        // filters the bank names down based on entry
         return bank.name.toLowerCase().includes(holdSuggest.toLowerCase())
     })
-    
+    // validations
     const FormSchema = yup.object().shape({
         account_value: yup
             .number().min(1, 'Account value must be at least 1 characters long'),
@@ -47,11 +48,6 @@ function AddNewAccountForm() {
             .matches(/^(Checking|Savings)$/, "Account type should be 'Checking' or 'Savings'"),
         cardNumber: yup.string()
             .matches(/^\d+$/, 'Must contain only digits')
-            .test(
-                'no-zero',
-                'Value cannot contain the digit 0',
-                value => typeof value === 'string' && !value.includes('0')
-              )
             .length(9, 'Must be at least 9 characters long')
 
         });
@@ -61,6 +57,7 @@ function AddNewAccountForm() {
     <Formik
     initialValues={{ bank_name: '', account_value: '', account_type: 'Checking', cardNumber: 0 }}
     validationSchema={FormSchema}
+    // pushing the new account data to the backend
     onSubmit={(values, { setSubmitting }) => {
         handleNewAccountSubmission(values.bank_name, values.account_value, values.account_type, parseInt(values.cardNumber), setSubmitting, navigate)
         
@@ -69,9 +66,7 @@ function AddNewAccountForm() {
     {({ isSubmitting, errors, handleChange }) => (
       
     <Form className='login_form_body'>
-        
-        {/* <div className='form_row'> */}
-        <div className='form_fields'>
+            <div className='form_fields'>
             <div className='form_row'>
                 <label className="formik_labels" id = "accountAdd">Bank Name: </label>
                 <Field

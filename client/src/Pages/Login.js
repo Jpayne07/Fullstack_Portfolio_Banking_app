@@ -12,7 +12,7 @@ function Login() {
     const {handleLogin, mockLogin, errors, user, API_URL} = useContext(AppContext);
 
     const handleLoginGithub = () => {
-      window.location.href = `${API_URL}/api/login-github`; // Ensure the URL matches your Flask app's URL
+      window.location.href = `${API_URL}/api/bank/login-github`; // Ensure the URL matches your Flask app's URL
     };
     if (user){
       navigate('/')

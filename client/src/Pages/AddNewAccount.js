@@ -17,6 +17,7 @@ function AddNewAccount() {
                 <div className='login_header'><h2>Create New Bank Account</h2>
                   {errorState?<p>Invalid account information. Bank name must be less than 30 characters and account value must be positive.</p>:null}
                 </div>
+                {/* form for new account creation below */}
                 <AddNewAccountForm />
               </div>
             </div>

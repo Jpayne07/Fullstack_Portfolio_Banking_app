@@ -30,8 +30,6 @@ return (
   <div style={{ width: '300px', height: '300px', position: 'relative' }}>
     {/* The PieChart itself */}
     <PieChart
-    //     label={({ dataEntry }) => (hovered === dataEntry.title ? `${dataEntry.title}: ${dataEntry.value}` : dataEntry.value)}
-
       data={arrofObjects}
       onMouseOver={(_, index) => {
         setHoveredTitle(arrofObjects[index].title)
@@ -54,7 +52,7 @@ return (
         left: '50%',
         transform: 'translate(-50%, -50%)',
         textAlign: 'center',
-        pointerEvents: 'none', // ensures the label doesn't block chart hover
+        pointerEvents: 'none',
       }}
     >
       <div style={{ fontWeight: 'bold', fontSize: '2rem' }}>{hovered}:</div>

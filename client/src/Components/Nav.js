@@ -23,7 +23,6 @@ function Nav() {
         sessionStorage.clear();
         navigate('/login');
       })
-      // .catch((error) => console.error('Error:', error)); // Optional: handle fetch error
   };
 
   const toggleLinks = () => {
