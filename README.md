@@ -52,6 +52,10 @@ Steps or commands to clone or download the repository and install dependencies:
 
 ```bash
 git clone https://github.com/Jpayne07/Fullstack_Portfolio_Banking_app/
+cd Fullstack_Portfolio_Banking_app
 cd client && npm install && npm start
+```
+In another terminal
+```
 cd ../server && pip install requirements.txt && flask run
 
