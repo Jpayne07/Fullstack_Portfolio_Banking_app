@@ -25,7 +25,7 @@ While it does require setup from a user, the benefits include:
 
 ### How to use this app:
 1. Users can sign up via the signup page:  
-   [https://jacobpaynecodes.com/Fullstack_Portfolio_Banking_app/signup](https://jacobpaynecodes.com/Fullstack_Portfolio_Banking_app/signup)
+  [https://jacobpaynecodes.com/Fullstack_Portfolio_Banking_app/signup](https://jacobpaynecodes.com/Fullstack_Portfolio_Banking_app/signup)
 2. From there they can store their information and create accounts to get started:
    1. Simply enter the name of the bank and the existing dollar amount.
    2. You can then import transactions and store them in the file *(in progress)*:
@@ -48,14 +48,6 @@ List any required software or system requirements (e.g., Node.js version, Python
 
 ## Installation
 
-Steps or commands to clone or download the repository and install dependencies:
+Installation steps are coming! For now enjoy the experience in the demo [https://jacobpaynecodes.com/Fullstack_Portfolio_Banking_app/login](https://jacobpaynecodes.com/Fullstack_Portfolio_Banking_app/login) and follow along here!
 
-```bash
-git clone https://github.com/Jpayne07/Fullstack_Portfolio_Banking_app/
-cd Fullstack_Portfolio_Banking_app
-cd client && npm install && npm start
-```
-In another terminal
-```
-cd ../server && pip install requirements.txt && flask run
 
